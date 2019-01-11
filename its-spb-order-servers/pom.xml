@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.its.order.servers</groupId>
+	<artifactId>its-spb-order-servers</artifactId>
+	<version>1.0.0</version>
+	<name>its-spb-order-servers</name>
+	<description>its-spb-order-servers</description>
+
+	<parent>
+		<groupId>com.its.parent</groupId>
+		<artifactId>its-spb-parent</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<dependencies>
+		<!-- SpringBoot整合Eureka客户端 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<!-- SpringBoot整合Zookeeper客户端 需要注意Zookeeper的安装版本 <dependency> <groupId>org.springframework.cloud</groupId> 
+			<artifactId>spring-cloud-starter-zookeeper-discovery</artifactId> </dependency> -->
+		<!-- SpringBoot整合Feign -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		<!-- hystrix断路器 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
+		</dependency>
+		<!-- SpringCloud 整合 Config Client端 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-client</artifactId>
+		</dependency>
+		<!-- SpringCloud 整合 Config 手动刷新 -->
+		<!-- 通过post请求如下地址实现Client端手动刷新http://localhost:8301/actuator/refresh -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- SpringBoot 整合 springfox-swagger2 实现API管理 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<!-- its-spb-order-servers-api -->
+		<dependency>
+			<groupId>com.its.order.servers.api</groupId>
+			<artifactId>its-spb-order-servers-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- its-spb-base-servers-api -->
+		<dependency>
+			<groupId>com.its.base.servers.api</groupId>
+			<artifactId>its-spb-base-servers-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+	</dependencies>
+</project>

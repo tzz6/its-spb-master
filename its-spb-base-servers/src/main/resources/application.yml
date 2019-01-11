@@ -1,0 +1,36 @@
+server:
+  ###Base服务端口号
+  port: 8201
+    
+spring: 
+  application: 
+  ###服务别名--服务注册到注册中心名称
+    name: its-spb-base-servers
+
+#不同注册中心更换，接口方式调用不变，只需要变更yml注册中心配置文件及Maven pom依赖信息
+#Eureka注册中心配置
+eureka:
+  client:
+    serviceUrl:
+    ###注册地址
+      defaultZone: http://127.0.0.1:8101/eureka/
+      ###集群
+    #  defaultZone: http://127.0.0.1:8101/eureka/,http://127.0.0.1:8102/eureka/
+    ###是否需要将自己服务注册到eureka注册中心(true：是，false：否)
+    registerWithEureka: true
+    ###是否需要去检索服务信息（true：是，false：否)
+    fetchRegistry: true
+  ###心跳检测与续约时间,测试时将值设置小些,保证服务关闭后注册中心能及时剔除
+  instance:
+    ###EurekaClient向EurekaServer端发送心跳的时间间隔,单位为秒
+    leaseRenewalIntervalInSeconds: 1
+    ###EurekaServer在收到最后一次心跳之后的等待时间上限,单位为秒,超时则剔除
+    leaseExpirationDurationInSeconds: 2
+#Zookeeper注册中心配置
+#  cloud: 
+#    zookeeper: 
+#      connect-string: 10.202.107.143:2181    
+
+#Swagger配置
+swagger: 
+  base-package: com.its.base.servers.api

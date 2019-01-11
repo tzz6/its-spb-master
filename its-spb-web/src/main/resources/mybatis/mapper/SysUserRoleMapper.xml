@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.its.core.mybatis.dao.mapper.SysUserRoleMapper">
+	<resultMap type="com.its.model.mybatis.dao.domain.SysUserRole" id="SysUserRole">
+		<result property="stId" column="ST_ID" />
+		<result property="roleId" column="ROLE_ID" />
+	</resultMap>
+
+	<select id="getSysUserRoleBystId" resultMap="SysUserRole">
+		SELECT ST_ID, ROLE_ID FROM sys_user_role
+		where 1 = 1
+		<if test="stId !='' and stId != null">
+			and ST_ID = #{stId, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<insert id="saveSysUserRole" parameterType="java.util.List">
+		INSERT INTO sys_user_role (ST_ID,ROLE_ID) VALUES
+		<foreach collection="list" item="sysUserRole" index="index"  separator="," >
+	           (#{sysUserRole.stId, jdbcType=VARCHAR}, #{sysUserRole.roleId, jdbcType=VARCHAR})
+	   </foreach>
+	</insert>
+	
+	<delete id="deleteSysUserRoleByStId" parameterType="String">
+     	DELETE FROM sys_user_role WHERE ST_ID = #{stId, jdbcType=VARCHAR}
+    </delete>
+	<delete id="deleteSysUserRoleByRoleId" parameterType="String">
+     	DELETE FROM sys_user_role WHERE ROLE_ID = #{roleId, jdbcType=VARCHAR}
+    </delete>
+</mapper>

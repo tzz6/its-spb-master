@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=utf-8" />
+<title>测试HTMl转PDF</title>
+<style type="text/css">
+body {
+	margin-left: 45px;
+	margin-right: 45px;
+	font-family: Arial Unicode MS;
+	font-size: 10px;
+}
+
+table {
+	margin: auto;
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid #444444;
+}
+
+th, td {
+	border: 1px solid #444444;
+	font-size: 10px;
+	margin-left: 5px;
+}
+
+.mcContent {
+	line-height: 180%;
+	padding: 20px;
+}
+
+.logo {
+	text-align: center;
+}
+
+.title {
+	text-align: center;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.notes {
+	font-weight: normal;
+	margin-left: 5px;
+	margin-right: 5px;
+	line-height: 18px;
+}
+
+.text_content {
+	margin-left: 5px;
+	margin-right: 5px;
+	line-height: 18px;
+}
+
+.sum_insured_first_row {
+	width: 20%;
+}
+
+.sum_insured_span {
+	font-size: 10px;
+}
+
+.special_agreements_div {
+	page-break-before: always;
+	font-size: 14px;
+	margin-top: 20px;
+}
+
+.special_agreements_div .special_agreements {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.title_right {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.title_right p {
+	text-align: left;
+	margin: 0;
+	margin-left: 50%;
+	padding: 0;
+}
+
+@page {
+	size: 8.5in 11in;
+	@
+	bottom-center
+	{
+	content
+	:
+	"page "
+	counter(
+	page
+	)
+	" of  "
+	counter(
+	pages
+	);
+}
+
+.signature {
+	margin: 0 auto;
+	clear: both;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.signature_table {
+	/* 	font-size: 16px; */
+	font-weight: bold;
+}
+</style>
+</head>
+<body>
+	<div>
+		<div class="logo">
+			<img src="2.png" />
+		</div>
+		<div class="title">
+		<h1>测试使用Flyingsaucer将HTML转换为PDF</h1>
+			Test using Flyingsaucer converts
+			HTML to PDF Test using Flyingsaucer converts HTML to PDF &amp; <br />
+			Test using Flyingsaucer converts HTML to PDF
+		</div>
+		<div class="title_right">
+			<p>测试号：${testNo}</p>
+			<p>Test No.</p>
+		</div>
+		<div class="notes">
+			Flyingsaucer使用iText2.0.8作为其pdf输出的基础工具,另外增加了解析html/xml并形成pdf式排版的功能.最重要的它还支持css样式表.组合这些能力后,
+			它就可以将网页变成pdf了.但是,它也有他的问题.大家知道iText的版本现在已经升级为5.0以上了,而flyingsaucer却依然沿用2.0.8的版本.为什么呢?
+			因为这个灰碟貌似自2007年就已经停止维护了,最终版本flyingsaucer-R8.也就是说这是个几年前的工具包,至于新的替代此功能的包又在哪里?
+			我没有找到,倒是有个功能相似但是收费的,不知道是不是它的成长版.这是题外话我们不研究.只看这个flyingsaucer-R8这个版本能否满足我们的基本要求吧。<br />
+
+			Flyingsaucer using iText2.0.8 as tool, the basis of the PDF output
+			also increased the parsing HTML/XML and PDF type typesetting
+			function. The most important it supports CSS stylesheet. \ Combine
+			these abilities, it can be Become a PDF page. But, it also has his
+			problem. We know that the versions of iText is now upgraded to 5.0
+			above, but still continue to use the mid-atlantic moved flyingsaucer
+			version. Why? Because the ash disc has stopped maintenance
+			since 2007, appeared to be the final version flyingsaucer - the R8.
+			That is to say, this is a few years ago toolkit, as for the new
+			replace the function of package in where? I couldn't find it, there
+			was a similar functions but charge, don't know if it's growth. This
+			is a digression we don't study. Just look at the flyingsaucer - the
+			R8 this version can meet our basic requirements. China Life Insurance
+			Company Limited underwrites personal insurance for the following
+			insured and issues this policy in accor dance with the Application
+			Form and the terms and conditions of this insurance contract and
+			other relevant materials. The policy is written both in English and
+			Chinese to facilitate your understanding. If any dispute arises out
+			of the interpretation of the policy, the Chinese version shall
+			govern. 
+		</div>
+
+		<div class="insurance_info">
+			<table class="insurance_info_table" cellpadding="0" cellspacing="0"
+				width="100%">
+				<tr>
+					<td width="20%" colspan="3">用户名<br /> username
+					</td>
+					<td width="43%" colspan="3">${username}<br /></td>
+					<td width="15%">密码<br /> password
+					</td>
+					<td>${password}</td>
+				</tr>
+				<tr>
+					<td width="20%" colspan="3">联络地址<br /> Correspondence Address
+					</td>
+					<td width="43%" colspan="3">${address}</td>
+					<td width="15%">邮编<br /> Postal Code
+					</td>
+					<td>${code}</td>
+				</tr>
+				<tr class="td_width1">
+					<td width="20%" colspan="3">姓名<br /> Name
+					</td>
+					<td width="13%">${name}</td>
+					<td width="10%">（拼音）<br /> （Pinyin）
+					</td>
+					<td width="18%">${insuredPingyinName}</td>
+					<td width="15%">护照号码<br /> Passport No
+					</td>
+					<td>${insuredPassportNo}</td>
+				</tr>
+				<tr>
+					<td width="5%">性别<br /> Sex
+					</td>
+					<td width="5%">${insuredSex}</td>
+					<td width="10%">出生日期<br /> Date of Birth
+					</td>
+					<td width="13%">${insuredBirthday}</td>
+					<td width="10%">电话<br /> Telephone No.
+					</td>
+					<td width="18%">${insuredPhone}</td>
+					<td width="15%">证件号码 <br />ID No.
+					</td>
+					<td>${insuredIDNo}</td>
+				</tr>
+				<tr>
+					<td class="address_class" colspan="3">备注 <br /> Remarks
+					</td>
+					<td colspan="5">${remarks}</td>
+				</tr>
+				<tr>
+					<td class="address_class" colspan="3">注册时间 <br /> Register Date
+					</td>
+					<td colspan="5">${registerDate}</td>
+				</tr>
+			</table>
+		</div>
+		<br />
+		<br />
+		<br />
+		<br />
+		
+		
+		<div class="signature">
+			<br /> <br />
+			<table class="signature_table" style="border: 0; width: 100%;">
+				<tr>
+					<th
+						style="border: 0; font-size: 12px; font-weight: bold; text-align: left; width: 17%;">总经理签名：
+						<br /> <span style="font-size: 10px">Authorized Signature</span>
+					</th>
+					<td
+						style="border: 0; font-size: 12px; font-weight: bold; text-align: left; width: 17%;"></td>
+					<th
+						style="border: 0; font-size: 12px; font-weight: bold; text-align: left; width: 17%;">公司签章：
+						<br /> <span style="font-size: 10px">Company Stamp</span>
+					</th>
+					<td
+						style="border: 0; font-size: 12px; font-weight: bold; text-align: left; width: 17%;"></td>
+					<th
+						style="border: 0; font-size: 12px; font-weight: bold; text-align: left; width: 16%;">签发日期：<br />
+						<span style="font-size: 10px">Issue Date</span>
+					</th>
+					<td
+						style="border: 0; font-size: 12px; font-weight: bold; text-align: left; width: 16%;">${issueDate}</td>
+				</tr>
+			</table>
+		</div>
+		<div class="text_content">
+			<br />在使用过程中发现flyingsaucer对导出pdf的网页有一些要求。
+		</div>
+
+		<div class="special_agreements_div">
+			<div class="special_agreements">特别要求:</div>
+			<br /> 1. 所有的标签必须都闭合;<br />
+			<br /> 2. 网页开头引入的DTD必须与网页体中使用的标签一致;<br />
+			<br /> 3. 部分不太常用的html标签貌似不认.比如<u></u>;<br />
+		</div>
+	</div>
+</body>
+</html>

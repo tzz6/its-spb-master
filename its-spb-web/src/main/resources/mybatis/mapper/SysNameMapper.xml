@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.its.core.mybatis.dao.mapper.SysNameMapper">
+	<resultMap type="com.its.model.mybatis.dao.domain.SysName" id="SysName">
+		<result property="sysNameCode" column="SYS_NAME_CODE" />
+		<result property="enName" column="EN_NAME" />
+		<result property="bldCode" column="BLD_CODE" />
+		<result property="snStatus" column="SN_STATUS" />
+		<result property="name" column="BLD_NAME" />
+	</resultMap>
+
+	<select id="getSysNameByLang" resultMap="SysName">
+		SELECT
+		SYS_NAME_CODE, EN_NAME, sn.BLD_CODE,SN_STATUS,bl.BLD_NAME BLD_NAME FROM sys_name sn 
+		left join bld_language bl on sn.bld_code = bl.bld_code
+		where 1 = 1 and sn.sn_status = '1'
+		<if test="lang !='' and lang != null">
+			and bl.lang = #{lang, jdbcType=VARCHAR} 
+		</if>
+		order by sn.sys_name_code asc 
+	</select>
+	
+</mapper>

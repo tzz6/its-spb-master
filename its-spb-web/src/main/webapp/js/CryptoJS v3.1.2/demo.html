@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+	<title></title>
+	<head>
+		<script src="rollups/aes.js"></script>
+		<!-- <script src="mode-ecb-min.js"></script> -->
+		<script>
+		
+		
+		function Encrypt(word){
+		var a = randomString(32)
+		 var key = CryptoJS.enc.Utf8.parse(a);
+		 var iv  = CryptoJS.enc.Utf8.parse('0102030405060708');	
+		 var srcs = CryptoJS.enc.Utf8.parse(word);
+		 var encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: iv,mode:CryptoJS.mode.CBC});
+         return encrypted.toString();
+	}
+function Decrypt(word){
+		 var key = CryptoJS.enc.Utf8.parse("884b2fbc1397c37a");	
+		 var iv  = CryptoJS.enc.Utf8.parse('0102030405060708');	
+		 var decrypt = CryptoJS.AES.decrypt(srcs, key, { iv: iv,mode:CryptoJS.mode.CBC});
+		 return CryptoJS.enc.Utf8.stringify(encrypted).toString();
+	}
+
+	console.log(Encrypt("abcW123456"));
+
+		
+		
+		
+		/*
+		
+		var base64Key = "QWJjZGVmZ2hpamtsbW5vcA==";
+			//	var key = CryptoJS.enc.Base64.parse(base64Key);
+			//var key = "78B31088-F0E4-4A86-B749-429D9F774AA0";
+			var key = "884b2fbc1397c37a4f6fe951aa19679d";
+			var plaintText = "abcW123456";
+			console.log( "plaintText = " + plaintText );
+			var encryptedData = CryptoJS.AES.encrypt(plaintText, key, {
+				mode: CryptoJS.mode.ECB,
+				padding: CryptoJS.pad.Pkcs7
+			});
+			console.log( "encryptedData = " + encryptedData );
+
+			var decryptedData = CryptoJS.AES.decrypt( encryptedData, key, {
+				mode: CryptoJS.mode.ECB,
+				padding: CryptoJS.pad.Pkcs7
+			} );
+			var decryptedText = decryptedData.toString(CryptoJS.enc.Utf8 );
+			console.log( "decryptedText = " + decryptedText );
+		*/
+		function randomString(len){
+			var = len | 32;
+			var chars = 'ABCDEFGHIJKLMNOPQRSTWUXYZabcdefhijklmnopqrstwuxyz1234567890';
+			var maxPos = chars.length;
+			var pwd = '';
+			for(var i = 0;i<len;i++){
+				pwd += chars.charAt(Math.floor(Math.random() * maxPos));
+			}
+			
+			return pwd;
+		}
+		alert(randomString(32))
+
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

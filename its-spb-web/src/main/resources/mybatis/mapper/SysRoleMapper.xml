@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.its.core.mybatis.dao.mapper.SysRoleMapper">
+	<resultMap type="com.its.model.mybatis.dao.domain.SysRole" id="SysRole">
+		<result property="roleId" column="ROLE_ID" />
+		<result property="roleName" column="ROLE_NAME" />
+		<result property="sysNameCode" column="SYS_NAME_CODE" />
+		<result property="sysName" column="SYS_NAME" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="createTm" column="CREATE_TM" />
+		<result property="updateBy" column="UPDATE_BY" />
+		<result property="updateTm" column="UPDATE_TM" />
+	</resultMap>
+
+	<select id="getSysRoleCount" parameterType="map" resultType="Integer">
+		SELECT count(1) FROM sys_role sr 
+		left join sys_name sn  on sr.sys_name_code = sn.sys_name_code
+		left join bld_language bl on sn.bld_code = bl.bld_code
+		where 1 = 1
+		<if test="roleName !='' and roleName != null">
+			and sr.ROLE_NAME like CONCAT('%',#{roleName, jdbcType=VARCHAR},'%') 
+		</if>
+		<if test="sysNameCode !='' and sysNameCode != null">
+			and sr.SYS_NAME_CODE = #{sysNameCode, jdbcType=VARCHAR} 
+		</if>
+		<if test="lang !='' and lang != null">
+			and bl.lang = #{lang, jdbcType=VARCHAR} 
+		</if>
+	</select>
+	
+	<select id="getSysRoleList" parameterType="map" resultMap="SysRole">
+		SELECT
+		ROLE_ID, ROLE_NAME, sr.SYS_NAME_CODE,bl.bld_name SYS_NAME,CREATE_BY,
+		DATE_FORMAT(CREATE_TM,'%Y-%m-%d %H:%i:%S') CREATE_TM,
+		UPDATE_BY,
+		DATE_FORMAT(UPDATE_TM,'%Y-%m-%d %H:%i:%S') UPDATE_TM 
+		FROM sys_role sr 
+		left join sys_name sn  on sr.sys_name_code = sn.sys_name_code
+		left join bld_language bl on sn.bld_code = bl.bld_code
+		where 1 = 1
+		<if test="roleName !='' and roleName != null">
+			and sr.ROLE_NAME like CONCAT('%',#{roleName, jdbcType=VARCHAR},'%') 
+		</if>
+		<if test="sysNameCode !='' and sysNameCode != null">
+			and sr.SYS_NAME_CODE = #{sysNameCode, jdbcType=VARCHAR} 
+		</if>
+		<if test="lang !='' and lang != null">
+			and bl.lang = #{lang, jdbcType=VARCHAR} 
+		</if>
+		ORDER BY CREATE_TM DESC LIMIT #{startNum, jdbcType=INTEGER},#{rows, jdbcType=INTEGER}
+	</select>
+	
+	<insert id="insertSysRole" parameterType="com.its.model.mybatis.dao.domain.SysRole">
+		INSERT INTO sys_role
+		(ROLE_ID,ROLE_NAME,SYS_NAME_CODE,CREATE_BY,CREATE_TM,UPDATE_BY,UPDATE_TM) VALUES
+		(#{roleId, jdbcType=VARCHAR}, 
+		#{roleName, jdbcType=VARCHAR}, 
+		#{sysNameCode, jdbcType=VARCHAR}, 
+		#{createBy, jdbcType=VARCHAR}, 
+		DATE_FORMAT(#{createTm},'%Y-%m-%d %H:%i:%S'), 
+		#{updateBy,jdbcType=VARCHAR}, 
+		DATE_FORMAT(#{updateTm},'%Y-%m-%d %H:%i:%S'))
+	</insert>
+	
+	<select id="getSysRoleById" resultMap="SysRole">
+		SELECT
+		ROLE_ID, ROLE_NAME, SYS_NAME_CODE,CREATE_BY,
+		DATE_FORMAT(CREATE_TM,'%Y-%m-%d %H:%i:%S') CREATE_TM,
+		UPDATE_BY,
+		DATE_FORMAT(UPDATE_TM,'%Y-%m-%d %H:%i:%S') UPDATE_TM 
+		FROM sys_role
+		where 1 = 1
+		<if test="roleId !='' and roleId != null">
+			and ROLE_ID = #{roleId, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<update id="updateSysRole" parameterType="com.its.model.mybatis.dao.domain.SysRole">
+		update sys_role set 
+		ROLE_NAME = #{roleName, jdbcType=VARCHAR}, 
+		SYS_NAME_CODE = #{sysNameCode, jdbcType=VARCHAR}, 
+		UPDATE_BY = #{updateBy, jdbcType=VARCHAR}, 
+		UPDATE_TM = DATE_FORMAT(#{updateTm},'%Y-%m-%d %H:%i:%S')  
+		where ROLE_ID =  #{roleId,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteSysRole" parameterType="java.util.List">
+     		DELETE FROM sys_role WHERE ROLE_ID in
+     		<foreach collection="list" item="roleId" index="index"
+	            open="(" separator="," close=")">
+	            #{roleId}
+	        </foreach>
+     </delete>
+</mapper>

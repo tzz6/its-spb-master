@@ -1,0 +1,46 @@
+###使用Spring Cloud Config Server时，应在 bootstrap.yml 中指定注册中心配置
+###bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。
+###application.yml 可以用来定义应用级别的，如果搭配 spring-cloud-config 使用 application.yml 里面定义的文件可以实现动态替换。
+spring: 
+  application: 
+  ###服务别名--服务注册到注册中心名称
+    name: its-spb-zuul
+  ###配置中心Client
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: its-spb-config-servers
+    ###读取前缀
+      profile: dev
+      label: master
+
+#Eureka注册中心配置
+eureka:
+  client:
+    serviceUrl:
+    ###注册地址
+      defaultZone: http://127.0.0.1:8101/eureka/
+###将Zuul配置到Config中心实现动态路由      
+###Zuul
+#zuul: 
+#  routes: 
+#    ###自定义服务转发规则(名称自定义)
+#    api-base: 
+#      ###当客户端请求http://127.0.0.1:80/api-base开头的都会转发到Base服务
+#      path: /api-base/**
+#      ###base服务别名 zuul默认整合ribbon 自动实现负载均衡
+#      serviceId: its-spb-base-servers
+#    api-order: 
+#      ###当客户端请求http://127.0.0.1:80/api-order开头的都会转发到Order服务
+#      path: /api-order/**
+#      ###order服务别名
+#      serviceId: its-spb-order-servers
+
+###Config手工刷新配置"*"开启所有端点权限（refresh,health,info等）
+###通过post请求如下地址实现Client端手动刷新http://localhost:80/actuator/refresh
+management: 
+  endpoints: 
+    web: 
+      exposure: 
+        include: "*"

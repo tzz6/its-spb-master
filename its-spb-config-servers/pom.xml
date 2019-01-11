@@ -1,0 +1,28 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.its.config.servers</groupId>
+	<artifactId>its-spb-config-servers</artifactId>
+	<version>1.0.0</version>
+	<name>its-spb-config-servers</name>
+	<description>its-spb-config-servers</description>
+
+	<parent>
+		<groupId>com.its.parent</groupId>
+		<artifactId>its-spb-parent</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<dependencies>
+		<!-- SpringCloud 整合 Config服务端 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-server</artifactId>
+		</dependency>
+		<!-- SpringBoot整合Eureka客户端 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+	</dependencies>
+</project>

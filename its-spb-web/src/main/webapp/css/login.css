@@ -1,0 +1,11 @@
+﻿* {padding: 0;margin: 0;}
+li {list-style: none;}
+.login {width: 900px;height: 341px;	position: absolute;top: 50%;left: 50%;margin-top:-170.5px;margin-left: -450px;}
+.login-content {width: 341px;height: 242px;padding: 38px;float: right;border: 1px solid #ccc;}
+.login-content li {margin-bottom: 25px;}
+.login-content h2 {font-size: 16px;margin-bottom: 9px;color: #666;}
+.input_cls {	height: 35px;line-height: 35px;border: 1px solid #ccc;width: 341px;font-size: 17px;outline:none;text-indent:5px;}
+.brand {width: 450px;height: 323px;float: left;background: url(../images/brand-bg.png) no-repeat center center;}
+.login_btn {width: 341px;height: 40px;line-height: 40px;background: #428BCA;font-size: 18px;color: #fff;border: none;}
+.input_cls:focus {border: 1px solid #999;}
+.error {color: #f00;padding-top: 2px;font-size: 12px;}

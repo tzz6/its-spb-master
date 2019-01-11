@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.its.core.mybatis.dao.mapper.SQLExecuteMapper">
+
+
+    <select id="execute" parameterType="String" resultType="java.util.LinkedHashMap">
+        ${value}
+    </select>
+
+    <select id="getCount" parameterType="String" resultType="java.lang.Long">
+        ${value}
+    </select>
+    <update id="executeIUD">
+        ${value}
+    </update>
+</mapper>

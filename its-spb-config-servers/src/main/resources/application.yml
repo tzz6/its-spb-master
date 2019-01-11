@@ -1,0 +1,28 @@
+server:
+  ###Config服务端口号
+  port: 8401
+
+#Eureka注册中心配置
+eureka:
+  client:
+    serviceUrl:
+    ###注册地址
+      defaultZone: http://127.0.0.1:8101/eureka/
+    
+spring: 
+  application: 
+  ###服务别名--服务注册到注册中心名称
+    name: its-spb-config-servers
+  cloud:
+    config:
+      server:
+        git:
+          ###git环境地址
+          uri: https://github.com/tzz6/its-spb-config.git
+          ###搜索目录
+          search-paths: 
+            - its-config
+#          username: null
+#          password: null
+        ###读取分支
+        lable: master

@@ -1,0 +1,45 @@
+###使用Spring Cloud Config Server时，应在 bootstrap.yml 中指定注册中心配置
+###bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。
+###application.yml 可以用来定义应用级别的，如果搭配 spring-cloud-config 使用 application.yml 里面定义的文件可以实现动态替换。
+spring: 
+  application: 
+  ###服务别名--服务注册到注册中心名称
+    name: its-spb-order-servers
+  ### main: allow-bean-definition-overriding处理多个接口上的@FeignClient(“相同服务名”)会报错，overriding is disabled 
+  main: 
+    allow-bean-definition-overriding: true
+  ###配置中心Client
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: its-spb-config-servers
+    ###读取前缀
+      profile: dev
+      label: master
+
+#不同注册中心更换，接口方式调用不变，只需要变更yml注册中心配置文件及Maven pom依赖信息
+#Eureka注册中心配置    
+eureka:
+  client:
+    serviceUrl:
+    ###注册地址
+      defaultZone: http://127.0.0.1:8101/eureka/
+      ###集群
+    #  defaultZone: http://127.0.0.1:8101/eureka/,http://127.0.0.1:8102/eureka/
+    ###是否需要将自己服务注册到eureka注册中心(true：是，false：否)
+    registerWithEureka: true
+    ###是否需要去检索服务信息（true：是，false：否)
+    fetchRegistry: true
+#Zookeeper注册中心配置
+#  cloud: 
+#    zookeeper: 
+#      connect-string: 10.202.107.143:2181
+
+###Config手工刷新配置"*"开启所有端点权限（refresh,health,info等）
+###通过post请求如下地址实现Client端手动刷新http://localhost:8301/actuator/refresh
+management: 
+  endpoints: 
+    web: 
+      exposure: 
+        include: "*"

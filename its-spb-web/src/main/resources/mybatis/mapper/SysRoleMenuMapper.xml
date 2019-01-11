@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.its.core.mybatis.dao.mapper.SysRoleMenuMapper">
+	<resultMap type="com.its.model.mybatis.dao.domain.SysRoleMenu" id="SysRoleMenu">
+		<result property="roleId" column="ROLE_ID" />
+		<result property="menuId" column="MENU_ID" />
+	</resultMap>
+
+	<select id="getSysRoleMenuByRoleId" resultMap="SysRoleMenu">
+		SELECT ROLE_ID, MENU_ID FROM sys_role_menu
+		where 1 = 1
+		<if test="roleId !='' and roleId != null">
+			and ROLE_ID = #{roleId, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<insert id="saveSysRoleMenu" parameterType="java.util.List">
+		INSERT INTO sys_role_menu (ROLE_ID,MENU_ID) VALUES
+		<foreach collection="list" item="sysRole" index="index"  separator="," >
+	           (#{sysRole.roleId, jdbcType=VARCHAR}, #{sysRole.menuId, jdbcType=VARCHAR})
+	   </foreach>
+	</insert>
+	
+	<delete id="deleteSysRoleMenuByRoleId" parameterType="String">
+     	DELETE FROM sys_role_menu WHERE ROLE_ID = #{roleId, jdbcType=VARCHAR}
+    </delete>
+</mapper>

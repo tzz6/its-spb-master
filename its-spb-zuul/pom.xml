@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.its.zuul</groupId>
+	<artifactId>its-spb-zuul</artifactId>
+	<version>1.0.0</version>
+	<name>its-spb-zuul</name>
+	<description>its-spb-zuul</description>
+
+	<parent>
+		<groupId>com.its.parent</groupId>
+		<artifactId>its-spb-parent</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<dependencies>
+		<!-- SpringCloud整合Eureka客户端 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<!-- SpringCloud 整合 Config Client端 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-client</artifactId>
+		</dependency>
+		<!-- SpringCloud 整合 Config 手动刷新 -->
+		<!-- 通过post请求如下地址实现Client端手动刷新http://localhost:80/actuator/refresh -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!-- SpringCloud整合Zuul -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+		</dependency>
+		<!-- SpringBoot整合Swagger客户端 -->
+		<dependency>
+			<groupId>com.spring4all</groupId>
+			<artifactId>swagger-spring-boot-starter</artifactId>
+			<version>1.7.0.RELEASE</version>
+		</dependency>
+
+	</dependencies>
+</project>

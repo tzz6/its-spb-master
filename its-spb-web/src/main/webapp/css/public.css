@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+.headerBar { width:100%; height:20px; padding:0px; margin:0px; min-width:1240px;border-bottom:solid 1px #ccc;font-size:14px; }
+.headerBar_lft { float:left; width:430px; height:20px; padding-left:20px;}
+.headerBar_lft li { float:left; width:66px; height:20px; line-height:15px; text-align:center; margin-right:2px;font-size:14px;}
+.headerBar_lft li a { color:#666; display:block; height:20px;}
+.headerBar_lft li a:hover,.headerBar_lft li.current { width:66px; height:20px; line-height:15px; color:#488fcd; background: url(../images/bg_headerBar02.gif) no-repeat; text-decoration:none;}
+
+
+.headerBar_rit { float:right; text-align:right;  padding-right:20px; line-height:15px; }
+.headerBar_rit li { float:left; padding:0px 5px; height:20px; line-height:15px; background:url(../images/bg_sideNav03.gif) right no-repeat; }
+.headerBar_rit li a { color:#666; padding:0px 5px; margin:0px; }
+.headerBar_rit li.setUp {}
+.headerBar_rit li.setUp .aIcon { background: url(../images/icon_header01.gif) right center no-repeat; padding-right:10px; display:block;}
+.headerBar_rit li.setUp .aIcon:hover { background:#fff url(../images/icon_header02.gif) right center no-repeat; text-decoration:none; color:#488fcd; }
+
+.headerBar_drop { float:right; position:absolute; width:80px; padding:2px; border:1px solid #bbd4f9; background:#fff; margin-top:-2px; z-index:30; right:0;}
+.headerBar_drop a { width:70px; height:20px; line-height:15px; text-align:left; padding:1px 3px; display:block;}
+.headerBar_drop a:hover { background:#edf4fc; height:20px;  display:block; color:#488fcd;}

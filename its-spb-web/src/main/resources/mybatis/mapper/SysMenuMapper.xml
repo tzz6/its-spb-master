@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.its.core.mybatis.dao.mapper.SysMenuMapper">
+	<resultMap type="com.its.model.mybatis.dao.domain.SysMenu" id="SysMenu">
+		<result property="menuId" column="MENU_ID" />
+		<result property="parentMenuId" column="PARENT_MENU_ID" />
+		<result property="parentMenuName" column="PARENT_MENU_NAME" />
+		<result property="menuName" column="MENU_NAME" />
+		<result property="menuSort" column="MENU_SORT" />
+		<result property="menuUrl" column="MENU_URL" />
+		<result property="menuType" column="MENU_TYPE" />
+		<result property="permissionCode" column="PERMISSION_CODE" />
+		<result property="permissionUrl" column="PERMISSION_URL" />
+		<result property="sysNameCode" column="SYS_NAME_CODE" />
+		<result property="sysName" column="SYS_NAME" />
+		<result property="bldCode" column="BLD_CODE" />
+	</resultMap>
+
+	<select id="getSysMenus" resultMap="SysMenu">
+		SELECT MENU_ID,
+		PARENT_MENU_ID, MENU_NAME,MENU_URL,MENU_SORT,BLD_CODE FROM sys_menu  order by menu_sort
+	</select>
+	<select id="getSysMenuListFirst" resultMap="SysMenu">
+		SELECT MENU_ID,
+		PARENT_MENU_ID,bl.BLD_NAME MENU_NAME,MENU_URL,MENU_SORT,sm.BLD_CODE
+		FROM sys_menu sm left join bld_language bl on sm.bld_code = bl.bld_code
+		WHERE sm.parent_menu_id is null 
+		<if test="lang !='' and lang != null">
+			and bl.lang = #{lang, jdbcType=VARCHAR} 
+		</if>
+		order by sm.menu_sort
+	</select>
+	<select id="getSysMenuListByParentMenuId" resultMap="SysMenu">
+	SELECT MENU_ID,
+	PARENT_MENU_ID,bl.BLD_NAME MENU_NAME,MENU_URL,MENU_SORT,sm.BLD_CODE
+	FROM sys_menu sm left join bld_language bl on sm.bld_code = bl.bld_code
+	WHERE  1 = 1 
+		<if test="parentMenuId !='' and parentMenuId != null">
+			and sm.parent_menu_id = #{parentMenuId, jdbcType=VARCHAR} 
+		</if>
+		<if test="lang !='' and lang != null">
+			and bl.lang = #{lang, jdbcType=VARCHAR} 
+		</if>
+		order by sm.menu_sort
+	</select>
+	
+	<select id="getSysMenuCount" parameterType="map" resultType="Integer">
+		SELECT count(1) FROM sys_menu sm 
+		left join sys_name sn on sm.sys_name_code = sn.sys_name_code
+		left join bld_language bl on sm.bld_code = bl.bld_code
+		left join bld_language bl_s on sn.bld_code = bl_s.bld_code
+		where 1= 1 
+		<if test="lang !='' and lang != null">
+		and bl.lang = #{lang, jdbcType=VARCHAR} 
+		</if>
+		<if test="lang !='' and lang != null">
+		and bl_s.lang = #{lang, jdbcType=VARCHAR}
+		</if>
+		<if test="menuName !='' and menuName != null">
+			and bl.BLD_NAME like CONCAT('%',#{menuName, jdbcType=VARCHAR},'%') 
+		</if>
+		<if test="sysNameCode !='' and sysNameCode != null">
+			and sm.SYS_NAME_CODE = #{sysNameCode, jdbcType=VARCHAR} 
+		</if>
+		<if test="menuType !='' and menuType != null">
+			and sm.MENU_TYPE = #{menuType, jdbcType=VARCHAR} 
+		</if>
+	</select>
+	
+	<select id="getSysMenuList" parameterType="map" resultMap="SysMenu">
+		SELECT sm.MENU_ID,
+		sm.PARENT_MENU_ID,bl_s_p.BLD_NAME PARENT_MENU_NAME,bl_s_p.lang,bl.BLD_NAME MENU_NAME,sm.MENU_URL,sm.MENU_SORT,sm.BLD_CODE,sm.MENU_TYPE,sm.PERMISSION_CODE,sm.PERMISSION_URL, sm.SYS_NAME_CODE,bl_s.BLD_NAME SYS_NAME
+		FROM sys_menu sm 
+		left join sys_menu smp on sm.parent_menu_id = smp.menu_id
+		left join sys_name sn on sm.sys_name_code = sn.sys_name_code
+		left join bld_language bl on sm.bld_code = bl.bld_code
+		left join bld_language bl_s on sn.bld_code = bl_s.bld_code
+		left join bld_language bl_s_p on smp.bld_code = bl_s_p.bld_code
+		where 1= 1 
+		<if test="lang !='' and lang != null">
+		and bl.lang = #{lang, jdbcType=VARCHAR} and bl_s.lang = #{lang, jdbcType=VARCHAR} and (bl_s_p.lang=#{lang, jdbcType=VARCHAR} or bl_s_p.lang is null)
+		</if>
+		<if test="menuName !='' and menuName != null">
+			and bl.BLD_NAME like CONCAT('%',#{menuName, jdbcType=VARCHAR},'%') 
+		</if>
+		<if test="sysNameCode !='' and sysNameCode != null">
+			and sm.SYS_NAME_CODE = #{sysNameCode, jdbcType=VARCHAR} 
+		</if>
+		<if test="menuType !='' and menuType != null">
+			and sm.MENU_TYPE = #{menuType, jdbcType=VARCHAR} 
+		</if>
+		ORDER BY sm.menu_sort LIMIT #{startNum, jdbcType=INTEGER},#{rows, jdbcType=INTEGER}
+	</select>
+	
+	<select id="getSysMenuListByUser" parameterType="map" resultMap="SysMenu">
+	SELECT max(sm. MENU_ID) MENU_ID , max(PARENT_MENU_ID) PARENT_MENU_ID ,
+		max(bl.BLD_NAME)  MENU_NAME ,max(MENU_URL) MENU_URL,
+		max(MENU_SORT) MENU_SORT,max(sm.BLD_CODE) BLD_CODE,
+		max(MENU_TYPE) MENU_TYPE,max(PERMISSION_CODE) PERMISSION_CODE,
+		max(PERMISSION_URL) PERMISSION_URL, max(sm.SYS_NAME_CODE ) SYS_NAME_CODE
+		FROM sys_menu sm 
+		left join bld_language bl on sm.bld_code = bl.bld_code
+		left join sys_role_menu srm on sm.menu_id = srm.menu_id
+		left join sys_user_role sur on srm.role_id = sur.role_id
+		where 1=1  
+		<if test="sysNameCode !='' and sysNameCode != null">
+		and sm.SYS_NAME_CODE = #{sysNameCode, jdbcType=VARCHAR} 
+		</if>
+		<if test="stId !='' and stId != null">
+		and sur.st_id = #{stId, jdbcType=VARCHAR} 
+		</if>
+		<if test="lang !='' and lang != null">
+		and bl.lang = #{lang, jdbcType=VARCHAR}
+		</if>
+		GROUP BY sm.MENU_ID ORDER BY sm.menu_sort
+	</select>
+	
+	<select id="getInterceptorUserMenus" parameterType="map" resultMap="SysMenu">
+	SELECT  MENU_ID,MENU_NAME , PARENT_MENU_ID  ,MENU_URL,MENU_SORT,sm.BLD_CODE,MENU_TYPE,PERMISSION_CODE,
+		PERMISSION_URL, sm.SYS_NAME_CODE 
+		FROM sys_menu sm 
+		where 1=1 and sm.PERMISSION_URL is not null
+		<if test="sysNameCode !='' and sysNameCode != null">
+		and sm.SYS_NAME_CODE = #{sysNameCode, jdbcType=VARCHAR} 
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.its.core.mybatis.dao.mapper.JobManagerMapper">
+	<resultMap type="com.its.model.mybatis.dao.domain.JobManager" id="JobManager">
+		<result property="jobId" column="JOB_ID" />
+		<result property="serviceType" column="SERVICE_TYPE" />
+		<result property="serviceId" column="SERVICE_ID" />
+		<result property="status" column="STATUS" />
+		<result property="jobCount" column="JOB_COUNT" />
+		<result property="ip" column="IP" />
+		<result property="jobIp" column="JOB_IP" />
+	</resultMap>
+
+
+	<insert id="insertJobManager" parameterType="com.its.model.mybatis.dao.domain.JobManager">
+		INSERT INTO tab_job_manager (SERVICE_TYPE,SERVICE_ID,STATUS,IP,JOB_IP) VALUES 
+		(#{serviceType, jdbcType=VARCHAR}, 
+		#{serviceId, jdbcType=VARCHAR}, 
+		#{status, jdbcType=VARCHAR}, 
+		#{ip, jdbcType=VARCHAR}, 
+		#{jobIp, jdbcType=VARCHAR})
+		
+	</insert>
+	
+	<update id="updateJobManager" parameterType="com.its.model.mybatis.dao.domain.JobManager">
+		update tab_job_manager set 
+		SERVICE_TYPE = #{serviceType, jdbcType=VARCHAR}, 
+		SERVICE_ID = #{serviceId, jdbcType=VARCHAR}, 
+		STATUS = #{status, jdbcType=VARCHAR}, 
+		JOB_COUNT = JOB_COUNT + 1,
+		IP = #{ip, jdbcType=VARCHAR}, 
+		JOB_IP = #{jobIp, jdbcType=VARCHAR}  
+		where JOB_ID =  #{jobId,jdbcType=BIGINT}
+	</update>
+	
+	<select id="getJobManagerList" parameterType="map" resultMap="JobManager">
+		SELECT
+		JOB_ID,SERVICE_TYPE,SERVICE_ID,STATUS,JOB_COUNT,IP,JOB_IP
+		FROM tab_job_manager
+		where 1 = 1 and JOB_COUNT <![CDATA[<=]]> 5 
+		<if test="status !='' and status != null">
+			and STATUS = #{status, jdbcType=VARCHAR} 
+		</if>
+		<if test="serviceType !='' and serviceType != null">
+			and SERVICE_TYPE = #{serviceType, jdbcType=VARCHAR} 
+		</if>
+		<if test="ip !='' and ip != null">
+			and IP = #{ip, jdbcType=VARCHAR} 
+		</if>
+		<if test="shardingTotalCount !='' and shardingTotalCount != null and shardingItem != null and shardingItem != null">
+			and MOD(JOB_ID, #{shardingTotalCount, jdbcType=INTEGER}) = #{shardingItem, jdbcType=INTEGER}
+		</if>
+		ORDER BY JOB_ID ASC LIMIT #{startNum, jdbcType=INTEGER},#{rows, jdbcType=INTEGER}
+	</select>
+</mapper>

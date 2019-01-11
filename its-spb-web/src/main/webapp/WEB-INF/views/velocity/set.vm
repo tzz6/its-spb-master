@@ -1,0 +1,12 @@
+#set($id=1)
+$id
+#set($value=${maxValue})
+$value
+#set($arrs=["第一个","第二个"])
+#foreach($e in $arrs)
+$e
+#end
+#set($ints=[5..1])
+#foreach($e in $ints)
+$e
+#end

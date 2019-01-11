@@ -1,0 +1,127 @@
+server:
+  ###Order服务端口号
+  port: 8301
+  ###设置Tomcat最大线程数，默认200
+#  tomcat: 
+#    max-threads: 50
+    
+###使用Spring Cloud Config Server时，应在 bootstrap.yml 中指定注册中心配置
+###bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。
+###application.yml 可以用来定义应用级别的，如果搭配 spring-cloud-config 使用 application.yml 里面定义的文件可以实现动态替换。
+
+###设置feign客户端超时时间,默认为1000ms
+###全局设置：
+ribbon:
+  ###指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间。
+  ReadTimeout: 5000
+  ###指的是建立连接后从服务器读取到可用资源所用的时间。
+  ConnectTimeout: 5000
+###局部设置：
+###service-id:
+#####ribbon:
+#######ReadTimeout:1000 
+#######ConnectTimeout:1000 
+
+
+### 方式二：@FeignClient中的fallback类级别实现，需要在yml中配置开启Feign的Hystrix熔断器(研发中主要使用这种方式)
+feign:
+  hystrix:
+    enabled: true
+#### hystrix禁止服务超时时间，默认为true:不禁止，false:禁止（用于学习效果测试，正常情况不允许禁止服务超时时间）
+hystrix:
+#  threadpool:
+#      default:
+#        coreSize: 200 ##并发执行的最大线程数，默认10
+#        maxQueueSize: 200 ##BlockingQueue的最大队列数
+#        queueSizeRejectionThreshold: 50 ##即使maxQueueSize没有达到，达到queueSizeRejectionThreshold该值后，请求也会被拒绝
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true 
+        isolation: 
+          thread: 
+            timeoutInMilliseconds: 2000
+            
+## Hystrix 默认加载的配置文件
+## 线程池大小
+#hystrix.threadpool.default.coreSize=1
+## 缓冲区大小， 如果为-1，则不缓冲，直接进行降级 fallback
+#hystrix.threadpool.default.maxQueueSize=200
+## 缓冲区大小超限的阈值，超限就直接降级
+#hystrix.threadpool.default.queueSizeRejectionThreshold=2
+#
+## 执行策略
+## 资源隔离模式，默认thread。 还有一种叫信号量
+#hystrix.command.default.execution.isolation.strategy=THREAD
+## 是否打开超时
+##### hystrix禁止服务超时时间，默认为true:不禁止，false:禁止（用于学习效果测试，正常情况不允许禁止服务超时时间）
+#hystrix.command.default.execution.timeout.enabled=true
+## 超时时间，默认1000毫秒
+#hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds=15000
+## 超时时中断线程
+#hystrix.command.default.execution.isolation.thread.interruptOnTimeout=true
+## 取消时候中断线程
+#hystrix.command.default.execution.isolation.thread.interruptOnFutureCancel=false
+## 信号量模式下，最大并发量
+#hystrix.command.default.execution.isolation.semaphore.maxConcurrentRequests=2
+#
+## 降级策略
+## 是否开启服务降级
+#hystrix.command.default.fallback.enabled=true
+## fallback执行并发量
+#hystrix.command.default.fallback.isolation.semaphore.maxConcurrentRequests=100
+#
+## 熔断策略
+## 启用/禁用熔断机制
+#hystrix.command.default.circuitBreaker.enabled=true
+## 强制开启熔断
+#hystrix.command.default.circuitBreaker.forceOpen=false
+## 强制关闭熔断
+#hystrix.command.default.circuitBreaker.forceClosed=false
+## 前提条件，一定时间内发起一定数量的请求。  也就是5秒钟内(这个5秒对应下面的滚动窗口长度)至少请求4次，熔断器才发挥起作用。  默认20
+#hystrix.command.default.circuitBreaker.requestVolumeThreshold=4
+## 错误百分比。达到或超过这个百分比，熔断器打开。  比如：5秒内有4个请求，2个请求超时或者失败，就会自动开启熔断
+#hystrix.command.default.circuitBreaker.errorThresholdPercentage=50
+## 10秒后，进入半打开状态（熔断开启，间隔一段时间后，会让一部分的命令去请求服务提供者，如果结果依旧是失败，则又会进入熔断状态，如果成功，就关闭熔断）。 默认5秒
+#hystrix.command.default.circuitBreaker.sleepWindowInMilliseconds=10000
+#
+## 度量策略
+## 5秒为一次统计周期，术语描述：滚动窗口的长度为5秒
+#hystrix.command.default.metrics.rollingStats.timeInMilliseconds=5000
+## 统计周期内 度量桶的数量，必须被timeInMilliseconds整除。作用：
+#hystrix.command.default.metrics.rollingStats.numBuckets=10
+## 是否收集执行时间，并计算各个时间段的百分比
+#hystrix.command.default.metrics.rollingPercentile.enabled=true
+## 设置执行时间统计周期为多久，用来计算百分比
+#hystrix.command.default.metrics.rollingPercentile.timeInMilliseconds=60000
+## 执行时间统计周期内，度量桶的数量
+#hystrix.command.default.metrics.rollingPercentile.numBuckets=6
+## 执行时间统计周期内，每个度量桶最多统计多少条记录。设置为50，有100次请求，则只会统计最近的10次
+#hystrix.command.default.metrics.rollingPercentile.bucketSize=100
+## 数据取样时间间隔
+#hystrix.command.default.metrics.healthSnapshot.intervalInMilliseconds=500
+#
+## 设置是否缓存请求，request-scope内缓存
+#hystrix.command.default.requestCache.enabled=false
+## 设置HystrixCommand执行和事件是否打印到HystrixRequestLog中
+#hystrix.command.default.requestLog.enabled=false
+#
+## 限流策略
+##如果没有定义HystrixThreadPoolKey，HystrixThreadPoolKey会默认定义为HystrixCommandGroupKey的值
+#hystrix.threadpool.userGroup.coreSize=1
+#hystrix.threadpool.userGroup.maxQueueSize=-1
+#hystrix.threadpool.userGroup.queueSizeRejectionThreshold=800
+#
+#hystrix.threadpool.userThreadPool.coreSize=1
+#hystrix.threadpool.userThreadPool.maxQueueSize=-1
+#hystrix.threadpool.userThreadPool.queueSizeRejectionThreshold=800
+#hystrix.command.userCommandKey.execution.isolation.thread.timeoutInMilliseconds=5000
+
+
+###公司项目接口设计，该如何设计：接口权限(开放接口|内部接口)、考虑幂等性、安全性(https、加密)、防止篡改数据(验证签名)、使用网关拦截实现黑名单和白名单、
+###接口使用http+json格式restful目的为了实现跨平台、考虑高并发对接口服务实现保护（服务降级、熔断、隔离），最后使用统一API管理平台api swagger
+
+#Swagger配置
+swagger: 
+  base-package: com.its.base.servers.api

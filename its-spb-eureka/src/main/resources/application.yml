@@ -1,0 +1,53 @@
+server:
+  ###注册中心服务端口号
+  port: 8101
+  
+eureka:
+  instance:
+    ###注册中心IP地址
+    hostname: 127.0.0.1
+  client:
+    serviceUrl:
+    ###注册地址
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    ###因为自己是注册中心，是否需要将自己注册给自己的注册中心(集群的时候需要设置为true)
+      registerWithEureka: false
+    ###因为自己是注册中心，不需要去检索服务信息
+    fetchRegistry: false
+    ###开发环境关闭自我保护机制,保证不可用服务及时剔除
+  server: 
+    enableSelfPreservation: false
+    evictionIntervalTimerInMs: 200000
+    
+###通过  http://127.0.0.1:8101/ 可访问注册中心
+
+###集群
+#server:
+#  ###注册中心服务端口号
+#  port: 8101
+#  
+#spring: 
+#  application: 
+#  ###服务别名--服务注册到注册中心名称
+#    name: its-spb-eureka
+#eureka:
+#  instance:
+#    ###注册中心IP地址
+#    hostname: 127.0.0.1
+#  client:
+#    serviceUrl:
+#    ###注册地址
+####eureka集群，通过启动多台eureka服务，相互注册实现集群,端口为另一台eureka服务    
+#      defaultZone: http://${eureka.instance.hostname}:8102/eureka/
+#    ###因为自己是注册中心，是否需要将自己注册给自己的注册中心(集群的时候需要设置为true)
+#    registerWithEureka: true
+#    ###因为自己是注册中心，不需要去检索服务信息
+#    fetchRegistry: true
+
+
+
+###Eureka自我保护机制:
+####是为了防止EurekaClient可以正常运行,但是与EurekaServer网络不通的情况下,EurekaServer不会将EurekaClent服务剔除
+####默认情况下EurekaClient定时向EurekaServer端发送心跳包,如果EurekaServer端在一定时间内没有收到EurekaClient发送的心跳包,便会直接从服务注册列表中剔除该服务(默认90S)
+####但是在短时间内丢失了大量服务实例心跳,这时EurekaServer会开启自我保护机制,不会剔除该服务
+####默认是开启自我保护机制,建议在开发环境关闭,生产环境开启

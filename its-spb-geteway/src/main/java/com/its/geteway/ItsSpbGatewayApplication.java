@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class ItsSpbGetewayApplication {
+public class ItsSpbGatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ItsSpbGetewayApplication.class, args);
+		SpringApplication.run(ItsSpbGatewayApplication.class, args);
 	}
 
 	@Bean

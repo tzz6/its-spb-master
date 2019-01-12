@@ -10,7 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- **/
+ * 自定义Ga过滤器工厂
+ *
+ */
 public class RequestTimeGatewayFilterFactory
 		extends AbstractGatewayFilterFactory<RequestTimeGatewayFilterFactory.Config> {
 

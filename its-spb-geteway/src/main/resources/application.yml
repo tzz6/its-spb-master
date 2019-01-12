@@ -4,7 +4,7 @@ server:
 spring: 
   application: 
   ###服务别名--服务注册到注册中心名称
-    name: its-spb-geteway
+    name: its-spb-gateway
   cloud:
     gateway:
       discovery:
@@ -20,8 +20,10 @@ spring:
             ###当客户端请求http://127.0.0.1:80/api-base开头的都会转发到Base服务
           - Path=/api-base/**
         filters:
-            ###设置StripPrefix=1，否则访问服务时会带上/api-base
+            ###设置StripPrefix=1,去掉前缀,否则访问服务时会带上/api-base
           - StripPrefix=1
+          ###设置PrefixPath=/mypath,添加前缀,访问服务时会带上/mypath
+          ###- PrefixPath=/mypath
           - RequestTime=true
         ###自定义服务路由名称(名称自定义)
       - id: its-spb-order-servers

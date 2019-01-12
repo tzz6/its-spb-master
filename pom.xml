@@ -69,7 +69,7 @@
 		<module>its-spb-config-servers</module>
 		<module>its-spb-common</module>
 		<module>its-spb-zuul</module>
-		<module>its-spb-geteway</module>
+		<module>its-spb-gateway</module>
 		<module>its-spb-base-servers-api</module>
 		<module>its-spb-base-servers</module>
 		<module>its-spb-order-servers-api</module>

@@ -1,3 +1,6 @@
+###虚拟机IP
+vm: 
+  ip: vm-04-ip
 ###使用Spring Cloud Config Server时，应在 bootstrap.yml 中指定注册中心配置
 ###bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。
 ###application.yml 可以用来定义应用级别的，如果搭配 spring-cloud-config 使用 application.yml 里面定义的文件可以实现动态替换。
@@ -17,6 +20,13 @@ spring:
     ###读取前缀
       profile: dev
       label: master
+  ###zipkin服务追踪
+  zipkin: 
+    base-url: http://${vm.ip}:9411/
+  ###采样比例默认的为 0.1可设置介于 0到 1之间，1则表示全部采集
+  sleuth:
+    sampler:
+      probability: 1.0
 
 #不同注册中心更换，接口方式调用不变，只需要变更yml注册中心配置文件及Maven pom依赖信息
 #Eureka注册中心配置    

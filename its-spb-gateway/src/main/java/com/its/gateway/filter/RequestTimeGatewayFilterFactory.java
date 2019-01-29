@@ -1,4 +1,4 @@
-package com.its.gateway;
+package com.its.gateway.filter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 自定义Ga过滤器工厂
+ * 自定义Gateway过滤器工厂
  *
  */
 public class RequestTimeGatewayFilterFactory

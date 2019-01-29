@@ -5,6 +5,24 @@ spring:
   application: 
   ###服务别名--服务注册到注册中心名称
     name: its-spb-gateway
+  ###设置有效的配置文件
+  profiles:
+    active: its-spb-geteway
+#Eureka注册中心配置
+eureka:
+  client:
+    serviceUrl:
+    ###注册地址
+      defaultZone: http://127.0.0.1:8101/eureka/    
+ribbon:
+  ###指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间。
+  ReadTimeout: 5000
+  ###指的是建立连接后从服务器读取到可用资源所用的时间。
+  ConnectTimeout: 5000
+
+###yml再建一个配置文件，语法是三个横线“---”
+---
+spring: 
   cloud:
     gateway:
       discovery:
@@ -35,41 +53,120 @@ spring:
         filters:
           - StripPrefix=1
           - RequestTime=true
-          
-          
-#  cloud:
-#    gateway:
-#      filter:
-#        remove-non-proxy-headers:
-#          headers:
-#          - dummy
-#      routes:
-#        - id:  apiuser
-#        # 重点！/info必须使用http进行转发，lb代表从注册中心获取服务
-#          uri: lb://user-service
-#          predicates:
-#          # 重点！转发该路径！,/userapi/**,
-#          - Path=/its-base/**
-#          # http://localhost:6601/userapi/user/users/2, 必须加上StripPrefix=1，否则访问服务时会带上userapi
-#          #而不是我们期望的去掉userapi，只保留**部分
-#          filters:
-#          - StripPrefix=1
-#        - id:  api2user
-#          uri: lb://user-service
-#          predicates:
-#          - Path=/userapi2/**
-#          filters:
-#          - StripPrefix=1
-          
-          
-#Eureka注册中心配置
-eureka:
-  client:
-    serviceUrl:
-    ###注册地址
-      defaultZone: http://127.0.0.1:8101/eureka/    
-ribbon:
-  ###指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间。
-  ReadTimeout: 5000
-  ###指的是建立连接后从服务器读取到可用资源所用的时间。
-  ConnectTimeout: 5000
+  profiles: its-spb-geteway      
+
+###Spring Cloud Gateway官方Route Predicate Factories
+###yml再建一个配置文件，语法是三个横线“---”        
+###After Route Predicate Factory 请求时间在2017-01-20T17:42:47.789-07:00[America/Denver]之后跳转http://example.org
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: after_route
+        uri: http://example.org
+        predicates:
+        - After=2017-01-20T17:42:47.789-07:00[America/Denver]
+  profiles: after_route
+###Before Route Predicate Factory 请求时间在2017-01-20T17:42:47.789-07:00[America/Denver]之前跳转http://example.org  
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: before_route
+        uri: http://example.org
+        predicates:
+        - Before=2017-01-20T17:42:47.789-07:00[America/Denver]
+  profiles: befter_route
+###Between Route Predicate Factory 请求时间在2017-01-20T17:42:47.789-07:00[America/Denver], 2017-01-21T17:42:47.789-07:00[America/Denver]之间跳转http://example.org  
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: between_route
+        uri: http://example.org
+        predicates:
+        - Between=2017-01-20T17:42:47.789-07:00[America/Denver], 2017-01-21T17:42:47.789-07:00[America/Denver]
+  profiles: between_route
+###Cookie Route Predicate Factory 请求Cookie名称JSESSIONID,值3214891EC42262C77D75514BF8E13EFE
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: cookie_route
+        uri: http://example.org
+        predicates:
+        - Cookie=JSESSIONID, 3214891EC42262C77D75514BF8E13EFE
+  profiles: cookie_route
+###Header Route Predicate Factory
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: header_route
+        uri: http://example.org
+        predicates:
+        - Header=X-Request-Id, \d+
+  profiles: header_route
+###Host Route Predicate Factory
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: host_route
+        uri: http://httpbin.org:80/get
+        predicates:
+        - Host=**.127.0.0.1
+  profiles: host_route
+###Method Route Predicate Factory 请求类型为get
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: method_route
+        uri: http://httpbin.org:80/get
+        predicates:
+        - Method=GET
+  profiles: method_route
+###Path Route Predicate Factory
+###测试http://127.0.0.1/foo/123
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: path_route
+        uri: http://example.org
+        predicates:
+        - Path=/foo/{segment},/bar/{segment}
+  profiles: path_route
+###Query Route Predicate Factory
+###测试http://127.0.0.1?foo=ba.
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: query_route
+        uri: http://example.org
+        predicates:
+        - Query=foo, ba.
+  profiles: query_route
+###Query Route Predicate Factory
+###测试http://127.0.0.1?foo=ba.
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: remoteaddr_route
+        uri: http://example.org
+        predicates:
+        - RemoteAddr=127.0.0.1
+  profiles: remoteaddr_route

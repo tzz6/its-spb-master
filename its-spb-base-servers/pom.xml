@@ -28,6 +28,23 @@
 			<artifactId>swagger-spring-boot-starter</artifactId>
 			<version>1.7.0.RELEASE</version>
 		</dependency>
+	<!-- SpringBoot整合zipkin实现服务追踪-2.X版本 -->
+	<!-- SpringBoot 2.0 版本之后，官方已不推荐自己搭建定制，而是直接提供了编译好的 jar包 -->
+	<!-- 使用命令java -jar： -->
+	<!-- Linux -->
+	<!-- curl -sSL https://zipkin.io/quickstart.sh | bash -s -->
+	<!-- java -jar zipkin.jar -->
+	<!-- Windocs -->
+	<!-- https://zipkin.io/pages/quickstart.html官网下载zipkin-server-2.12.0-exec.jar包 -->
+	<!-- java -jar zipkin-server-2.12.0-exec.jar -->
+	<!-- 使用 docker 的方式 -->
+	<!-- docker run -d -p 9411:9411 openzipkin/zipkin -->
+	<!-- java -jar zipkin.jar -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
+		</dependency>
+
 		<!-- its-spb-base-servers-api -->
 		<dependency>
 			<groupId>com.its.base.servers.api</groupId>

@@ -133,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
 	 * 
 	 * @return
 	 */
-	@ApiOperation("解决服务雪崩效应 getOrderToBaseGetSysRoleHystrix方式二：@FeignClient中的fallback类级别实现")
+	@ApiOperation(value = "解决服务雪崩效应 getOrderToBaseGetSysRoleHystrix方式二：@FeignClient中的fallback类级别实现", notes = "查询数据库中某个的学生信息")
 	@ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String")
 	@GetMapping("/getOrderToBaseGetSysRoleHystrix/{id}")
 	@Override

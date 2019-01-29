@@ -125,3 +125,6 @@ hystrix:
 #Swagger配置
 swagger: 
   base-package: com.its.base.servers.api
+logging:
+  level:
+    root: info

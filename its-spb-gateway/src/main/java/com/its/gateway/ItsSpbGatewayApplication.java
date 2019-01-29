@@ -5,6 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 
+import com.its.gateway.filter.RequestTimeGatewayFilterFactory;
+/**
+ * Gatewey网关
+ *
+ */
 @SpringBootApplication
 @EnableEurekaClient
 public class ItsSpbGatewayApplication {

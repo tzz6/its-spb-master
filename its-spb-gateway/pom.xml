@@ -6,7 +6,6 @@
 	<version>1.0.0</version>
 	<name>its-spb-geteway</name>
 	<description>its-spb-geteway</description>
-
 	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -30,6 +29,23 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+		<!-- SpringBoot整合Swagger客户端 -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.spring4all</groupId> -->
+<!-- 			<artifactId>swagger-spring-boot-starter</artifactId> -->
+<!-- 			<version>1.7.0.RELEASE</version> -->
+<!-- 		</dependency> -->
+	<!-- SpringBoot 整合 springfox-swagger2 实现API管理 -->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
 		</dependency>
 	</dependencies>
 

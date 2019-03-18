@@ -9,14 +9,16 @@ import com.netflix.zuul.exception.ZuulException;
 
 /**
  * 网关过滤器
- *
+ * 
+ * @author tzz
  */
 public class ItsServerFilter extends ZuulFilter {
 
-	/**
-	 * run：过滤器的具体逻辑
-	 */
-	public Object run() throws ZuulException {
+    /**
+     * run：过滤器的具体逻辑
+     */
+    @Override
+    public Object run() throws ZuulException {
 		// 案例：拦截所有服务请求,判断服务接口上是否传递accessToken参数
 		// 1.获取上下文
 		RequestContext ctx = RequestContext.getCurrentContext();
@@ -25,12 +27,15 @@ public class ItsServerFilter extends ZuulFilter {
 
 		// 3.从请求头中获取Token
 		Object accessToken = request.getParameter("accessToken");
-		String servletPath = request.getServletPath();// 请求的servletPath
+		// 请求的servletPath
+		String servletPath = request.getServletPath();
 		// String contextPath = request.getContextPath();// 项目请求路径
 		String ip = IpUtil.getIpAddr(request);
 
-		String[] notFilterUrl = new String[] { "v2/api-docs", "logout", "webcam", "test" };// 不需登录要拦截的url
-		String[] ipFilter = new String[] { "127.0.0.1", "10.118.53.59" };// IP白名单
+		// 不需登录要拦截的url
+		String[] notFilterUrl = new String[] { "v2/api-docs", "logout", "webcam", "test" };
+		// IP白名单
+		String[] ipFilter = new String[] { "127.0.0.1", "10.118.53.59", "10.118.53.41" };
 		boolean flag = false;
 		String message = null;
 		if (!checkFilter(ip, ipFilter)) {
@@ -46,10 +51,13 @@ public class ItsServerFilter extends ZuulFilter {
 		}
 		if (flag) {
 			// 请求被拦截，不再调用服务接口，网关服务直接响应客户端
-			ctx.setSendZuulResponse(false);// 设置为false令zuul过滤该请求，不对其进行路由
-			ctx.setResponseStatusCode(401);// 设置了其返回的错误码
+		    // 设置为false令zuul过滤该请求，不对其进行路由
+			ctx.setSendZuulResponse(false);
+			// 设置了其返回的错误码
+			ctx.setResponseStatusCode(401);
 			ctx.getResponse().setContentType("text/html;charset=UTF-8");
-			ctx.setResponseBody(message);// 设置了其返回的内容
+			// 设置了其返回的内容
+			ctx.setResponseBody(message);
 		}
 		return null;
 	}
@@ -57,6 +65,7 @@ public class ItsServerFilter extends ZuulFilter {
 	/**
 	 * shouldFilter：返回一个boolean类型来判断该过滤器是否有效(过滤器的开关)true:有效/false:无效
 	 */
+    @Override
 	public boolean shouldFilter() {
 		return true;
 	}

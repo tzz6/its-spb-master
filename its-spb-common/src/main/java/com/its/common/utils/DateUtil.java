@@ -6,25 +6,30 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
+/**
+ * 
+ * @author tzz
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public class DateUtil {
 
-	private final static String yyyyMMdd = "yyyyMMdd";
-	private final static String yyyyMMddHHmmss = "yyyyMMddHHmmss";
-	private final static String yyyyMMddHHmmssSSS = "yyyyMMddHHmmssSSS";
+	private final static String YYYYMMDD = "yyyyMMdd";
+	private final static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
+	private final static String YYYYMMDDHHMMSSSSS = "yyyyMMddHHmmssSSS";
 
 	public static String getDateyyyyMMdd() {
-		SimpleDateFormat format = new SimpleDateFormat(yyyyMMdd);
+		SimpleDateFormat format = new SimpleDateFormat(YYYYMMDD);
 		return format.format(new Date());
 	}
 
 	public static String getDateyyyyMMddHHmmss() {
-		SimpleDateFormat format = new SimpleDateFormat(yyyyMMddHHmmss);
+		SimpleDateFormat format = new SimpleDateFormat(YYYYMMDDHHMMSS);
 		return format.format(new Date());
 	}
 
 	public static String getDateyyyyMMddHHmmssSSS() {
-		SimpleDateFormat format = new SimpleDateFormat(yyyyMMddHHmmssSSS);
+		SimpleDateFormat format = new SimpleDateFormat(YYYYMMDDHHMMSSSSS);
 		return format.format(new Date());
 	}
 

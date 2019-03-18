@@ -10,7 +10,7 @@ import javax.xml.bind.Unmarshaller;
 
 /**
  * Jaxb 2.0
- *
+ * @author tzz
  */
 public class JaxbXmlUtil {
 

@@ -1,11 +1,11 @@
 package com.its.common.utils;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
  * 主键生成类
  * 
+ * @author tzz
  *
  */
 public final class PrimaryKeyUtil {
@@ -33,7 +33,7 @@ public final class PrimaryKeyUtil {
 
 	private static String genPkWhenPostErr() {
 		StringBuffer bf = new StringBuffer(PK_ERR_ID_PERFIX);
-		String timeLongVar = String.valueOf(new Date().getTime());
+		String timeLongVar = String.valueOf(System.currentTimeMillis());
 		bf.append(timeLongVar);
 		java.util.Random rdm = new java.util.Random();
 		String rdmVar = String.valueOf(rdm.nextLong());

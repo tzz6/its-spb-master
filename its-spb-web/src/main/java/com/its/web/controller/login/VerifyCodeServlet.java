@@ -26,10 +26,12 @@ public class VerifyCodeServlet extends HttpServlet {
 
 	public static Color getRandColor(int fc, int bc) {
 		Random random = new Random();
-		if (fc > 255)
-			fc = 255;
-		if (bc > 255)
-			bc = 255;
+		if (fc > 255){
+		    fc = 255;
+		}
+		if (bc > 255){
+		    bc = 255;
+		}
 		int r = fc + random.nextInt(bc - fc);
 		int g = fc + random.nextInt(bc - fc);
 		int b = fc + random.nextInt(bc - fc);
@@ -105,7 +107,7 @@ public class VerifyCodeServlet extends HttpServlet {
 		// 将认证码存入SESSION
 		log.info("请求IP" + IpUtil.getIpAddr(request) + "  sessionID" + request.getSession().getId() + "  生成验证码：  ---> "
 				+ sRand);
-		request.getSession().setAttribute(Constants.SESSION_KEY.VERIFY_CODE, sRand);
+		request.getSession().setAttribute(Constants.SessionKey.VERIFY_CODE, sRand);
 		// 图象生效
 		g.dispose();
 		// 输出图象到页面

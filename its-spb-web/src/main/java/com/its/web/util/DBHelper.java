@@ -1,6 +1,6 @@
 package com.its.web.util;
 
-import com.its.common.crypto.des.DESUtil;
+import com.its.common.crypto.des.DesUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,9 +25,9 @@ public class DBHelper {
 		user = PropertiesUtil.getValue(prop, "jdbc.username");
 		password = PropertiesUtil.getValue(prop, "jdbc.password");
 		// 解密
-		url = DESUtil.decrypt(url, DESUtil.KEY);
-		user = DESUtil.decrypt(user, DESUtil.KEY);
-		password = DESUtil.decrypt(password, DESUtil.KEY);
+		url = DesUtil.decrypt(url, DesUtil.KEY);
+		user = DesUtil.decrypt(user, DesUtil.KEY);
+		password = DesUtil.decrypt(password, DesUtil.KEY);
 	}
 
 	private Connection connection;

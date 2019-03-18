@@ -8,7 +8,7 @@ import com.its.order.servers.api.feign.SysRoleServiceFeign;
 
 /**
  * 方式二：@FeignClient中的fallback类级别实现，需要在yml中配置开启Feign的Hystrix熔断器(研发中主要使用这种方式)
- *
+ * @author tzz
  */
 @Component
 public class SysRoleServiceFallback implements SysRoleServiceFeign {

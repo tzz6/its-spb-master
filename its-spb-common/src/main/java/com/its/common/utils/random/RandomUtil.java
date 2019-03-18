@@ -2,6 +2,10 @@ package com.its.common.utils.random;
 
 import java.util.Random;
 
+/**
+ * 
+ * @author tzz
+ */
 public class RandomUtil {
 	public static final String ALLCHAR = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String LETTERCHAR = "abcdefghijkllmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";

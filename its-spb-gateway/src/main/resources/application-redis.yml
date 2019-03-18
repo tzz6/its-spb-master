@@ -1,0 +1,17 @@
+#配置druid数据源
+spring:
+    redis:
+        database: 0
+        host: vm-02-ip
+        port: 6379
+        password: 123456
+        lettuce: 
+          pool: 
+            max-active: 8
+            max-idle: 8
+            max-wait: -1ms
+            min-idle: 0
+        ##sentinel: 
+          ##master: its_sentinel
+          ##nodes: vm-01-ip:26379,vm-02-ip:26379,vm-03-ip:26379
+        timeout: 100ms

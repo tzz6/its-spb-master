@@ -10,23 +10,32 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.its.order.servers.api.feign.MemberApiFeign;
-
+/**
+ * 
+ * @author tzz
+ * @date 2019/03/18
+ * @Introduce: OrderController
+ */
 @RestController
 public class OrderController {
 
-	// 在SpringCloud中支持两种客户端调用工具
-	// 方式一：RestTemplate,RestTemplate是由SpringBoot Web组件提供 默认整合Ribbon负载均衡器
-	// rest方式底层采用httpclient技术实现
-	@Autowired
-	private RestTemplate restTemplate;
+    /**
+     * 在SpringCloud中支持两种客户端调用工具<br>
+     * 方式一：RestTemplate,RestTemplate是由SpringBoot Web组件提供 默认整合Ribbon负载均衡器<br>
+     * rest方式底层采用httpclient技术实现
+     */
+    @Autowired
+    private RestTemplate restTemplate;
 
-	// 方式二：Feign(实际开发中主要使用Feigin,RestTemplate基本不使用)
-	// Feign是一个声明式的Http客户端调用工具，采用接口+注解方式实现，易读性比较强
-	@Autowired
-	private MemberApiFeign memberApiFeign;
-	//获取注册中心的注册服务列表
-	@Autowired
-	private DiscoveryClient discoveryClient;
+    /**
+     * 方式二：Feign(实际开发中主要使用Feigin,RestTemplate基本不使用)<br>
+     * Feign是一个声明式的Http客户端调用工具，采用接口+注解方式实现，易读性比较强
+     */
+    @Autowired
+    private MemberApiFeign memberApiFeign;
+    /** 获取注册中心的注册服务列表 */
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
 	@GetMapping("/getOrder")
 	public String getOrder() {

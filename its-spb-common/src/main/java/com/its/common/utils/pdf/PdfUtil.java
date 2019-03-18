@@ -20,14 +20,20 @@ import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * PDF
+ * @author tzz
  */
-public class PDFUtil {
+public class PdfUtil {
 
-	private static Font headfont;// 设置字体大小
-	private static Font headfont2;// 设置字体大小
-	private static Font keyfont;// 设置字体大小
-	private static Font keyfontNomal;// 设置字体大小
-	private static Font textfont;// 设置字体大小
+    /** 设置字体大小*/
+	private static Font headfont;
+	 /** 设置字体大小 */
+	private static Font headfont2;
+	 /** 设置字体大小*/
+	private static Font keyfont;
+	 /** 设置字体大小*/
+	private static Font keyfontNomal;
+	 /** 设置字体大小*/
+	private static Font textfont;
 	private static int maxWidth = 520;
 
 	static {
@@ -37,11 +43,16 @@ public class PDFUtil {
 			// BaseFont.NOT_EMBEDDED);
 			bfChinese = BaseFont.createFont("C:/Windows/Fonts/arialuni.ttf", BaseFont.IDENTITY_H,
 					BaseFont.NOT_EMBEDDED);
-			headfont = new Font(bfChinese, 12, Font.BOLD);// 设置字体大小
-			headfont2 = new Font(bfChinese, 10, Font.BOLD);// 设置字体大小
-			keyfont = new Font(bfChinese, 8, Font.BOLD);// 设置字体大小
-			keyfontNomal = new Font(bfChinese, 8, Font.NORMAL);// 设置字体大小
-			textfont = new Font(bfChinese, 8, Font.NORMAL);// 设置字体大小
+			// 设置字体大小
+			headfont = new Font(bfChinese, 12, Font.BOLD);
+			// 设置字体大小
+			headfont2 = new Font(bfChinese, 10, Font.BOLD);
+			// 设置字体大小
+			keyfont = new Font(bfChinese, 8, Font.BOLD);
+			// 设置字体大小
+			keyfontNomal = new Font(bfChinese, 8, Font.NORMAL);
+			// 设置字体大小
+			textfont = new Font(bfChinese, 8, Font.NORMAL);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -143,7 +154,8 @@ public class PDFUtil {
 			pdfPTable.addCell(createCell("完税价格", keyfont, Element.ALIGN_CENTER));
 			pdfPTable.addCell(createCell("税率%", keyfont, Element.ALIGN_CENTER));
 			pdfPTable.addCell(createCell("进口税金额", keyfont, Element.ALIGN_CENTER));
-			for (int i = 0; i < 200; i++) {
+			int index = 200;
+			for (int i = 0; i < index; i++) {
 				pdfPTable.addCell(createCell((i + 1) + "", textfont));
 				pdfPTable.addCell(createCell("品名" + (i + 1), textfont));
 				pdfPTable.addCell(createCell("10", textfont));
@@ -164,8 +176,10 @@ public class PDFUtil {
 
 			savePath = path + DateUtil.getDateyyyyMMddHHmmss() + ".pdf";
 			File file = new File(savePath);
-			Document document = new Document();// 建立一个Document对象
-			document.setPageSize(PageSize.A4);// 设置页面大小
+			// 建立一个Document对象
+			Document document = new Document();
+			// 设置页面大小
+			document.setPageSize(PageSize.A4);
 			PdfWriter.getInstance(document, new FileOutputStream(file));
 			document.open();
 			document.add(pdfPTable);

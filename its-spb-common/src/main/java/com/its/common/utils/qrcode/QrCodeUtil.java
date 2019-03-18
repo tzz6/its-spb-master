@@ -23,16 +23,17 @@ import com.google.zxing.common.HybridBinarizer;
 
 /**
  * 二维码生成、解析
+ * @author tzz
  */
-public class QRCodeUtil {
+public class QrCodeUtil {
 
-	protected static final Logger log = Logger.getLogger(QRCodeUtil.class);
+	protected static final Logger log = Logger.getLogger(QrCodeUtil.class);
 
 	/** 生成二维码图片 */
 	public static void generateQRCode(String url, String path) {
 		try {
 			MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-			Map<EncodeHintType, String> hints = new HashMap<EncodeHintType, String>();
+			Map<EncodeHintType, String> hints = new HashMap<EncodeHintType, String>(16);
 			hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
 			BitMatrix bitMatrix = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 400, 400, hints);
 			File file = new File(path);
@@ -52,7 +53,7 @@ public class QRCodeUtil {
 			LuminanceSource source = new BufferedImageLuminanceSource(image);
 			Binarizer binarizer = new HybridBinarizer(source);
 			BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
-			Map hints = new HashMap();
+			Map hints = new HashMap(16);
 			hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
 			hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
 			Result result = formatReader.decode(binaryBitmap, hints);

@@ -12,7 +12,12 @@ import com.its.common.model.ResponseBase;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
-
+/**
+ * 
+ * @author tzz
+ * @date 2019/03/18
+ * @Introduce: SysUser服务接口
+ */
 @Api("SysUser服务接口")
 @RestController
 public class SysUserServiceImpl implements SysUserService {

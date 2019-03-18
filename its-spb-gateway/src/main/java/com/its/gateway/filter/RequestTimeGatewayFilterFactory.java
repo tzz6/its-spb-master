@@ -11,7 +11,8 @@ import java.util.List;
 
 /**
  * 自定义Gateway过滤器工厂
- *
+ * 
+ * @author tzz
  */
 public class RequestTimeGatewayFilterFactory
 		extends AbstractGatewayFilterFactory<RequestTimeGatewayFilterFactory.Config> {

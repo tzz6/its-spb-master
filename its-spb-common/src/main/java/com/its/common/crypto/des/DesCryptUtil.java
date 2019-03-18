@@ -11,6 +11,8 @@ import javax.crypto.spec.DESKeySpec;
 
 /**
  * 对称加密(DES/3DES/AES) 推荐使用AES
+ * 
+ * @author tzz
  */
 public class DesCryptUtil {
 
@@ -64,10 +66,12 @@ public class DesCryptUtil {
 
 	/** 加密 */
 	public static String encrypt(String algorithm, SecretKey key, String date) {
-		byte[] cipherByte = null;// 定义要生成的密文
+	    // 定义要生成的密文
+		byte[] cipherByte = null;
 		try {
 			Cipher cipher = Cipher.getInstance(algorithm);
-			SecureRandom sr = new SecureRandom();// 加密随机数生成器 (可以不写)
+			// 加密随机数生成器 (可以不写)
+			SecureRandom sr = new SecureRandom();
 			// 用指定的密钥和模式初始化Cipher对象
 			cipher.init(Cipher.ENCRYPT_MODE, key, sr);
 			// 对要加密的内容进行编码处理,
@@ -81,10 +85,12 @@ public class DesCryptUtil {
 	
 	/** 加密 */
 	public static byte[] encryptByte(String algorithm, SecretKey key, String date) {
-		byte[] cipherByte = null;// 定义要生成的密文
+	    // 定义要生成的密文
+		byte[] cipherByte = null;
 		try {
 			Cipher cipher = Cipher.getInstance(algorithm);
-			SecureRandom sr = new SecureRandom();// 加密随机数生成器 (可以不写)
+			// 加密随机数生成器 (可以不写)
+			SecureRandom sr = new SecureRandom();
 			// 用指定的密钥和模式初始化Cipher对象
 			cipher.init(Cipher.ENCRYPT_MODE, key, sr);
 			// 对要加密的内容进行编码处理,
@@ -98,7 +104,8 @@ public class DesCryptUtil {
 
 	/** 解密 */
 	public static String decrypt(String algorithm, SecretKey key, String date) {
-		SecureRandom sr = new SecureRandom();// 加密随机数生成器
+	    // 加密随机数生成器
+		SecureRandom sr = new SecureRandom();
 		byte[] cipherByte = null;
 		try {
 			// 得到加密/解密器
@@ -115,7 +122,8 @@ public class DesCryptUtil {
 	
 	/** 解密 */
 	public static String decryptByte(String algorithm, SecretKey key, byte[] date) {
-		SecureRandom sr = new SecureRandom();// 加密随机数生成器
+	    // 加密随机数生成器
+		SecureRandom sr = new SecureRandom();
 		byte[] cipherByte = null;
 		try {
 			// 得到加密/解密器
@@ -132,33 +140,37 @@ public class DesCryptUtil {
 
 	public static String byte2hex(byte[] b) {
 		String hs = "";
+		StringBuilder builder = new StringBuilder();
+		builder.append("");
 		String stmp = "";
 		for (int n = 0; n < b.length; n++) {
 			stmp = (java.lang.Integer.toHexString(b[n] & 0XFF));
 			if (stmp.length() == 1) {
-				hs = hs + "0" + stmp;
+			    builder.append("0").append(stmp);
 			} else {
-				hs = hs + stmp;
+			    builder.append(stmp);
 			}
 		}
+		hs = builder.toString();
 		return hs.toUpperCase();
 	}
 
-	public static byte[] hex2byte(String hex) {
-		byte[] ret = new byte[8];
-		byte[] tmp = hex.getBytes();
+    public static byte[] hex2byte(String hex) {
+        int index = 8;
+        byte[] ret = new byte[index];
+        byte[] tmp = hex.getBytes();
 
-		for (int i = 0; i < 8; i++) {
-			ret[i] = uniteBytes(tmp[i * 2], tmp[i * 2 + 1]);
-		}
-		return ret;
-	}
+        for (int i = 0; i < index; i++) {
+            ret[i] = uniteBytes(tmp[i * 2], tmp[i * 2 + 1]);
+        }
+        return ret;
+    }
 
 	public static byte uniteBytes(byte src0, byte src1) {
-		byte _b0 = Byte.decode("0x" + new String(new byte[] { src0 })).byteValue();
-		_b0 = (byte) (_b0 << 4);
-		byte _b1 = Byte.decode("0x" + new String(new byte[] { src1 })).byteValue();
-		byte ret = (byte) (_b0 ^ _b1);
+		byte b0 = Byte.decode("0x" + new String(new byte[] { src0 })).byteValue();
+		b0 = (byte) (b0 << 4);
+		byte b1 = Byte.decode("0x" + new String(new byte[] { src1 })).byteValue();
+		byte ret = (byte) (b0 ^ b1);
 		return ret;
 	}
 }

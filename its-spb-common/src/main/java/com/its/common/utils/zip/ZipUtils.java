@@ -10,6 +10,9 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @author tzz
+ */
 public class ZipUtils {
 
 	/**
@@ -20,24 +23,26 @@ public class ZipUtils {
 	 * @param zippath
 	 *            压缩后存放的路径
 	 */
-	public static void ZipFile(String filepath, String zippath) {
-		File file = null;// 要被压缩的文件夹
+	public static void zipFile(String filepath, String zippath) {
+	    // 要被压缩的文件夹
+		File file = null;
 		File zipFile = null;
 		ZipOutputStream zipOut = null;
 		try {
 			file = new File(filepath);
 			zipFile = new File(zippath);
 			zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
-			ZipFile(file, zipFile, zipOut);
+			zipFile(file, zipFile, zipOut);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static void ZipFile(File file, File zipFile, ZipOutputStream zipOut) {
+	private static void zipFile(File file, File zipFile, ZipOutputStream zipOut) {
 		InputStream input = null;
 		try {
-			if (file.isDirectory()) {// 压缩文件夹
+			if (file.isDirectory()) {
+			    // 压缩文件夹
 				File[] files = file.listFiles();
 				for (int i = 0; i < files.length; ++i) {
 					File f = files[i];
@@ -50,7 +55,8 @@ public class ZipUtils {
 					input.close();
 				}
 				zipOut.close();
-			} else {// 压缩单个文件
+			} else {
+			    // 压缩单个文件
 				input = new FileInputStream(file);
 				String fileName = new String(file.getName().getBytes(), "UTF-8");
 				zipOut.putNextEntry(new ZipEntry(fileName));
@@ -69,15 +75,18 @@ public class ZipUtils {
 	}
 
 	/** 解压缩（解压缩单个文件） */
-	public static void ZipContraFile(String zippath, String outfilepath, String filename) {
+	public static void zipContraFile(String zippath, String outfilepath, String filename) {
 		ZipFile zipFile = null;
-		File file = null;// 压缩文件路径和文件名
-		File outFile = null;// 解压后路径和文件名
+		// 压缩文件路径和文件名
+		File file = null;
+		// 解压后路径和文件名
+		File outFile = null;
 		try {
 			file = new File(zippath);
 			outFile = new File(outfilepath);
 			zipFile = new ZipFile(file);
-			ZipEntry entry = zipFile.getEntry(filename);// 所解压的文件名
+			// 所解压的文件名
+			ZipEntry entry = zipFile.getEntry(filename);
 			InputStream input = zipFile.getInputStream(entry);
 			OutputStream output = new FileOutputStream(outFile);
 			int temp = 0;
@@ -95,7 +104,7 @@ public class ZipUtils {
 	 * 解压缩（压缩文件中包含多个文件）可代替上面的方法使用。 ZipInputStream类
 	 * 当我们需要解压缩多个文件的时候，ZipEntry就无法使用了， 如果想操作更加复杂的压缩文件，我们就必须使用ZipInputStream类
 	 */
-	public static void ZipContraMultiFile(String zippath, String outzippath) {
+	public static void zipContraMultiFile(String zippath, String outzippath) {
 		File file = null;
 		ZipFile zipFile = null;
 		ZipInputStream zipInput = null;

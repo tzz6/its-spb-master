@@ -8,12 +8,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.its.base.servers.api.sys.domain.SysUser;
 import com.its.common.model.ResponseBase;
 
+/**
+ * 
+ * @author tzz
+ * @Introduce: SysUserService
+ */
 public interface SysUserService {
 
-	@GetMapping("/getSysUserByStId")
-	public SysUser getSysUserByStId(@RequestParam(value = "stId") String stId);
+    /**
+     * 根据id获取SysUser
+     * 
+     * @param stId
+     * @return
+     */
+    @GetMapping("/getSysUserByStId")
+    public SysUser getSysUserByStId(@RequestParam(value = "stId") String stId);
 
-	@PostMapping("/getSysUser")
-	public ResponseBase getSysUser(@RequestBody SysUser sysUser);
+    /**
+     * 获取SysUser
+     * 
+     * @param sysUser
+     * @return
+     */
+    @PostMapping("/getSysUser")
+    public ResponseBase getSysUser(@RequestBody SysUser sysUser);
 
 }

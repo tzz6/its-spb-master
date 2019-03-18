@@ -10,7 +10,8 @@ import java.net.URL;
 
 /**
  * HttpUtil
- *
+ * 
+ * @author tzz
  */
 public final class HttpUtil {
 
@@ -49,8 +50,9 @@ public final class HttpUtil {
 				out.flush();
 
 				reader = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-				while ((line = reader.readLine()) != null)
-					result.append(line);
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
 			} finally {
 				if (out != null) {
 					out.close();

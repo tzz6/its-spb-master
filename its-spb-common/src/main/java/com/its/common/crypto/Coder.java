@@ -5,6 +5,10 @@ import java.io.IOException;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
+/**
+ * 
+ * @author tzz
+ */
 public class Coder {
 
 	public static String encryptBASE64(byte[] key) {  

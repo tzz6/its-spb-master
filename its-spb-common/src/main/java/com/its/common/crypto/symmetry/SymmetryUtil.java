@@ -12,6 +12,7 @@ import sun.misc.BASE64Encoder;
 
 /**
  * 对称加密(AES/DES/3DES) 推荐使用AES
+ * @author tzz
  */
 public class SymmetryUtil {
 	public static String ALGORITHM_AES = "AES";
@@ -29,8 +30,10 @@ public class SymmetryUtil {
 	 * @throws NoSuchAlgorithmException
 	 */
 	public static SecretKey createKey(String algorithm, int keysize, String key) {
-		KeyGenerator keyGenerator = null;// 声明KeyGenerator对象
-		SecretKey secretKey = null;// 声明 密钥对象
+	    // 声明KeyGenerator对象
+		KeyGenerator keyGenerator = null;
+		// 声明 密钥对象
+		SecretKey secretKey = null;
 		try {
 			keyGenerator = KeyGenerator.getInstance(algorithm);
 			keyGenerator.init(keysize, new SecureRandom(key.getBytes()));

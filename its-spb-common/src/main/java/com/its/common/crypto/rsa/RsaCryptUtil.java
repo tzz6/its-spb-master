@@ -20,11 +20,13 @@ import javax.crypto.Cipher;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+
 /**
  * RSA非对称加密
- *
+ * 
+ * @author tzz
  */
-public class RSACryptUtil {
+public class RsaCryptUtil {
 
 	public static final String KEY_ALGORITHM = "RSA";
 	public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
@@ -49,8 +51,10 @@ public class RSACryptUtil {
 			keyPairGen = KeyPairGenerator.getInstance(KEY_ALGORITHM);
 			keyPairGen.initialize(1024);
 			KeyPair keyPair = keyPairGen.generateKeyPair();
-			RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();// 公钥
-			RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();// 私钥
+			// 公钥
+			RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
+			// 私钥
+			RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 			keyMap.put(PUBLIC_KEY, publicKey);
 			keyMap.put(PRIVATE_KEY, privateKey);
 		} catch (NoSuchAlgorithmException e) {
@@ -73,7 +77,8 @@ public class RSACryptUtil {
 	
 	/**用公钥解密*/
 	public static byte[] decryptByPublicKey(byte[] data, String key) throws Exception {
-		byte[] keyBytes = decryptBASE64(key);// 对密钥解密
+	    // 对密钥解密
+		byte[] keyBytes = decryptBASE64(key);
 		// 取得公钥
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
@@ -86,7 +91,8 @@ public class RSACryptUtil {
 	
 	/**用私钥解密*/
 	public static byte[] decryptByPrivateKey(byte[] data, String key) throws Exception {
-		byte[] keyBytes = decryptBASE64(key);// 对密钥解密
+	    // 对密钥解密
+		byte[] keyBytes = decryptBASE64(key);
 		// 取得私钥
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
@@ -99,7 +105,8 @@ public class RSACryptUtil {
 	
 	/**用公钥加密*/
 	public static byte[] encryptByPublicKey(byte[] data, String key) throws Exception {
-		byte[] keyBytes = decryptBASE64(key);// 对公钥解密
+	    // 对公钥解密
+		byte[] keyBytes = decryptBASE64(key);
 		// 取得公钥
 		X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
@@ -112,7 +119,8 @@ public class RSACryptUtil {
 	
 	/**用私钥加密*/
 	public static byte[] encryptByPrivateKey(byte[] data, String key) throws Exception {
-		byte[] keyBytes = decryptBASE64(key);// 对密钥解密
+	    // 对密钥解密
+		byte[] keyBytes = decryptBASE64(key);
 		// 取得私钥
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
@@ -129,7 +137,8 @@ public class RSACryptUtil {
 	 * @param privateKey 私钥
 	 */
 	public static String sign(byte[] data, String privateKey) throws Exception {
-		byte[] keyBytes = decryptBASE64(privateKey);// 解密由base64编码的私钥
+	    // 解密由base64编码的私钥
+		byte[] keyBytes = decryptBASE64(privateKey);
 		// 构造PKCS8EncodedKeySpec对象
 		PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 		// KEY_ALGORITHM 指定的加密算法
@@ -153,8 +162,8 @@ public class RSACryptUtil {
 	 * 
 	 */
 	public static boolean verify(byte[] data, String publicKey, String sign) throws Exception {
-		byte[] keyBytes = decryptBASE64(publicKey);// 解密由base64编码的公钥
-		
+	    // 解密由base64编码的公钥
+		byte[] keyBytes = decryptBASE64(publicKey);
 		// 构造X509EncodedKeySpec对象
 		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
 		// KEY_ALGORITHM 指定的加密算法

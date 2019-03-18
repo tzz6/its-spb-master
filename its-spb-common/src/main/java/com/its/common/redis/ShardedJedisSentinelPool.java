@@ -37,6 +37,7 @@ import redis.clients.util.Pool;
  * 故在Jedis2.2.2中新增了对Sentinel的支持，应用通过redis.clients.jedis.JedisSentinelPool.getResource()取得的Jedis实例会及时更新到新的主实例地址。
  * 笔者所在的公司先使用了方案1一段时间后，发现keepalived在有些情况下会导致数据丢失，keepalived通过shell脚本进行主从切换，配置复杂，而且keepalived成为新的单点，
  * 后来选用了方案3，使用Redis官方解决方案；（方案2需要编写大量的监控代码，没有方案3简便，网上有人使用方案2读者可自行查看）
+ * @author tzz
  **/
 @SuppressWarnings("rawtypes")
 public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
@@ -90,13 +91,14 @@ public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
 		this.password = password;
 		this.database = database;
 
-		List<HostAndPort> masterList = initSentinels(sentinels, masters);// 初始化哨兵
+		// 初始化哨兵
+		List<HostAndPort> masterList = initSentinels(sentinels, masters);
 		initPool(masterList);
 	}
 
 	/** 初始化哨兵 **/
 	private List<HostAndPort> initSentinels(Set<String> sentinels, final List<String> masters) {
-		Map<String, HostAndPort> masterMap = new HashMap<String, HostAndPort>();
+		Map<String, HostAndPort> masterMap = new HashMap<String, HostAndPort>(16);
 		List<HostAndPort> shardMasters = new ArrayList<HostAndPort>();
 		log.info("Trying to find all master from available Sentinels...");
 		for (String masterName : masters) {
@@ -176,8 +178,9 @@ public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
 		if (currentShardMasters != null && shardMasters != null) {
 			if (currentShardMasters.size() == shardMasters.size()) {
 				for (int i = 0; i < currentShardMasters.size(); i++) {
-					if (!currentShardMasters.get(i).equals(shardMasters.get(i)))
-						return false;
+                    if (!currentShardMasters.get(i).equals(shardMasters.get(i))) {
+                        return false;
+                    }
 				}
 				return true;
 			}
@@ -224,11 +227,13 @@ public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
 			this.keyTagPattern = keyTagPattern;
 		}
 
+		@Override
 		public PooledObject<ShardedJedis> makeObject() throws Exception {
 			ShardedJedis jedis = new ShardedJedis(shards, algo, keyTagPattern);
 			return new DefaultPooledObject<ShardedJedis>(jedis);
 		}
 
+		@Override
 		public void destroyObject(PooledObject<ShardedJedis> pooledShardedJedis) throws Exception {
 			final ShardedJedis shardedJedis = pooledShardedJedis.getObject();
 			for (Jedis jedis : shardedJedis.getAllShards()) {
@@ -245,11 +250,12 @@ public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
 			}
 		}
 
+		@Override
 		public boolean validateObject(PooledObject<ShardedJedis> pooledShardedJedis) {
 			try {
 				ShardedJedis jedis = pooledShardedJedis.getObject();
 				for (Jedis shard : jedis.getAllShards()) {
-					if (!shard.ping().equals("PONG")) {
+					if (!"PONG".equals(shard.ping())) {
 						return false;
 					}
 				}
@@ -259,10 +265,12 @@ public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
 			}
 		}
 
+		@Override
 		public void activateObject(PooledObject<ShardedJedis> p) throws Exception {
 
 		}
 
+		@Override
 		public void passivateObject(PooledObject<ShardedJedis> p) throws Exception {
 
 		}
@@ -319,6 +327,7 @@ public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
 			this.subscribeRetryWaitTimeMillis = subscribeRetryWaitTimeMillis;
 		}
 
+		@Override
 		public void run() {
 			running.set(true);
 			while (running.get()) {
@@ -389,5 +398,17 @@ public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
 				log.severe("Caught exception while shutting down: " + e.getMessage());
 			}
 		}
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj);
+        }
+		
+		
 	}
 }

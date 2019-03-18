@@ -15,17 +15,18 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 /**
  * its-spb-zuul服务启动<br>
  * Zuul集群:可采用Nginx+zuul 一主一备或多机轮询<br>
- * 客户端发送请求统一到Nginx,再使用Nginx(LVS+keepalived)实现反向代理和负载均衡，采用轮询算法转发到zuul网关
- *
+ * 客户端发送请求统一到Nginx,再使用Nginx(LVS+keepalived)实现反向代理和负载均衡，采用轮询算法转发到zuul网关<br>
+ * 
+ * @EnableEurekaClient 将当前服务注册到Eureka注册中心,如果注册中心是Eureka使用，向注册中心注册服务<br>
+ * @EnableDiscoveryClient如果注册中心是Zookeeper、Connsul使用@EnableDiscoveryClient替换@EnableEurekaClient，向注册中心注册服务<br>
+ * @EnableZuulProxy 开启Zuul网关代理<br>
+ * @EnableSwagger2Doc开启Swagger<br>
+ * 
+ * @author tzz
  */
 @SpringBootApplication
-// @EnableEurekaClient 将当前服务注册到Eureka注册中心,如果注册中心是Eureka使用，向注册中心注册服务
 @EnableEurekaClient
-// @EnableDiscoveryClient如果注册中心是Zookeeper、Connsul使用，向注册中心注册服务
-// @EnableDiscoveryClient
-// @EnableZuulProxy 开启Zuul网关代理
 @EnableZuulProxy
-//@EnableSwagger2Doc开启Swagger
 @EnableSwagger2Doc
 public class ItsSpbZuulApplication {
 

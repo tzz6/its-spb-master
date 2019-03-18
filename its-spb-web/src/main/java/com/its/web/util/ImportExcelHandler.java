@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import com.its.common.utils.Constants;
 import com.its.common.utils.ImportError;
 import com.its.common.utils.PrimaryKeyUtil;
-import com.its.common.utils.poi.POISAXExcelHandler;
+import com.its.common.utils.poi.AbstractPoiSaxExcelHandler;
 import com.its.model.mybatis.dao.domain.SysUser;
 
 /**
@@ -18,7 +18,7 @@ import com.its.model.mybatis.dao.domain.SysUser;
  * 
  *
  */
-public class ImportExcelHandler extends POISAXExcelHandler {
+public class ImportExcelHandler extends AbstractPoiSaxExcelHandler {
 
 	private static final Log logger = LogFactory.getLog(ImportExcelHandler.class);
 

@@ -25,29 +25,29 @@ import org.xml.sax.helpers.XMLReaderFactory;
 /**
  * Excel超大数据读取，抽象Excel2007读取器 excel2007的底层数据结构是xml文件，采用SAX的事件驱动的方法解析
  * xml，需要继承DefaultHandler，在遇到文件内容时，事件会触发，这种做法可以大大降低 内存的耗费，特别使用于大数据量的文件。
- * 
+ * @author tzz
  */
-public abstract class ExcelHandler extends DefaultHandler {
+public abstract class AbstractExcelHandler extends DefaultHandler {
 
 	@SuppressWarnings("unused")
-	private static final Log logger = LogFactory.getLog(ExcelHandler.class);
+	private static final Log logger = LogFactory.getLog(AbstractExcelHandler.class);
 
-	// 共享字符串表
+	/** 共享字符串表*/
 	private SharedStringsTable sst;
-	// 上一次的内容
+	/** 上一次的内容*/
 	private String lastContents;
 	private boolean nextIsString;
 
 	private int sheetIndex = -1;
 	private List<String> rowList = new ArrayList<String>();
 
-	// 当前行
+	/** 当前行*/
 	private int curRow = 0;
-	// 当前列
+	/** 当前列*/
 	private int curCol = 0;
-	// 日期标志
+	/** 日期标志*/
 	private boolean dateFlag;
-	// 数字标志
+	/** 数字标志*/
 	private boolean numberFlag;
 
 	private boolean isTElement;
@@ -105,31 +105,41 @@ public abstract class ExcelHandler extends DefaultHandler {
 		return parser;
 	}
 
+	@Override
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 //		logger.info("startElement: " + localName + ", " + name + ", " + attributes);
-		if ("c".equals(name)) {// c:单元格
+	    // c:单元格
+	    String s = "s";
+	    String c = "c";
+	    String date = "1";
+	    String type = "2";
+		if (c.equals(name)) {
 			// 如果下一个元素是 SST 的索引，则将nextIsString标记为true
 			String cellType = attributes.getValue("t");
-			if ("s".equals(cellType)) {
+			if (s.equals(cellType)) {
 				nextIsString = true;
 			} else {
 				nextIsString = false;
 				isEmpty = true;
 			}
-			String cellDateType = attributes.getValue("s");
-			if ("1".equals(cellDateType)) {// 日期格式
+			String cellDateType = attributes.getValue(s);
+			// 日期格式
+			if (date.equals(cellDateType)) {
 				dateFlag = true;
 			} else {
 				dateFlag = false;
 			}
-			if ("2".equals(cellDateType)) {// 数字类型处理
+			// 数字类型处理
+			if (type.equals(cellDateType)) {
 				numberFlag = true;
 			} else {
 				numberFlag = false;
 			}
 		}
 
-		if ("t".equals(name)) {// 当元素为t时
+		// 当元素为t时
+		String t = "t";
+		if (t.equals(name)) {
 			isTElement = true;
 		} else {
 			isTElement = false;
@@ -138,6 +148,7 @@ public abstract class ExcelHandler extends DefaultHandler {
 		lastContents = "";
 	}
 
+	@Override
 	@SuppressWarnings("unused")
 	public void endElement(String uri, String localName, String name) throws SAXException {
 		// 根据SST的索引值的到单元格的真正要存储的字符串
@@ -150,23 +161,29 @@ public abstract class ExcelHandler extends DefaultHandler {
 //				logger.info(nextIsString);
 			}
 		}
-		if (isTElement) {// t元素也包含字符串
+		// t元素也包含字符串
+		String v = "v";
+		String c = "c";
+		String row = "row";
+		if (isTElement) {
 			String value = lastContents.trim();
 			rowList.add(curCol, value);
 			curCol++;
 			isTElement = false;
-		} else if ("v".equals(name)) {
+		} else if (v.equals(name)) {
 			// v => 单元格的值，如果单元格是字符串则v标签的值为该字符串在SST中的索引
 			// 将单元格内容加入rowlist中，在这之前先去掉字符串前后的空白符
 			String value = lastContents.trim();
-			value = value.equals("") ? " " : value;
+			value = "".equals(value) ? " " : value;
 			try {
-				if (dateFlag) {// 日期格式处理
+			    // 日期格式处理
+				if (dateFlag) {
 					Date date = HSSFDateUtil.getJavaDate(Double.valueOf(value));
 					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 //					value = dateFormat.format(date);
 				}
-				if (numberFlag) {// 数字类型处理
+				// 数字类型处理
+				if (numberFlag) {
 					BigDecimal bd = new BigDecimal(value);
 //					value = bd.setScale(3, BigDecimal.ROUND_UP).toString();
 				}
@@ -175,12 +192,12 @@ public abstract class ExcelHandler extends DefaultHandler {
 			}
 			rowList.add(curCol, value);
 			curCol++;
-		} else if (isEmpty && "c".equals(name)) {
+		} else if (isEmpty && c.equals(name)) {
 			rowList.add(curCol, null);
 			curCol++;
 		} else {
 			// 如果标签名称为 row ，这说明已到行尾，调用 optRows() 方法
-			if (name.equals("row")) {
+			if (row.equals(name)) {
 				getRows(sheetIndex + 1, curRow, rowList);
 				rowList.clear();
 				curRow++;
@@ -190,6 +207,7 @@ public abstract class ExcelHandler extends DefaultHandler {
 		isEmpty = false;
 	}
 
+	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException {
 		// 得到单元格内容的值
 		lastContents += new String(ch, start, length);

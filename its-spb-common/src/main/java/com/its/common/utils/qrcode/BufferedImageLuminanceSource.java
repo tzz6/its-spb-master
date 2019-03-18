@@ -5,9 +5,11 @@ import com.google.zxing.LuminanceSource;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+
 /**
  * 解析二维码
- *
+ * 
+ * @author tzz
  */
 public final class BufferedImageLuminanceSource extends LuminanceSource {
 
@@ -31,7 +33,8 @@ public final class BufferedImageLuminanceSource extends LuminanceSource {
 		for (int y = top; y < top + height; y++) {
 			for (int x = left; x < left + width; x++) {
 				if ((image.getRGB(x, y) & 0xFF000000) == 0) {
-					image.setRGB(x, y, 0xFFFFFFFF); // = white
+				    // = white
+					image.setRGB(x, y, 0xFFFFFFFF); 
 				}
 			}
 		}

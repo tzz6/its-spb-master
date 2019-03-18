@@ -2,7 +2,8 @@ package com.its.common.utils;
 
 /**
  * 常用排序工具类
- *
+ * 
+ * @author tzz
  */
 public class SortUtil {
 
@@ -86,8 +87,10 @@ public class SortUtil {
 
 			num[i] = key;
 			/* 递归调用 */
-			quickSorter(num, left, i - 1);// 递归左
-			quickSorter(num, i + 1, rigth);// 递归右
+			// 递归左
+			quickSorter(num, left, i - 1);
+			// 递归右
+			quickSorter(num, i + 1, rigth);
 		}
 
 		return num;
@@ -100,7 +103,7 @@ public class SortUtil {
 	// 4. 重复步骤3，直到找到已排序的元素小于或者等于新元素的位置
 	// 5. 将新元素插入到下一位置中
 	// 6. 重复步骤2
-	// 如果比较操作的代价比交换操作大的话，可以采用二分查找法来减少比较操作的数目。该算法可以认为是插入排序的一个变种，称为二分查找排序。
+	/** 如果比较操作的代价比交换操作大的话，可以采用二分查找法来减少比较操作的数目。该算法可以认为是插入排序的一个变种，称为二分查找排序。*/
 	public static int[] insetSorter(int[] num) {
 		for (int i = 1; i < num.length; i++) {
 			int temp = num[i];
@@ -113,35 +116,44 @@ public class SortUtil {
 		return num;
 	}
 
-	// 希尔排序
+	/** 希尔排序 */
 	public static int[] shellSorter(int[] num, int index) {
-		int j, k; // 循环计数变量
-		int Temp; // 暂存变量
-		boolean Change; // 数据是否改变
-		int DataLength; // 分割集合的间隔长度
-		int Pointer; // 进行处理的位置
-		DataLength = index / 2;
+	    // 循环计数变量
+		int j, k; 
+		// 暂存变量
+		int temp; 
+		// 数据是否改变
+		boolean change; 
+		// 分割集合的间隔长度
+		int dataLength; 
+		// 进行处理的位置
+		int pointer; 
+		dataLength = index / 2;
 		// 初始集合间隔长度
-		while (DataLength != 0) { // 数列仍可进行分割
+		// 数列仍可进行分割
+		while (dataLength != 0) { 
 			// 对各个集合进行处理
-			for (j = DataLength; j < index; j++) {
-				Change = false;
-				Temp = num[j]; // 暂存Data[j]的值,待交换值时用
-				Pointer = j - DataLength; // 计算进行处理的位置
+			for (j = dataLength; j < index; j++) {
+				change = false;
+				// 暂存Data[j]的值,待交换值时用
+				temp = num[j]; 
+				// 计算进行处理的位置
+				pointer = j - dataLength; 
 				// 进行集合内数值的比较与交换值
-				while (Temp < num[Pointer] && Pointer >= 0 && Pointer <= index) {
-					num[Pointer + DataLength] = num[Pointer];
+				while (temp < num[pointer] && pointer >= 0 && pointer <= index) {
+					num[pointer + dataLength] = num[pointer];
 					// 计算下一个欲进行处理的位置
-					Pointer = Pointer - DataLength;
-					Change = true;
-					if (Pointer < 0 || Pointer > index) {
+					pointer = pointer - dataLength;
+					change = true;
+					if (pointer < 0 || pointer > index) {
 						break;
 					}
 				}
 				// 与最后的数值交换
-				num[Pointer + DataLength] = Temp;
+				num[pointer + dataLength] = temp;
 
-				if (Change) { // 打印目前排序结果
+				// 打印目前排序结果
+				if (change) { 
 					 System.out.print("排序中: ");
 					 for (k = 0; k < index; k++) {
 					 System.out.printf("%3s ", num[k]);
@@ -150,7 +162,7 @@ public class SortUtil {
 				}
 			}
 			// 计算下次分割的间隔长度
-			DataLength = DataLength / 2;
+			dataLength = dataLength / 2;
 		}
 		return num;
 	}
@@ -186,8 +198,10 @@ public class SortUtil {
      */
 	public static void merge(int[] nums, int low, int mid, int high) {
 		int[] temp = new int[high - low + 1];
-		int i = low;// 左指针
-		int j = mid + 1;// 右指针
+		// 左指针
+		int i = low;
+		// 右指针
+		int j = mid + 1;
 		int k = 0;
 
 		// 把较小的数先移到新数组中
@@ -228,14 +242,15 @@ public class SortUtil {
 		return num;
 	}
 
-	// 对data数组从0到lastIndex建大顶堆
+	/** 对data数组从0到lastIndex建大顶堆 */
 	public static void buildMaxHeap(int[] data, int lastIndex) {
 		// 从lastIndex处节点（最后一个节点）的父节点开始
-		for (int i = (lastIndex - 1) / 2; i >= 0; i--) {
+	    int last = 2;
+		for (int i = (lastIndex - 1) / last; i >= 0; i--) {
 			// k保存正在判断的节点
 			int j = i;
 			// 如果当前k节点的子节点存在
-			while (j * 2 + 1 <= lastIndex) {
+			while (j * last + 1 <= lastIndex) {
 				// k节点的左子节点的索引
 				int biggerIndex = 2 * j + 1;
 				// 如果biggerIndex小于lastIndex，即biggerIndex+1代表的k节点的右子节点存在
@@ -259,7 +274,7 @@ public class SortUtil {
 		}
 	}
 
-	// 交换
+	/** 交换 */
 	public static void swap(int[] data, int i, int j) {
 		int tmp = data[i];
 		data[i] = data[j];

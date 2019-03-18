@@ -21,9 +21,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
+/**
+ * SysUser服务接口
+ * 
+ * @RefreshScope Spring Cloud Config 手动刷新
+ * @author tzz
+ * @date 2019/03/18
+ */
 @Api("SysUser服务接口")
 @RestController
-@RefreshScope // Spring Cloud Config 手动刷新
+@RefreshScope
 public class OrderServiceImpl implements OrderService {
 	// 1.服务雪崩效应
 	// 解释：默认情况下tomcat只有一个线程池去处理客户端发送的所有所有服务请求，这样的话在高并发情况下，如果客户端所有的请求堆积到
@@ -49,9 +56,9 @@ public class OrderServiceImpl implements OrderService {
 	// 3.服务隔离：隔离机制(线程池方式和信号量),高并发下使用线程池方式
 	// 线程池隔离：设置为线程池隔离，则接口(服务)都有自己独立的线程池，互不影响 ，缺点是CPU占用率非常高，(核心关键接口，不是每个接口都需要使用)
 
-	// 使用SpringCloud Config读取配置文件
-	@Value("${spring.datasource.username}")
-	private String datasourceUsername;
+    /** 使用SpringCloud Config读取配置文件 */
+    @Value("${spring.datasource.username}")
+    private String datasourceUsername;
 
 	@Autowired
 	private SysUserServiceFeign sysUserServiceFeign;

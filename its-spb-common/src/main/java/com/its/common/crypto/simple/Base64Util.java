@@ -6,9 +6,12 @@ import org.apache.log4j.Logger;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-
-public class BASE64Util {
-	private static final Logger logger = Logger.getLogger(BASE64Util.class);
+/**
+ * 
+ * @author tzz
+ */
+public class Base64Util {
+	private static final Logger logger = Logger.getLogger(Base64Util.class);
 
 	/** 加密 */
 	public static String encrypt(byte[] key) {

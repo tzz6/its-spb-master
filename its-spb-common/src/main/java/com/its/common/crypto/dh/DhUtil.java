@@ -21,8 +21,10 @@ import javax.crypto.spec.DHParameterSpec;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-
-public class DHUtil {
+/**
+ * @author tzz
+ */
+public class DhUtil {
 	
 	public static final String ALGORITHM = "DH";
 	/**默认密钥字节数*/
@@ -30,8 +32,10 @@ public class DHUtil {
 
 	/** DH加密下需要一种对称加密算法对数据加密，这里我们使用DES，也可以使用其他对称加密算法*/
 	public static final String SECRET_ALGORITHM = "DES";
-	private static final String PUBLIC_KEY = "DHPublicKey";//公钥
-	private static final String PRIVATE_KEY = "DHPrivateKey";//私钥
+	/** 公钥 */
+	private static final String PUBLIC_KEY = "DHPublicKey";
+	/** 私钥 */
+	private static final String PRIVATE_KEY = "DHPrivateKey";
 
 	public String encryptBASE64(byte[] key) {  
 		return (new BASE64Encoder()).encodeBuffer(key);  

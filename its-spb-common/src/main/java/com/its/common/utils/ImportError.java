@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 导入文件上传错误
  * 
- *
+ * @author tzz
  */
 public class ImportError implements Comparable<ImportError> ,Serializable {
 

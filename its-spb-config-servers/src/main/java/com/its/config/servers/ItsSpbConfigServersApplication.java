@@ -7,16 +7,17 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * Config服务端
- *
+ * 
+ * @EnableEurekaClient 将当前服务注册到Eureka注册中心,如果注册中心是Eureka使用，向注册中心注册服务<br>
+ * @EnableConfigServer注解开启ConfigServer功能
+ * @author tzz
  */
 @SpringBootApplication
-// @EnableEurekaClient 将当前服务注册到Eureka注册中心,如果注册中心是Eureka使用，向注册中心注册服务
 @EnableEurekaClient
-// @EnableConfigServer注解开启ConfigServer功能
 @EnableConfigServer
 public class ItsSpbConfigServersApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ItsSpbConfigServersApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ItsSpbConfigServersApplication.class, args);
+    }
 }

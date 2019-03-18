@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.its.common.crypto.simple.MD5SHACryptoUtil;
+import com.its.common.crypto.simple.Md5ShaCryptoUtil;
 import com.its.common.utils.Constants;
 import com.its.common.utils.PrimaryKeyUtil;
 import com.its.model.bean.Datagrid;
@@ -120,7 +120,7 @@ public class SysUserController {
             String password = sysUser.getStCode();
             String salt = sysUser.getStCode();
             // SHA512加盐加密方式:密码+盐(盐可随机生成存储至数据库或使用用户名，当前使用简单方式即盐为用户名)
-            String stPassword = MD5SHACryptoUtil.sha512Encrypt(password + salt);
+            String stPassword = Md5ShaCryptoUtil.sha512Encrypt(password + salt);
             sysUser.setStPassword(stPassword);
             sysUserFacade.insertSysUser(sysUser);
             log.info("新增用户成功---用户名为" + stCode);

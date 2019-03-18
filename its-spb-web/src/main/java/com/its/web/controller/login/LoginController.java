@@ -1,16 +1,14 @@
 package com.its.web.controller.login;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.its.common.crypto.rsa.RSACryptUtil;
-import com.its.common.crypto.simple.MD5SHACryptoUtil;
-import com.its.common.utils.Constants;
-import com.its.model.bean.MenuBean;
-import com.its.model.mybatis.dao.domain.SysMenu;
-import com.its.model.mybatis.dao.domain.SysUser;
-import com.its.servers.facade.dubbo.sys.service.SysUserFacade;
-import com.its.web.util.CookieUtil;
-import com.its.web.util.UserSession;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,13 +20,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.its.common.crypto.rsa.RsaCryptUtil;
+import com.its.common.crypto.simple.Md5ShaCryptoUtil;
+import com.its.common.utils.Constants;
+import com.its.model.bean.MenuBean;
+import com.its.model.mybatis.dao.domain.SysMenu;
+import com.its.model.mybatis.dao.domain.SysUser;
+import com.its.servers.facade.dubbo.sys.service.SysUserFacade;
+import com.its.web.util.CookieUtil;
+import com.its.web.util.UserSession;
 
 /**
  * 登录
@@ -52,14 +54,14 @@ public class LoginController{
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String toLogin(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-		String savePassword = CookieUtil.getCookie(request, Constants.COOKIE_KEY.SAVE_PASSWORD);
-		String autoLogin = CookieUtil.getCookie(request, Constants.COOKIE_KEY.AUTO_LOGIN);
+		String savePassword = CookieUtil.getCookie(request, Constants.CookieKey.SAVE_PASSWORD);
+		String autoLogin = CookieUtil.getCookie(request, Constants.CookieKey.AUTO_LOGIN);
 		if (autoLogin != null && "1".equals(autoLogin)) {
 			model.put("autoLogin", autoLogin);
 		}
 		if (savePassword != null && "1".equals(savePassword)) {
-			String username = CookieUtil.getCookie(request, Constants.COOKIE_KEY.USERNAME);
-			String password = CookieUtil.getCookie(request, Constants.COOKIE_KEY.PASSWORD);
+			String username = CookieUtil.getCookie(request, Constants.CookieKey.USERNAME);
+			String password = CookieUtil.getCookie(request, Constants.CookieKey.PASSWORD);
 			model.put("savePassword", savePassword);
 			model.put("username", username);
 			model.put("password", password);
@@ -81,7 +83,7 @@ public class LoginController{
 		try {
 			String loginUrl = "/index";
 
-			String sessVerifyCode = (String) request.getSession().getAttribute(Constants.SESSION_KEY.VERIFY_CODE);
+			String sessVerifyCode = (String) request.getSession().getAttribute(Constants.SessionKey.VERIFY_CODE);
 			if (verifyCode != null && sessVerifyCode.equals(verifyCode.toUpperCase())) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("stCode", username);
@@ -98,29 +100,29 @@ public class LoginController{
 						+ "cZpED4czpY/ll6g+Vbn5YiTn67OC7hi1aW4/a0cGxg2vHDVcYhoDAtzXYNhg/jMqxY07NdjlAkEA"
 						+ "gtTLxrw1WrQQ3Qj76l556ihm9xTYr/OYm+rq+oXmULmk/ud9MzEQ8mP0Pz/DmxV3KmU73JOrCfR3"
 						+ "V9mrVTbe4Q==";
-				byte[] decodedData = RSACryptUtil.decryptByPrivateKey(RSACryptUtil.decryptBASE64(password), privateKey);
+				byte[] decodedData = RsaCryptUtil.decryptByPrivateKey(RsaCryptUtil.decryptBASE64(password), privateKey);
 				password = new String(decodedData);
 				// SHA512加盐加密方式:密码+盐(盐可随机生成存储至数据库或使用用户名，当前使用简单方式即盐为用户名)
-				map.put("stPassword", MD5SHACryptoUtil.sha512Encrypt(password + username));
+				map.put("stPassword", Md5ShaCryptoUtil.sha512Encrypt(password + username));
 				SysUser sysUser = sysUserFacade.login(map);
 				if (sysUser != null) {
 					sysUser.setLanguage(lang);
 					UserSession.setUser(sysUser);
 					if (StringUtils.isNotBlank(savePassword)) {
-						CookieUtil.addCookie(response, Constants.COOKIE_KEY.SAVE_PASSWORD, savePassword);
-						CookieUtil.addCookie(response, Constants.COOKIE_KEY.USERNAME, username);
-						CookieUtil.addCookie(response, Constants.COOKIE_KEY.PASSWORD, password);
+						CookieUtil.addCookie(response, Constants.CookieKey.SAVE_PASSWORD, savePassword);
+						CookieUtil.addCookie(response, Constants.CookieKey.USERNAME, username);
+						CookieUtil.addCookie(response, Constants.CookieKey.PASSWORD, password);
 
 						if (StringUtils.isNotBlank(autologin)) {
-							CookieUtil.addCookie(response, Constants.COOKIE_KEY.AUTO_LOGIN, autologin);
+							CookieUtil.addCookie(response, Constants.CookieKey.AUTO_LOGIN, autologin);
 						} else {
-							CookieUtil.removeCookie(response, Constants.COOKIE_KEY.AUTO_LOGIN);
+							CookieUtil.removeCookie(response, Constants.CookieKey.AUTO_LOGIN);
 						}
 					} else {
-						CookieUtil.removeCookie(response, Constants.COOKIE_KEY.SAVE_PASSWORD);
-						CookieUtil.removeCookie(response, Constants.COOKIE_KEY.USERNAME);
-						CookieUtil.removeCookie(response, Constants.COOKIE_KEY.PASSWORD);
-						CookieUtil.removeCookie(response, Constants.COOKIE_KEY.AUTO_LOGIN);
+						CookieUtil.removeCookie(response, Constants.CookieKey.SAVE_PASSWORD);
+						CookieUtil.removeCookie(response, Constants.CookieKey.USERNAME);
+						CookieUtil.removeCookie(response, Constants.CookieKey.PASSWORD);
+						CookieUtil.removeCookie(response, Constants.CookieKey.AUTO_LOGIN);
 					}
                     maps.put("status", "success");
                     maps.put("message", loginUrl);
@@ -192,7 +194,7 @@ public class LoginController{
 			List<SysMenu> firstMenus = new ArrayList<SysMenu>();
 			for (SysMenu sysMenu : userMenus) {
 				if (null == sysMenu.getParentMenuId() && sysMenu.getMenuType() != null
-						&& Constants.MENU_TYPE.MENU.equals(sysMenu.getMenuType())) {
+						&& Constants.MenuType.MENU.equals(sysMenu.getMenuType())) {
 					firstMenus.add(sysMenu);
 				}
 			}
@@ -210,7 +212,7 @@ public class LoginController{
 				for (SysMenu menu : userMenus) {
 					String parentMenuId = menu.getParentMenuId();
 					if (parentMenuId != null && parentMenuId.equals(firstMenu.getMenuId()) && menu.getMenuType() != null
-							&& Constants.MENU_TYPE.MENU.equals(menu.getMenuType())) {
+							&& Constants.MenuType.MENU.equals(menu.getMenuType())) {
 						twomenus.add(menu);
 					}
 				}

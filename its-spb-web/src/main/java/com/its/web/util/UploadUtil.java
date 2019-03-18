@@ -35,8 +35,9 @@ public class UploadUtil<T> {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			Import annotation = field.getAnnotation(Import.class);
-			if (annotation == null)
-				continue;
+			if (annotation == null){
+			    continue;
+			}
 			if (!StringUtils.isEmpty(annotation.description())) {
 				description = ResourceBundleHelper.get(lang, annotation.description());
 			}
@@ -77,8 +78,9 @@ public class UploadUtil<T> {
 		for (Field field : fields) {
 			field.setAccessible(true);
 			Import annotation = field.getAnnotation(Import.class);
-			if (annotation == null)
-				continue;
+			if (annotation == null){
+			    continue;
+			}
 			String anDescription = annotation.description();
 			if (!StringUtils.isEmpty(anDescription)) {
 				description = ResourceBundleHelper.get(lang, anDescription);

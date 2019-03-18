@@ -1,8 +1,11 @@
 package com.its.common.utils;
 
+/**
+ * @author tzz
+ */
 public class Constants {
 
-	public class SESSION_KEY {
+	public class SessionKey {
 		/** 用户 */
 		public static final String CURRENT_WEB_USER = "currentWebUser";
 		/** 验证码 */
@@ -17,7 +20,7 @@ public class Constants {
 		public static final String ITS_INTERCEPTOR_USER_MENU_SESSION = "ITS_INTERCEPTOR_USER_MENU_SESSION";
 	}
 
-	public class MENU_TYPE {
+	public class MenuType {
 		/** 菜单 */
 		public static final String MENU = "M";
 		/** 按钮 */
@@ -38,14 +41,14 @@ public class Constants {
 	
 	public static final String EXCEPTION = "EXCEPTION";
 
-	public class COOKIE_KEY {
+	public class CookieKey {
 		public static final String SAVE_PASSWORD = "savePassword";
 		public static final String AUTO_LOGIN = "autoLogin";
 		public static final String USERNAME = "username";
 		public static final String PASSWORD = "password";
 	}
 
-	public class UPGRADE {
+	public class Upgrade {
 		/** 升级版本XML配置文件 */
 		public static final String UPGRADE_XML = "upgrade.xml";
 		/** 斜线 */

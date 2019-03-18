@@ -3,6 +3,12 @@ package com.its.common.utils;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
+/**
+ * 
+ * @author tzz
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public class SystemUtil {
 
 	/** 获取计算机名 */

@@ -23,41 +23,41 @@ import org.json.JSONObject;
 
 /**
  * 百度翻译引擎java示例代码
+ * @author tzz
  */
 public class BaiduTranslateUtil {
 
 	private static final String UTF8 = "utf-8";
 
-	//申请者开发者id，实际使用时请修改成开发者自己的appid
-	private static final String appId = "20160324000016488";
+	/** 申请者开发者id，实际使用时请修改成开发者自己的appid */
+	private static final String APPID = "20160324000016488";
 
-	//申请成功后的证书token，实际使用时请修改成开发者自己的token
-	private static final String token = "T1NDUlQqsD7O_gVSxBCJ";
+	/** 申请成功后的证书token，实际使用时请修改成开发者自己的token */
+	private static final String TOKEN = "T1NDUlQqsD7O_gVSxBCJ";
 
-	private static final String url = "http://api.fanyi.baidu.com/api/trans/vip/translate";
+	private static final String URL = "http://api.fanyi.baidu.com/api/trans/vip/translate";
 	
-
-	// 随机数，用于生成md5值，开发者使用时请激活下边第四行代码
-	private static final Random random = new Random();
+	/** 随机数，用于生成md5值，开发者使用时请激活下边第四行代码 */
+	private static final Random RANDOM = new Random();
 
 	public static String translate(String q, String from, String to) throws Exception {
 		// 用于md5加密
-		 int salt = random.nextInt(10000);
+		 int salt = RANDOM.nextInt(10000);
 //		 本演示使用指定的随机数为1435660288
 //		int salt = 1435660288;
 
 		// 对appId+源文+随机数+token计算md5值
 		StringBuilder md5String = new StringBuilder();
-		md5String.append(appId).append(q).append(salt).append(token);
+		md5String.append(APPID).append(q).append(salt).append(TOKEN);
 		String md5 = DigestUtils.md5Hex(md5String.toString());
 
 		// 使用Post方式，组装参数
-		HttpPost httpost = new HttpPost(url);
+		HttpPost httpost = new HttpPost(URL);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("q", q));
 		nvps.add(new BasicNameValuePair("from", from));
 		nvps.add(new BasicNameValuePair("to", to));
-		nvps.add(new BasicNameValuePair("appid", appId));
+		nvps.add(new BasicNameValuePair("appid", APPID));
 		nvps.add(new BasicNameValuePair("salt", String.valueOf(salt)));
 		nvps.add(new BasicNameValuePair("sign", md5));
 		httpost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
@@ -81,9 +81,9 @@ public class BaiduTranslateUtil {
 
 		// 开发者自行处理错误，本示例失败返回为null
 		try {
-			String error_code = resultJson.getString("error_code");
-			if (error_code != null) {
-				System.out.println("出错代码:" + error_code);
+			String errorCode = resultJson.getString("error_code");
+			if (errorCode != null) {
+				System.out.println("出错代码:" + errorCode);
 				System.out.println("出错信息:" + resultJson.getString("error_msg"));
 				return null;
 			}

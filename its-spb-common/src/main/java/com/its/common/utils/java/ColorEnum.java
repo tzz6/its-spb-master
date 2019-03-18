@@ -1,7 +1,13 @@
 package com.its.common.utils.java;
-
+/**
+ * 
+ * @author tzz
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public enum ColorEnum {
 
+    //ColorEnum
 	RED(255,0,0),BLUE(0,0,255),BLACK(0,0,0),YELLOW(255,255,0),GREEN(0,255,0); 
 	
 	private int redValue;

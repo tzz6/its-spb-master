@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * 导入后的返回信息
  * 
- *
+ * @author tzz
  */
 public class ImportResult implements Serializable{
 

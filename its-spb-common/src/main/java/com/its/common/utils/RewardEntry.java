@@ -1,10 +1,17 @@
 package com.its.common.utils;
 
-/** 模型 */
+/**
+ * 模型
+ * @author tzz
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public class RewardEntry {
 
-	private String name;// 名称
-	private int percent;// 概率
+    /** 名称 */
+	private String name;
+	/** 概率 */
+	private int percent;
 
 	public RewardEntry(String name, int percent) {
 		super();

@@ -8,18 +8,18 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 
 /**
  * its-spb-base-servers服务启动
- *
+ * 
+ * @EnableEurekaClient 将当前服务注册到Eureka注册中心,如果注册中心是Eureka使用，向注册中心注册服务<br>
+ * @EnableDiscoveryClient如果注册中心是Zookeeper、Connsul使用@EnableDiscoveryClient替换@EnableEurekaClient，向注册中心注册服务<br>
+ * @EnableSwagger2Doc开启Swagger<br>
+ * @author tzz
  */
 @SpringBootApplication
-// @EnableEurekaClient 将当前服务注册到Eureka注册中心,如果注册中心是Eureka使用，向注册中心注册服务
 @EnableEurekaClient
-// @EnableDiscoveryClient如果注册中心是Zookeeper、Connsul使用，向注册中心注册服务
-// @EnableDiscoveryClient
-// @EnableSwagger2Doc开启Swagger
 @EnableSwagger2Doc
 public class ItsSpbBaseServersApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ItsSpbBaseServersApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ItsSpbBaseServersApplication.class, args);
+    }
 }

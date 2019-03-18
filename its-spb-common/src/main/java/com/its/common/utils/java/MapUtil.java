@@ -5,6 +5,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+/**
+ * 
+ * @author tzz
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public class MapUtil {
 
 	/**

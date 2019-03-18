@@ -17,6 +17,10 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
 
+/**
+ * 
+ * @author tzz
+ */
 public class XmlUtil {
 
 	/**
@@ -31,15 +35,16 @@ public class XmlUtil {
 		Map<String, Object> map = null;
 		try {
 			if (xml != null && !"".equals(xml)) {
-				map = new HashMap<String, Object>();
+				map = new HashMap<String, Object>(16);
 				Element root = DocumentHelper.parseText(xml).getRootElement();
 				List<Element> elements = root.elements();
 				for (Element element : elements) {
 					List<Element> childElements = element.elements();
 					if (childElements.size() > 0) {
 						map.put(element.getName(), xmlToMap(element));
-					} else
-						map.put(element.getName(), element.getText());
+					} else{
+					    map.put(element.getName(), element.getText());
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -50,7 +55,7 @@ public class XmlUtil {
 
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> xmlToMap(Element element) {
-		Map<String, Object> xmlMap = new HashMap<String, Object>();
+		Map<String, Object> xmlMap = new HashMap<String, Object>(16);
 		List<Element> elements = element.elements();
 		int size = elements.size();
 		if (size > 0) {
@@ -119,16 +124,19 @@ public class XmlUtil {
 	 */
 	@SuppressWarnings("unused")
 	private static XStream xstream = new XStream(new XppDriver() {
+	    @Override
 		public HierarchicalStreamWriter createWriter(Writer out) {
 			return new PrettyPrintWriter(out) {
 				// 对所有xml节点的转换都增加CDATA标记
 				boolean cdata = true;
 
+				@Override
 				@SuppressWarnings("rawtypes")
 				public void startNode(String name, Class clazz) {
 					super.startNode(name, clazz);
 				}
 
+				@Override
 				protected void writeText(QuickWriter writer, String text) {
 					if (cdata) {
 						writer.write("<![CDATA[");

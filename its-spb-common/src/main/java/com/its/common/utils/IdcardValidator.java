@@ -16,7 +16,7 @@ import java.util.Date;
  *    最后一位为校验位
  * </pre>
  * 
- * @author 313921
+ * @author tzz
  */
 public class IdcardValidator {
 
@@ -34,7 +34,7 @@ public class IdcardValidator {
 	 *     91 : 国外
 	 * </pre>
 	 */
-	private static String cityCode[] = { "11", "12", "13", "14", "15", "21",
+	private static String [] cityCode = { "11", "12", "13", "14", "15", "21",
 			"22", "23", "31", "32", "33", "34", "35", "36", "37", "41", "42",
 			"43", "44", "45", "46", "50", "51", "52", "53", "54", "61", "62",
 			"63", "64", "65", "71", "81", "82", "91" };
@@ -56,7 +56,8 @@ public class IdcardValidator {
 		if (idcard == null || "".equals(idcard)) {
 			return false;
 		}
-		if (idcard.length() == 15) {
+		int len = 15;
+		if (idcard.length() == len) {
 			return validate15IDCard(idcard);
 		}
 		return validate18Idcard(idcard);
@@ -102,7 +103,8 @@ public class IdcardValidator {
 		}
 
 		// 非18位为假
-		if (idcard.length() != 18) {
+		int len = 18;
+		if (idcard.length() != len) {
 			return false;
 		}
 		// 获取前17位
@@ -127,7 +129,8 @@ public class IdcardValidator {
 		try {
 			Date birthDate = sdf.parse(birthday);
 			String tmpDate = sdf.format(birthDate);
-			if (!tmpDate.equals(birthday)) {// 出生年月日不正确
+			// 出生年月日不正确
+			if (!tmpDate.equals(birthday)) {
 				return false;
 			}
 
@@ -175,7 +178,8 @@ public class IdcardValidator {
 			return false;
 		}
 		// 非15位为假
-		if (idcard.length() != 15) {
+		int len = 15;
+		if (idcard.length() != len) {
 			return false;
 		}
 
@@ -197,7 +201,8 @@ public class IdcardValidator {
 		try {
 			Date birthDate = sdf.parse(birthday);
 			String tmpDate = sdf.format(birthDate);
-			if (!tmpDate.equals(birthday)) {// 身份证日期错误
+			// 身份证日期错误
+			if (!tmpDate.equals(birthday)) {
 				return false;
 			}
 
@@ -221,7 +226,8 @@ public class IdcardValidator {
 		}
 
 		// 非15位身份证
-		if (idcard.length() != 15) {
+		int len = 15;
+		if (idcard.length() != len) {
 			return null;
 		}
 
@@ -244,7 +250,8 @@ public class IdcardValidator {
 		try {
 			birthdate = sdf.parse(birthday);
 			String tmpDate = sdf.format(birthdate);
-			if (!tmpDate.equals(birthday)) {// 身份证日期错误
+			// 身份证日期错误
+			if (!tmpDate.equals(birthday)) {
 				return null;
 			}
 
@@ -371,7 +378,11 @@ public class IdcardValidator {
 		case 0:
 			checkCode = "1";
 			break;
+		default:
+		    checkCode = "2";
+		    break;
 		}
+
 		return checkCode;
 	}
 
@@ -393,7 +404,7 @@ public class IdcardValidator {
 
 	public static void main(String[] args) throws Exception {
 		String idcard15 = "130321860311519";
-		String idcard18 = "44142119661022273X";//
+		String idcard18 = "44142119661022273X";
 		// 15位身份证
 		System.out.println(isValidatedAllIdcard(idcard15));
 		// 18位身份证

@@ -7,19 +7,32 @@ import java.util.*;
 
 import sun.security.x509.*;
 
+/**
+ * @author tzz
+ */
 public class SignCert {
 
-	private String mKeystore = "d:/tzz-sf.keystore"; // 密锁库路径
-	private char[] mKeystorePass = "123456789".toCharArray();// 密锁库密码
-	private char[] mSignPrivateKeyPass = "123456789".toCharArray();// 取得签发者私锁所需的密码
-	private String mSignCertAlias = "www.tzz-sf.com";// 签发者别名
-	private String mSignedCert = "d:/tzz-sf.cer"; // 被签证书
-	private String mNewCert = "d:/sign-tzz-sf.cer"; // 签发后的新证书全名
-	private int mValidityDay = 1; // 签发后的新证书有效期（天）
+    /** 密锁库路径 */
+    private String mKeystore = "d:/tzz-sf.keystore";
+    /** 密锁库密码 */
+    private char[] mKeystorePass = "123456789".toCharArray();
+    /** 取得签发者私锁所需的密码 */
+    private char[] mSignPrivateKeyPass = "123456789".toCharArray();
+    /** 签发者别名 */
+    private String mSignCertAlias = "www.tzz-sf.com";
+    /** 被签证书 */
+    private String mSignedCert = "d:/tzz-sf.cer";
+    /** 签发后的新证书全名 */
+    private String mNewCert = "d:/sign-tzz-sf.cer";
+    /** 签发后的新证书有效期（天） */
+    private int mValidityDay = 1;
 
-	private PrivateKey mSignPrivateKey = null;// 签发者的私锁
-	private X509CertInfo mSignCertInfo = null;// 签发证书信息
-	private X509CertInfo mSignedCertInfo = null;// 被签证书信息
+    /** 签发者的私锁 */
+    private PrivateKey mSignPrivateKey = null;
+    /** 签发证书信息 */
+    private X509CertInfo mSignCertInfo = null;
+    /** 被签证书信息 */
+    private X509CertInfo mSignedCertInfo = null;
 
 	/** 证书签名*/
 	public void sign() {

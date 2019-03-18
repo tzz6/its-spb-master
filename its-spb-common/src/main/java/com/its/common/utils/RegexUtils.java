@@ -4,7 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 
+ * @author tzz
+ */
 public class RegexUtils {
 
 	/**
@@ -14,8 +17,9 @@ public class RegexUtils {
 	 * @return
 	 */
 	public static boolean isNumber(String number) {
-		if (null == number || "".equals(number))
-			return true;
+		if (null == number || "".equals(number)){
+		    return true;
+		}
 		String regex = "[0-9]*";
 		return number.matches(regex);
 	}
@@ -27,8 +31,9 @@ public class RegexUtils {
 	 * @return boolean true,通过，false，没通过
 	 */
 	public static boolean isEmail(String email) {
-		if (null == email || "".equals(email))
-			return true;
+		if (null == email || "".equals(email)){
+		    return true;
+		}
 		String regex = "\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
 		return email.matches(regex);
 	}
@@ -40,10 +45,10 @@ public class RegexUtils {
 	 * @return boolean true,通过，false，没通过
 	 */
 	public static boolean isChinese(String text) {
-		if (null == text || "".equals(text))
-			return true;
-
-		return true;// StringUtil.isChinese(text);
+		if (null == text || "".equals(text)){
+		    return true;
+		}
+		return true;
 	}
 
 	/**
@@ -75,13 +80,12 @@ public class RegexUtils {
 		return false;
 	}
 
-	/*
-	 * 格式 yyyy-MM-dd hh:mm:ss *
-	 */
+    /** 格式 yyyy-MM-dd hh:mm:ss */
 	public static boolean isDate(String date) {
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		format.setLenient(false);// 设置为false，否则平年的2月29号也会为true
+		// 设置为false，否则平年的2月29号也会为true
+		format.setLenient(false);
 		try {
 			format.parse(date);
 			return true;
@@ -91,57 +95,53 @@ public class RegexUtils {
 
 	}
 
-	// 英文或者数字
+    /** 英文或者数字 */
 	public static boolean isEnglish(String string) {
 		return string.matches("^[A-Za-z,\\x21-\\x7e,\\s]+$");
 	}
 
-	// 字母和数字
+    /** 字母和数字 */
 	public static boolean isNumAndLetter(String string) {
 
 		return string.matches("^[a-zA-Z0-9]+$");
 	}
 
-	// 阿拉伯数字和空格或中横框(其他国家)
-	public static boolean isPost(String string) {
+    /** 阿拉伯数字和空格或中横框(其他国家) */
+    public static boolean isPost(String string) {
+        return string.matches("^(?:\\d|\\-|\\s)+$");
+    }
 
-		return string.matches("^(?:\\d|\\-|\\s)+$");
-	}
+    /** 英文字母和数字或空格(英国和加拿大) */
+    public static boolean isGBOrCA(String string) {
+        return string.matches("^[a-zA-Z0-9 ]*$");
+    }
 
-	// 英文字母和数字或空格(英国和加拿大)
-	public static boolean isGBOrCA(String string) {
+    /** 字母 数字 中横杠 */
+    public static boolean isNumberOrCharacter(String string) {
+        return string.matches("^[a-zA-Z0-9-]+$");
+    }
 
-		return string.matches("^[a-zA-Z0-9 ]*$");
-	}
-	//字母  数字 中横杠
-	public static boolean isNumberOrCharacter(String string) {
+    /** 字母 数字 中横杠 */
+    public static boolean isNumberOrCharacterOrSpace(String string) {
 
-		return string.matches("^[a-zA-Z0-9-]+$");
-	}
-	//字母  数字 中横杠
-	public static boolean isNumberOrCharacterOrSpace(String string) {
+        return string.matches("^[a-zA-Z0-9-\\s]+$");
+    }
 
-		return string.matches("^[a-zA-Z0-9-\\s]+$");
-	}
-	/**
-	 * 
-	 * @Title: getChinaType @Description:
-	 *         TODO(用于校验国家代码为CN、HK、MO、TW时，城市可以输入中文和英文，其它国家时只能输入英文字符,把枚举类型变量转成字符串) @return
-	 *         list 返回类型 @throws
-	 */
-
+    /**
+     * 
+     * @Title: getChinaType <br>
+     * @Description: (用于校验国家代码为CN、HK、MO、TW时，城市可以输入中文和英文，其它国家时只能输入英文字符,把枚举类型变量转成字符串) list
+     */
 	public static List<String> getChinaType() {
 		List<String> returnChinaTypes = new ArrayList<String>();
 		return returnChinaTypes;
 	}
 
-	/**
-	 * 
-	 * @Title: getGBAndCA @Description:
-	 *         TODO(用于校验英国和加拿大的邮编由英文字母和数字或空格组成，其它国家邮编由阿拉伯数字和空格或中横框组成) @return
-	 *         list 返回类型 @throws
-	 */
-
+    /**
+     * 
+     * @Title: getGBAndCA <br>
+     * @Description: (用于校验英国和加拿大的邮编由英文字母和数字或空格组成，其它国家邮编由阿拉伯数字和空格或中横框组成)
+     */
 	public static List<String> getGBAndCA() {
 		List<String> returnPostTypes = new ArrayList<String>();
 		return returnPostTypes;

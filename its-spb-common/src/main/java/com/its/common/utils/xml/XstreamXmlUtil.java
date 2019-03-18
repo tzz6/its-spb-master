@@ -14,8 +14,11 @@ import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-
-public class XStreamXmlUtil {
+/**
+ * 
+ * @author tzz
+ */
+public class XstreamXmlUtil {
 
 	/** XML转Bean对象 */
 	@SuppressWarnings("unchecked")
@@ -50,15 +53,16 @@ public class XStreamXmlUtil {
 	@SuppressWarnings("rawtypes")
 	public static XStream getStream() {
 		return new XStream(new XppDriver() {
+		    @Override
 			public HierarchicalStreamWriter createWriter(Writer out) {
 				return new PrettyPrintWriter(out) {
 					// 对所有xml节点的转换都增加CDATA标记
 					boolean cdata = true;
-
+					@Override
 					public void startNode(String name, Class clazz) {
 						super.startNode(name, clazz);
 					}
-
+					@Override
 					protected void writeText(QuickWriter writer, String text) {
 						if (cdata) {
 							writer.write("<![CDATA[");
@@ -76,7 +80,7 @@ public class XStreamXmlUtil {
 	/** XML转Map--支持N层子节点 */
 	@SuppressWarnings("unchecked")
 	public static Map<String, Object> xmlToMap(Element element) {
-		Map<String, Object> xmlMap = new HashMap<String, Object>();
+		Map<String, Object> xmlMap = new HashMap<String, Object>(16);
 		List<Element> elements = element.elements();
 		int size = elements.size();
 		if (size > 0) {
@@ -145,16 +149,19 @@ public class XStreamXmlUtil {
 	 */
 	@SuppressWarnings("unused")
 	private static XStream xstream = new XStream(new XppDriver() {
+	    @Override
 		public HierarchicalStreamWriter createWriter(Writer out) {
 			return new PrettyPrintWriter(out) {
 				// 对所有xml节点的转换都增加CDATA标记
 				boolean cdata = true;
-
+				
+				@Override
 				@SuppressWarnings("rawtypes")
 				public void startNode(String name, Class clazz) {
 					super.startNode(name, clazz);
 				}
 
+				@Override
 				protected void writeText(QuickWriter writer, String text) {
 					if (cdata) {
 						writer.write("<![CDATA[");

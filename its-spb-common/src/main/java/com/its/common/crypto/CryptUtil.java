@@ -20,6 +20,13 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+/**
+ * 
+ * @author tzz
+ * @工号: 
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public class CryptUtil {
 
 	/**MD5加密*/
@@ -99,11 +106,15 @@ public class CryptUtil {
 	}
 	
 	public static String encryptToDES(SecretKey key, String date) {
-		String algorithm = "DES";//定义加密算法
-		SecureRandom sr = new SecureRandom();// 加密随机数生成器 (可以不写)
-		byte[] cipherByte = null;// 定义要生成的密文
+	    //定义加密算法
+		String algorithm = "DES";
+		// 加密随机数生成器 (可以不写)
+		SecureRandom sr = new SecureRandom();
+		// 定义要生成的密文
+		byte[] cipherByte = null;
 		try {
-			Cipher cipher = Cipher.getInstance(algorithm);//加密/解密器
+		    //加密/解密器
+			Cipher cipher = Cipher.getInstance(algorithm);
 			// 用指定的密钥和模式初始化Cipher对象
 			cipher.init(Cipher.ENCRYPT_MODE, key, sr);
 			// 对要加密的内容进行编码处理,
@@ -116,8 +127,10 @@ public class CryptUtil {
 	}
 	
 	public static String decryptByDES(SecretKey key, String date) {
-		String algorithm = "DES";//定义加密算法
-		SecureRandom sr = new SecureRandom();// 加密随机数生成器
+	    //定义加密算法
+		String algorithm = "DES";
+		// 加密随机数生成器
+		SecureRandom sr = new SecureRandom();
 		byte[] cipherByte = null;
 		try {
 			// 得到加密/解密器
@@ -138,10 +151,13 @@ public class CryptUtil {
 		try {
 			// 根据特定的算法一个密钥对生成器
 			KeyPairGenerator pairGenerator = KeyPairGenerator.getInstance("DSA");
-			SecureRandom sr = new SecureRandom();//加密随机数生成器
-			sr.setSeed(1000);// 重新设置此随机对象的种子
+			//加密随机数生成器
+			SecureRandom sr = new SecureRandom();
+			// 重新设置此随机对象的种子
+			sr.setSeed(1000);
 			// 使用给定的随机源（和默认的参数集合）初始化确定密钥大小的密钥对生成器
-			pairGenerator.initialize(512, sr);// keygen.initialize(512);
+			// keygen.initialize(512);
+			pairGenerator.initialize(512, sr);
 			// 生成密钥组
 			KeyPair keys = pairGenerator.generateKeyPair();
 			// 得到公匙
@@ -202,34 +218,36 @@ public class CryptUtil {
 	public static String byte2hex(byte[] b) {
 		String hs = "";
 		String stmp = "";
+		StringBuilder stringBuilder = new StringBuilder();
 		for (int n = 0; n < b.length; n++) {
 			stmp = (java.lang.Integer.toHexString(b[n] & 0XFF));
 			if (stmp.length() == 1) {
-				hs = hs + "0" + stmp;
+			    stringBuilder.append("0").append(stmp);
 			} else {
-				hs = hs + stmp;
+				stringBuilder.append(stmp);
 			}
 		}
+		hs = stringBuilder.toString();
 		return hs.toUpperCase();
 	}
 	
 	public static byte[] hex2byte(String hex) {
 		byte[] ret = new byte[8];
 		byte[] tmp = hex.getBytes();
-		
-		for (int i = 0; i < 8; i++) {
+		int index = 8;
+		for (int i = 0; i < index; i++) {
 			ret[i] = uniteBytes(tmp[i * 2], tmp[i * 2 + 1]);
 		}
 		return ret;
 	}
 	
 	public static byte uniteBytes(byte src0, byte src1) {
-		byte _b0 = Byte.decode("0x" + new String(new byte[] { src0 }))
+		byte b0 = Byte.decode("0x" + new String(new byte[] { src0 }))
 				.byteValue();
-		_b0 = (byte) (_b0 << 4);
-		byte _b1 = Byte.decode("0x" + new String(new byte[] { src1 }))
+		b0 = (byte) (b0 << 4);
+		byte b1 = Byte.decode("0x" + new String(new byte[] { src1 }))
 				.byteValue();
-		byte ret = (byte) (_b0 ^ _b1);
+		byte ret = (byte) (b0 ^ b1);
 		return ret;
 	}
 	

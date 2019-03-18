@@ -1,5 +1,11 @@
 package com.its.common.model;
 
+/**
+ * 
+ * @author tzz
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public class ResponseBase {
 
 	private Integer rtnCode;

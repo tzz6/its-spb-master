@@ -5,6 +5,7 @@ import org.apache.http.conn.HttpClientConnectionManager;
 
 /**
  * 使用管理器，管理HTTP连接池 无效链接定期清理功能 
+ * @author tzz
  */
 public class HttpClientConnectionMonitorThread extends Thread {
 
@@ -24,7 +25,8 @@ public class HttpClientConnectionMonitorThread extends Thread {
 		try {
 			while (!shutdown) {
 				synchronized (this) {
-					wait(5000); // 等待5秒
+				    // 等待5秒
+					wait(5000); 
 					// 关闭过期的链接
 					connManager.closeExpiredConnections();
 					// 选择关闭 空闲30秒的链接

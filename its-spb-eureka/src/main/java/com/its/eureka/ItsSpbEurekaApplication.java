@@ -6,15 +6,16 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
  * SpringBoot启动
- *
+ * 
+ * @author tzz
  */
 @SpringBootApplication
 @EnableEurekaServer
 public class ItsSpbEurekaApplication {
 
-	// @EnableEurekaServer 表示开启EurekaServer服务 开启注册中心
-	public static void main(String[] args) {
-		SpringApplication.run(ItsSpbEurekaApplication.class, args);
-	}
-	// SpringCloud支持三种注册中心:Eureka/Zookeeper/Consul
+    /** @EnableEurekaServer 表示开启EurekaServer服务 开启注册中心 */
+    public static void main(String[] args) {
+        SpringApplication.run(ItsSpbEurekaApplication.class, args);
+    }
+    // SpringCloud支持三种注册中心:Eureka/Zookeeper/Consul
 }

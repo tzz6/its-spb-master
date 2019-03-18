@@ -5,7 +5,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-/** 根据设定的概率随机抽取数据算法 */
+/**
+ * 根据设定的概率随机抽取数据算法
+ * 
+ * @author tzz
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public class LotteryUtil {
 
 	/** 初始化 */

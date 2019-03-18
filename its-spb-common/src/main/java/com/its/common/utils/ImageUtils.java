@@ -25,6 +25,8 @@ import javax.imageio.ImageIO;
 
 /**
  * 图片工具类， 图片水印，文字水印，缩放
+ * 
+ * @author tzz
  */
 public final class ImageUtils {
 	/** 图片格式：JPG */
@@ -54,13 +56,14 @@ public final class ImageUtils {
 			Graphics2D g = bufferedImage.createGraphics();
 			g.drawImage(image, 0, 0, width, height, null);
 
-			Image waterImage = ImageIO.read(new File(waterImg)); // 水印文件
-			int width_1 = waterImage.getWidth(null);
-			int height_1 = waterImage.getHeight(null);
+			// 水印文件
+			Image waterImage = ImageIO.read(new File(waterImg)); 
+			int widthA = waterImage.getWidth(null);
+			int heightA = waterImage.getHeight(null);
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha));
 
-			int widthDiff = width - width_1;
-			int heightDiff = height - height_1;
+			int widthDiff = width - widthA;
+			int heightDiff = height - heightA;
 			if (x < 0) {
 				x = widthDiff / 2;
 			} else if (x > widthDiff) {
@@ -71,7 +74,8 @@ public final class ImageUtils {
 			} else if (y > heightDiff) {
 				y = heightDiff;
 			}
-			g.drawImage(waterImage, x, y, width_1, height_1, null); // 水印文件结束
+			// 水印文件结束
+			g.drawImage(waterImage, x, y, widthA, heightA, null); 
 			g.dispose();
 			ImageIO.write(bufferedImage, PICTRUE_FORMATE_JPG, file);
 		} catch (IOException e) {
@@ -117,10 +121,10 @@ public final class ImageUtils {
 			// g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,
 			// alpha));
 
-			int width_1 = fontSize * getLength(pressText);
-			int height_1 = fontSize;
-			int widthDiff = width - width_1;
-			int heightDiff = height - height_1;
+			int widthA = fontSize * getLength(pressText);
+			int heightA = fontSize;
+			int widthDiff = width - widthA;
+			int heightDiff = height - heightA;
 			if (x < 0) {
 				x = widthDiff / 2;
 			} else if (x > widthDiff) {
@@ -132,7 +136,7 @@ public final class ImageUtils {
 				y = heightDiff;
 			}
 
-			g.drawString(pressText, x, y + height_1);
+			g.drawString(pressText, x, y + heightA);
 			g.dispose();
 			ImageIO.write(bufferedImage, PICTRUE_FORMATE_JPG, file);
 		} catch (Exception e) {
@@ -171,7 +175,8 @@ public final class ImageUtils {
 	 */
 	public static void resize(String filePath, int height, int width, boolean bb) {
 		try {
-			double ratio = 0; // 缩放比例
+		    // 缩放比例
+			double ratio = 0; 
 			File f = new File(filePath);
 			BufferedImage bi = ImageIO.read(f);
 			Image itemp = bi.getScaledInstance(width, height, BufferedImage.SCALE_SMOOTH);
@@ -190,12 +195,13 @@ public final class ImageUtils {
 				Graphics2D g = image.createGraphics();
 				g.setColor(Color.white);
 				g.fillRect(0, 0, width, height);
-				if (width == itemp.getWidth(null))
-					g.drawImage(itemp, 0, (height - itemp.getHeight(null)) / 2, itemp.getWidth(null),
-							itemp.getHeight(null), Color.white, null);
-				else
-					g.drawImage(itemp, (width - itemp.getWidth(null)) / 2, 0, itemp.getWidth(null),
-							itemp.getHeight(null), Color.white, null);
+                if (width == itemp.getWidth(null)) {
+                    g.drawImage(itemp, 0, (height - itemp.getHeight(null)) / 2, itemp.getWidth(null),
+                        itemp.getHeight(null), Color.white, null);
+                } else {
+                    g.drawImage(itemp, (width - itemp.getWidth(null)) / 2, 0, itemp.getWidth(null),
+                        itemp.getHeight(null), Color.white, null);
+                }
 				g.dispose();
 				itemp = image;
 			}
@@ -216,11 +222,14 @@ public final class ImageUtils {
 	public static void mergeImage(String oneSrc, String twoSrc, String mergeSrc) {
 		String postFix = mergeSrc.substring(mergeSrc.lastIndexOf(".") + 1, mergeSrc.length());
 		try {
-			File fileOne = new File(oneSrc);// 读取第一张图片
+		    // 读取第一张图片
+			File fileOne = new File(oneSrc);
 			Image src = ImageIO.read(fileOne);
 			int width = src.getWidth(null);
 			int height = src.getHeight(null);
-			if (width > 900 || height > 900) {
+			int w = 900;
+			int h = 900;
+			if (width > w || height > h) {
 				int num = (int) Math.ceil((double) width / 900);
 				int num2 = (int) Math.ceil((double) height / 900);
 				num = num > num2 ? num : num2;
@@ -228,33 +237,39 @@ public final class ImageUtils {
 				height = height / num;
 			}
 			BufferedImage bufferedImageOne = null;
-			if ("png".equalsIgnoreCase(postFix.toLowerCase())) {
+			String type = "png";
+			if (type.equalsIgnoreCase(postFix.toLowerCase())) {
 				bufferedImageOne = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 			} else {
 				bufferedImageOne = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			}
 			bufferedImageOne.getGraphics().drawImage(src.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0,
 					null);
-			int[] imageArrayOne = new int[width * height];// 从图片中读取RGB
+			// 从图片中读取RGB
+			int[] imageArrayOne = new int[width * height];
 			imageArrayOne = bufferedImageOne.getRGB(0, 0, width, height, imageArrayOne, 0, width);
 
-			File fileTwo = new File(twoSrc);// 读取第二张图片
+			// 读取第二张图片
+			File fileTwo = new File(twoSrc);
 			src = ImageIO.read(fileTwo);
 			BufferedImage bufferedImageTwo = null;
-			if ("png".equalsIgnoreCase(postFix.toLowerCase())) {
+			if (type.equalsIgnoreCase(postFix.toLowerCase())) {
 				bufferedImageTwo = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
 			} else {
 				bufferedImageTwo = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			}
 			bufferedImageTwo.getGraphics().drawImage(src.getScaledInstance(width, height, Image.SCALE_SMOOTH), 0, 0,
 					null);
-			int[] imageArrayTwo = new int[width * height];// 从图片中读取RGB
+			// 从图片中读取RGB
+			int[] imageArrayTwo = new int[width * height];
 			imageArrayTwo = bufferedImageTwo.getRGB(0, 0, width, height, imageArrayTwo, 0, width);
 
 			// 生成新图片
 			BufferedImage imageNew = new BufferedImage(width * 2, height, BufferedImage.TYPE_INT_RGB);
-			imageNew.setRGB(0, 0, width, height, imageArrayOne, 0, width); // 设置左半部分的RGB
-			imageNew.setRGB(width, 0, width, height, imageArrayTwo, 0, width); // 设置右半部分的RGB
+			// 设置左半部分的RGB
+			imageNew.setRGB(0, 0, width, height, imageArrayOne, 0, width); 
+			// 设置右半部分的RGB
+			imageNew.setRGB(width, 0, width, height, imageArrayTwo, 0, width); 
 			File outFile = new File(mergeSrc);
 			// 写图片
 			ImageIO.write(imageNew, postFix, outFile);

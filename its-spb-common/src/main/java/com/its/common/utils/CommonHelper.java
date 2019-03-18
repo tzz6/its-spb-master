@@ -11,7 +11,9 @@ import javax.management.ObjectName;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
+/**
+ * @author tzz
+ */
 public class CommonHelper {
 
 	private static Log log = LogFactory.getLog(CommonHelper.class);
@@ -37,7 +39,7 @@ public class CommonHelper {
 		}
 	}
 
-	// 获取Serverid+port的字符串,JBOSS
+	/**获取Serverid+port的字符串,JBOSS*/ 
 	public static String getServerId() {
 		return SERVER_ID;
 	}
@@ -50,9 +52,9 @@ public class CommonHelper {
 		MBeanServer server = null;
 		List<MBeanServer> mbeanServers = MBeanServerFactory
 				.findMBeanServer(null);
-		for (MBeanServer _mbs : mbeanServers) {
-			if ("jboss".equals(_mbs.getDefaultDomain())) {
-				server = _mbs;
+		for (MBeanServer mbs : mbeanServers) {
+			if ("jboss".equals(mbs.getDefaultDomain())) {
+				server = mbs;
 				break;
 			}
 		}
@@ -62,15 +64,15 @@ public class CommonHelper {
 			server = ManagementFactory.getPlatformMBeanServer();
 		}
 		
-		if (server == null)
-			throw new Exception("没有命名为jboss的域");
+        if (server == null) {
+            throw new Exception("没有命名为jboss的域");
+        }
 
-		Set<ObjectInstance> instances = server.queryMBeans(ObjectName
-				.getInstance(TOMCAT_OBJECTNAME), null);
+        Set<ObjectInstance> instances = server.queryMBeans(ObjectName.getInstance(TOMCAT_OBJECTNAME), null);
 
-		for (ObjectInstance _ins : instances)
-			System.out
-					.println(_ins.getObjectName() + " " + _ins.getClassName());
+        for (ObjectInstance ins : instances) {
+            System.out.println(ins.getObjectName() + " " + ins.getClassName());
+        }
 
 		Set<ObjectName> names = server.queryNames(ObjectName
 				.getInstance(TOMCAT_OBJECTNAME), null);
@@ -79,7 +81,7 @@ public class CommonHelper {
 			if (TOMCAT_HTTP_PROTOCOL.equals(protocol)) {
 				Object o = server.getAttribute(name, "address");
 				String ip = o.toString().substring(1);
-//				int port = (Integer)server.getAttribute(name, "port");
+//				int port = (Integer)server.getAttribute(name, "port");另一种
 				return ip;
 			}
 

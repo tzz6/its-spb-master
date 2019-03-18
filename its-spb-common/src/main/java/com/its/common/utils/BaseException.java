@@ -1,5 +1,9 @@
 package com.its.common.utils;
 
+/**
+ * 
+ * @author tzz
+ */
 public class BaseException extends RuntimeException {
 
 	private static final long serialVersionUID = -7667374945272239037L;

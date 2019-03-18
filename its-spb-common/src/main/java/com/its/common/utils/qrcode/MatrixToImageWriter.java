@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.awt.image.BufferedImage;
 /**
  * 生成二维码
- *
+ * @author tzz
  */
 public final class MatrixToImageWriter {
 

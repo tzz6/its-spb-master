@@ -14,9 +14,10 @@ import sun.misc.BASE64Encoder;
 
 /**
  * DES对称加密
- *
+ * 
+ * @author tzz
  */
-public class DESUtil {
+public class DesUtil {
 
 	public static String ALGORITHM = "DES";
 	public static String KEY = "QWE!@#123qwe123@";
@@ -67,10 +68,12 @@ public class DESUtil {
 
 	/** 加密 */
 	public static byte[] encrypt(byte[] data, Key key) {
-		byte[] cipherByte = null;// 定义要生成的密文
+	    // 定义要生成的密文
+		byte[] cipherByte = null;
 		try {
 			Cipher cipher = Cipher.getInstance(ALGORITHM);
-			SecureRandom sr = new SecureRandom();// 加密随机数生成器 (可以不写)
+			// 加密随机数生成器 (可以不写)
+			SecureRandom sr = new SecureRandom();
 			cipher.init(Cipher.ENCRYPT_MODE, key, sr);
 			cipherByte = cipher.doFinal(data);
 		} catch (Exception e) {
@@ -81,10 +84,12 @@ public class DESUtil {
 
 	/** 解密 */
 	public static byte[] decrypt(byte[] data, Key key) {
-		byte[] cipherByte = null;// 定义要生成的密文
+	    // 定义要生成的密文
+		byte[] cipherByte = null;
 		try {
 			Cipher cipher = Cipher.getInstance(ALGORITHM);
-			SecureRandom sr = new SecureRandom();// 加密随机数生成器 (可以不写)
+			// 加密随机数生成器 (可以不写)
+			SecureRandom sr = new SecureRandom();
 			cipher.init(Cipher.DECRYPT_MODE, key, sr);
 			cipherByte = cipher.doFinal(data);
 		} catch (Exception e) {

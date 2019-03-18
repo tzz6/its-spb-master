@@ -28,14 +28,14 @@ public class UserSession {
 			e.printStackTrace();
 			return null;
 		}
-		return (SysUser) request.getSession().getAttribute(Constants.SESSION_KEY.ITS_USER_SESSION);
+		return (SysUser) request.getSession().getAttribute(Constants.SessionKey.ITS_USER_SESSION);
 	}
 
 	/** 将当前登录用户User设置到Session中 **/
 	public static void setUser(SysUser user) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
-		request.getSession().setAttribute(Constants.SESSION_KEY.ITS_USER_SESSION, user);
+        request.getSession().setAttribute(Constants.SessionKey.ITS_USER_SESSION, user);
 	}
 
 	/** 从Session中删除当前登录用户 **/
@@ -54,14 +54,14 @@ public class UserSession {
 			e.printStackTrace();
 			return null;
 		}
-		return (String) request.getSession().getAttribute(Constants.SESSION_KEY.SYS_TIME_ZONE);
+		return (String) request.getSession().getAttribute(Constants.SessionKey.SYS_TIME_ZONE);
 	}
 
 	/**将当前登录用户SysMenu设置到Session中*/
 	public static void setSysMenu(List<SysMenu> userMenus) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
-		request.getSession().setAttribute(Constants.SESSION_KEY.ITS_USER_MENU_SESSION, userMenus);
+		request.getSession().setAttribute(Constants.SessionKey.ITS_USER_MENU_SESSION, userMenus);
 		
 	}
 	
@@ -75,14 +75,14 @@ public class UserSession {
 			e.printStackTrace();
 			return null;
 		}
-		return (List<SysMenu>) request.getSession().getAttribute(Constants.SESSION_KEY.ITS_USER_MENU_SESSION);
+		return (List<SysMenu>) request.getSession().getAttribute(Constants.SessionKey.ITS_USER_MENU_SESSION);
 	}
 	
 	/**登录后需要拦截的权限URL设置到Session中*/
 	public static void setInterceptorSysMenu(List<SysMenu> userMenus) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
-		request.getSession().setAttribute(Constants.SESSION_KEY.ITS_INTERCEPTOR_USER_MENU_SESSION, userMenus);
+		request.getSession().setAttribute(Constants.SessionKey.ITS_INTERCEPTOR_USER_MENU_SESSION, userMenus);
 		
 	}
 	
@@ -96,6 +96,6 @@ public class UserSession {
 			e.printStackTrace();
 			return null;
 		}
-		return (List<SysMenu>) request.getSession().getAttribute(Constants.SESSION_KEY.ITS_INTERCEPTOR_USER_MENU_SESSION);
+		return (List<SysMenu>) request.getSession().getAttribute(Constants.SessionKey.ITS_INTERCEPTOR_USER_MENU_SESSION);
 	}
 }

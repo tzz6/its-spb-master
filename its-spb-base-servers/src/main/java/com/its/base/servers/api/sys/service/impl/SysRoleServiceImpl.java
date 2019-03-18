@@ -10,7 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.its.base.servers.api.sys.service.SysRoleService;
 import com.its.common.model.ResponseBase;
-
+/**
+ * 
+ * @author tzz
+ * @date 2019/03/18
+ * @Introduce: SysRoleServiceImpl
+ */
 @RestController
 public class SysRoleServiceImpl implements SysRoleService {
 
@@ -20,8 +25,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 	@GetMapping("/getSysRoleById")
 	@Override
 	public String getSysRoleById(String id) {
-		Map<String, String> maps = new HashMap<>();
-		for (int i = 0; i < 100; i++) {
+		Map<String, String> maps = new HashMap<>(16);
+		int index = 100;
+		for (int i = 0; i < index; i++) {
 			maps.put(i + "", "test" + i);
 		}
 		String value = maps.get(id);

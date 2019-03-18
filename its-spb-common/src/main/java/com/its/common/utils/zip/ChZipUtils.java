@@ -20,10 +20,11 @@ import com.its.common.utils.Constants;
 /**
  * ZIP工具包(支持中文)
  * 依赖：ant-1.9.6.jar
+ * @author tzz
  */
-public class CHZipUtils {
+public class ChZipUtils {
 	
-	private static final Logger logger = Logger.getLogger(CHZipUtils.class);
+	private static final Logger logger = Logger.getLogger(ChZipUtils.class);
 
 	/**使用GBK编码可以避免压缩中文文件名乱码*/
 	private static final String CHINESE_CHARSET = "GBK";
@@ -47,7 +48,8 @@ public class CHZipUtils {
 			zos.setEncoding(CHINESE_CHARSET);
 			File file = new File(sourceFolder);
 			String basePath = null;
-			if (file.isDirectory()) {//压缩文件夹
+			//压缩文件夹
+			if (file.isDirectory()) {
 				basePath = file.getPath();
 			} else {
 				basePath = file.getParent();

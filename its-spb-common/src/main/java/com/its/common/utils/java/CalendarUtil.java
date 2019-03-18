@@ -5,12 +5,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-
+/**
+ * 
+ * @author tzz
+ * @date 2019/02/22
+ * @Introduce: Write describe here
+ */
 public class CalendarUtil {
 
 	/** 获取年、月、日、时、分、秒、毫秒 */
 	public static String getCurrYMDHMSM() {
-		Calendar calendar = new GregorianCalendar();// 子类实例化
+	    // 子类实例化
+		Calendar calendar = new GregorianCalendar();
 		// 获取年、月、日、时、分、秒、毫秒
 		int currYEAR = calendar.get(Calendar.YEAR);
 		int currMONTH = calendar.get(Calendar.MONTH) + 1;
@@ -75,19 +81,19 @@ public class CalendarUtil {
 		return format.format(lastTime) + " 23:59:59";
 	}
 
-	// 根据日期取得星期几
+	/** 根据日期取得星期几*/
 	public static String getWeekArr(Date date) {
 		String[] weeks = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
-		int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
-		if (week_index < 0) {
-			week_index = 0;
+		int weekIndex = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		if (weekIndex < 0) {
+		    weekIndex = 0;
 		}
-		return weeks[week_index];
+		return weeks[weekIndex];
 	}
 
-	// 根据日期取得星期几
+	/** 根据日期取得星期几*/
 	public static String getWeek(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("EEEE", Locale.CHINESE);
 		return sdf.format(date);

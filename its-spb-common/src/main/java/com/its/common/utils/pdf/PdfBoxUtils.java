@@ -14,11 +14,11 @@ import org.apache.pdfbox.pdmodel.PDPage;
 
 /***
  * 使用PDFBox将PDF转Image
- *
+ * @author tzz
  */
-public class PDFBoxUtils {
+public class PdfBoxUtils {
 
-	private static Logger logger = Logger.getLogger(PDFBoxUtils.class);
+	private static Logger logger = Logger.getLogger(PdfBoxUtils.class);
 
 	/**
 	 * 将PDF转为Image(支持多页-多页转化为多张图片)

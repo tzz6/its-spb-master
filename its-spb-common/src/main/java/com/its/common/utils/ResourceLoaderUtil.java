@@ -4,7 +4,8 @@ import java.net.URL;
 
 /**
  * 资源加载
- *
+ * 
+ * @author tzz
  */
 public class ResourceLoaderUtil {
 	public static String CLASS_PATH_PREFIX = "classpath:";
@@ -25,15 +26,17 @@ public class ResourceLoaderUtil {
 		}
 
 		URL url = getResource(resource);
-		if (url == null)
-			return null;
+		if (url == null){
+		    return null;
+		}
 		return url.getPath().replaceAll("%20", " ");
 	}
 
 	public static String getPath(String resource, Class<?> clazz) {
 		URL url = getResource(resource, clazz);
-		if (url == null)
-			return null;
+		if (url == null){
+		    return null;
+		}
 		return url.getPath().replaceAll("%20", " ");
 	}
 

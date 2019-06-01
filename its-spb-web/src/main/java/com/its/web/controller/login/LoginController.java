@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,20 +33,22 @@ import com.its.web.util.CookieUtil;
 import com.its.web.util.UserSession;
 
 /**
- * 登录
- *
+ * 
+ * @author tzz
+ * @工号: 
+ * @date 2019/06/01
+ * @Introduce: 登录
  */
 @Controller
 public class LoginController{
 
-	private static final Logger logger = LogManager.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	private SysUserFacade sysUserFacade;
 
 	/**
-	 * 登录页面
-	 * 
+	   *  登录页面
 	 * @param request
 	 * @param response
 	 * @param model
@@ -70,7 +72,19 @@ public class LoginController{
 		return "login";
 	}
 
-	/** 登录 */
+	/**
+	    *  登录
+	 * @param username
+	 * @param password
+	 * @param verifyCode
+	 * @param lang
+	 * @param savePassword
+	 * @param autologin
+	 * @param model
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
     public Map<String, String> verifyLogin(@RequestParam("username") String username, @RequestParam("password") String password,
@@ -82,7 +96,8 @@ public class LoginController{
         Map<String, String> maps = new HashMap<>();
 		try {
 			String loginUrl = "/index";
-
+            logger.info("username: {} verifyCode: {} ", username, verifyCode);
+            logger.debug("username: {} verifyCode: {} lang: {} ", username, verifyCode, lang);
 			String sessVerifyCode = (String) request.getSession().getAttribute(Constants.SessionKey.VERIFY_CODE);
 			if (verifyCode != null && sessVerifyCode.equals(verifyCode.toUpperCase())) {
 				Map<String, Object> map = new HashMap<String, Object>();
@@ -137,7 +152,7 @@ public class LoginController{
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("login:" + e.getMessage(), e);
 		}
 		return maps;
 	}
@@ -152,13 +167,13 @@ public class LoginController{
 	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public void logout(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
-		logger.info("logout");
-		UserSession.removeUser();
-		try {
-			response.sendRedirect("/login");
-		} catch (IOException e) {
-			logger.info(e);
-		}
+        logger.info("logout");
+        UserSession.removeUser();
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            logger.error("logout:" + e.getMessage(), e);
+        }
 	}
 
 	/**

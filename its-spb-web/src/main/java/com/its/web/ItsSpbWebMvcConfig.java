@@ -11,6 +11,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.its.web.common.interceptor.LoginInterceptor;
 
+/**
+ * 
+ * @author tzz
+ * @工号: 
+ * @date 2019/07/10
+ * @Introduce: ItsSpbWebMvcConfig
+ */
 @Configuration
 public class ItsSpbWebMvcConfig implements WebMvcConfigurer {
 
@@ -20,27 +27,12 @@ public class ItsSpbWebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("/WEB-INF/index.jsp");//设置默认跳转首页
-        registry.addViewController("/sysUser/toSysUserManage").setViewName("sysUser/sysUserManage");//用户管理列表页面
+        //设置默认跳转首页
+        registry.addViewController("/").setViewName("/WEB-INF/index.jsp");
+        //用户管理列表页面
+        registry.addViewController("/sysUser/toSysUserManage").setViewName("sysUser/sysUserManage");
     }
 
-    /**
-     * 添加格式化转换器
-
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatter(new Formatter<Date>() {
-            @Override
-            public String print(Date date, Locale locale) {
-                return null;
-            }
-            @Override
-            public Date parse(String s, Locale locale) throws ParseException {
-                return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(s);
-            }
-
-        });
-    }*/
 
 	/**
 	 * 添加拦截器
@@ -64,4 +56,22 @@ public class ItsSpbWebMvcConfig implements WebMvcConfigurer {
 		//添加登录拦截器
 		registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns(excludePath);
 	}
+	
+	/**
+     * 添加格式化转换器
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addFormatter(new Formatter<Date>() {
+            @Override
+            public String print(Date date, Locale locale) {
+                return null;
+            }
+            @Override
+            public Date parse(String s, Locale locale) throws ParseException {
+                return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(s);
+            }
+
+        });
+    }*/
 }

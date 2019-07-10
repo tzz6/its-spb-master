@@ -13,6 +13,9 @@ import com.its.common.utils.Constants;
 import com.its.common.utils.ImportError;
 import com.its.model.annotation.Import;
 
+/**
+ * @author tzz
+ */
 public class UploadUtil<T> {
 
 	public static Logger logger = LogManager.getLogger(UploadUtil.class);

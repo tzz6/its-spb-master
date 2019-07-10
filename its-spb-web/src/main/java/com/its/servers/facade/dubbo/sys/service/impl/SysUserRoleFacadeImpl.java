@@ -9,7 +9,9 @@ import com.its.model.mybatis.dao.domain.SysUserRole;
 import com.its.servers.facade.dubbo.sys.service.SysUserRoleFacade;
 import com.its.service.mybatis.SysUserRoleService;
 
-
+/**
+ * @author tzz
+ */
 @Service("sysUserRoleFacade")
 public class SysUserRoleFacadeImpl implements SysUserRoleFacade {
 

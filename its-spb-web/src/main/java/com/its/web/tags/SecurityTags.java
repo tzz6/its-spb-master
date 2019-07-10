@@ -11,12 +11,13 @@ import com.its.web.util.UserSession;
 
 /**
  * 自定义权限控制标签
- *
+ * 
+ * @author tzz
  */
 public class SecurityTags extends TagSupport {
 
 	private static final long serialVersionUID = 3355675361846153593L;
-	// <sec:authentication property=""></sec:authentication>
+    /** <sec:authentication property=""></sec:authentication> */ 
 	private String property;
 
 	@Override

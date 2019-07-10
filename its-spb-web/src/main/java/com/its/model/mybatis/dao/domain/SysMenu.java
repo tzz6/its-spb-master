@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 菜单
- *
+ * @author tzz
  */
 public class SysMenu implements Serializable {
 

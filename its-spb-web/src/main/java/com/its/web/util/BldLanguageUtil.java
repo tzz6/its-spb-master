@@ -3,6 +3,9 @@ package com.its.web.util;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author tzz
+ */
 public class BldLanguageUtil {
 
 	public static Map<String, String> bldLanguageMaps = new HashMap<String, String>();

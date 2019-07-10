@@ -58,10 +58,11 @@ public class LoginController{
 	public String toLogin(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		String savePassword = CookieUtil.getCookie(request, Constants.CookieKey.SAVE_PASSWORD);
 		String autoLogin = CookieUtil.getCookie(request, Constants.CookieKey.AUTO_LOGIN);
-		if (autoLogin != null && "1".equals(autoLogin)) {
+		String loginType = "1";
+		if (autoLogin != null && loginType.equals(autoLogin)) {
 			model.put("autoLogin", autoLogin);
 		}
-		if (savePassword != null && "1".equals(savePassword)) {
+		if (savePassword != null && loginType.equals(savePassword)) {
 			String username = CookieUtil.getCookie(request, Constants.CookieKey.USERNAME);
 			String password = CookieUtil.getCookie(request, Constants.CookieKey.PASSWORD);
 			model.put("savePassword", savePassword);
@@ -93,14 +94,14 @@ public class LoginController{
 			@RequestParam(value = "savePassword", required = false) String savePassword,
 			@RequestParam(value = "autologin", required = false) String autologin, ModelMap model,
 			HttpServletRequest request, HttpServletResponse response) {
-        Map<String, String> maps = new HashMap<>();
+        Map<String, String> maps = new HashMap<>(16);
 		try {
 			String loginUrl = "/index";
             logger.info("username: {} verifyCode: {} ", username, verifyCode);
             logger.debug("username: {} verifyCode: {} lang: {} ", username, verifyCode, lang);
 			String sessVerifyCode = (String) request.getSession().getAttribute(Constants.SessionKey.VERIFY_CODE);
 			if (verifyCode != null && sessVerifyCode.equals(verifyCode.toUpperCase())) {
-				Map<String, Object> map = new HashMap<String, Object>();
+				Map<String, Object> map = new HashMap<String, Object>(16);
 				map.put("stCode", username);
 				//RAS私钥
 				String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOBIIIvxHcTZw0A7fxOQGyTpz9Da"

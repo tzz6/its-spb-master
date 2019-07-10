@@ -4,7 +4,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 /**
  * 读取资源配置文件
- *
+ * @author tzz
  */
 public class ResourceBundleHelper {
 	
@@ -23,8 +23,9 @@ public class ResourceBundleHelper {
 			return resName;
 		}
 
-		if (language.contains("_")) {
-			String[] arr = language.split("_");
+		String str = "_";
+		if (language.contains(str)) {
+			String[] arr = language.split(str);
 			locale = new Locale(arr[0], arr[1]);
 		} else {// 其他语言
 			locale = new Locale(language);

@@ -13,6 +13,9 @@ import com.its.core.mybatis.dao.mapper.JobManagerMapper;
 import com.its.model.mybatis.dao.domain.JobManager;
 import com.its.service.mybatis.JobManagerService;
 
+/**
+ * @author tzz
+ */
 @Service("jobManagerService")
 public class JobManagerServiceImpl implements JobManagerService {
 

@@ -24,7 +24,7 @@ import com.its.service.mybatis.SysReportService;
 
 /**
  * 报表管理
- * 
+ * @author tzz
  */
 @Controller
 @RequestMapping(value = "/sysReport")
@@ -35,8 +35,10 @@ public class SysReportController {
 	@Autowired
 	private SysReportService sysReportService;
 
-	private static Map<String, String> reportSqlMap = null;// 存储报表SQL
-	private static Map<String, String> pageValueSqlMap = null;// 页面动态条件SQL
+	/** 存储报表SQL */
+	private static Map<String, String> reportSqlMap = null;
+	/** 页面动态条件SQL */
+	private static Map<String, String> pageValueSqlMap = null;
 
 	// 使用Map模拟数据库存储
 	static {
@@ -115,9 +117,11 @@ public class SysReportController {
 				String whereName = "<where>" + name + "</where>";
 				if (StringUtils.isNotEmpty(paramValue)) {
 					String whereValue = request.getParameter(name + "_where");
-					if (StringUtils.isNotEmpty(whereValue)) {// 将条件点位符表达式替换为真实条件
+					if (StringUtils.isNotEmpty(whereValue)) {
+					    // 将条件点位符表达式替换为真实条件
 						whereValue = whereValue.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
-						whereValue = whereValue.replaceAll(whereName, paramValue);// 将参数点位符替换为真实条件数据
+						// 将参数点位符替换为真实条件数据
+						whereValue = whereValue.replaceAll(whereName, paramValue);
 						exeSql = exeSql.replaceAll(whereName, whereValue);
 					}
 				} else {// 查询条件无数据，则清除条件点位表达式

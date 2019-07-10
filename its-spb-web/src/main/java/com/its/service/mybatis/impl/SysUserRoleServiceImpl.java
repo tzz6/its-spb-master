@@ -12,6 +12,9 @@ import com.its.core.mybatis.dao.mapper.SysUserRoleMapper;
 import com.its.model.mybatis.dao.domain.SysUserRole;
 import com.its.service.mybatis.SysUserRoleService;
 
+/**
+ * @author tzz
+ */
 @Service("sysUserRoleService")
 public class SysUserRoleServiceImpl implements SysUserRoleService {
 

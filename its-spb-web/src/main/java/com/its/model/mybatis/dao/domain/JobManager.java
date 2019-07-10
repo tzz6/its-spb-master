@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 /**
  * 定时任务业务数据管理
- *
+ * 
+ * @author tzz
  */
 public class JobManager implements Serializable {
 

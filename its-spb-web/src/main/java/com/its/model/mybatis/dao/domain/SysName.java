@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 系统名称
- * 
+ * @author tzz 
  *
  */
 public class SysName implements Serializable {

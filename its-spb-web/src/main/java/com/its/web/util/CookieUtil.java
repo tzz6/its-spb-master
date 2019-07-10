@@ -7,6 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * 
+ * @author tzz
+ * @工号: 
+ * @date 2019/07/10
+ * @Introduce: CookieUtil
+ */
 public class CookieUtil {
 
 	public static String getCookie(HttpServletRequest request, String name) {
@@ -26,7 +33,8 @@ public class CookieUtil {
 
 	public static void addCookie(HttpServletResponse response, String name, String value) {
 		Cookie cookie = new Cookie(name, value);
-		cookie.setMaxAge(60*60);//单位秒
+		//单位秒
+		cookie.setMaxAge(60*60);
 		cookie.setPath("/");
 		response.addCookie(cookie);
 	}

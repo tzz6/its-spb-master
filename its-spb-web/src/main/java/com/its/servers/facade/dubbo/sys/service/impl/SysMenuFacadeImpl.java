@@ -11,7 +11,9 @@ import com.its.servers.facade.dubbo.sys.service.SysMenuFacade;
 import com.its.service.mybatis.SysMenuService;
 
 
-
+/**
+ * @author tzz
+ */
 @Service("sysMenuFacade")
 public class SysMenuFacadeImpl implements SysMenuFacade {
 

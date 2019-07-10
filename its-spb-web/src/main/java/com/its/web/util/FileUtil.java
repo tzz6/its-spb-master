@@ -10,6 +10,13 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.util.UUID;
 
+/**
+ * 
+ * @author tzz
+ * @工号: 
+ * @date 2019/07/10
+ * @Introduce: FileUtil
+ */
 public class FileUtil {
 	
 	private static Logger logger = LogManager.getLogger(FileUtil.class);
@@ -51,8 +58,10 @@ public class FileUtil {
 	public static String makePath(String filename, String savePath) {
 		// 得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
 		int hashcode = filename.hashCode();
-		int dir1 = hashcode & 0xf; // 0--15
-		int dir2 = (hashcode & 0xf0) >> 4; // 0-15
+		// 0--15
+		int dir1 = hashcode & 0xf; 
+		// 0-15
+		int dir2 = (hashcode & 0xf0) >> 4; 
 		String dir = savePath + File.separator + DateUtil.getDateyyyyMMdd() + File.separator + dir1 + File.separator
 				+ dir2;
 		File file = new File(dir);
@@ -126,7 +135,8 @@ public class FileUtil {
 				}
 			}
 			String index = "";
-			File[] oldfiles = dir.listFiles(new FileFilter() {// 文件过滤器，查看目录下是否有同名文件
+			File[] oldfiles = dir.listFiles(new FileFilter() {
+			    // 文件过滤器，查看目录下是否有同名文件
 				@Override
 				public boolean accept(File file) {
 					String oldFileName = file.getName();
@@ -138,7 +148,8 @@ public class FileUtil {
 					return flag;
 				}
 			});
-			if (oldfiles != null && oldfiles.length > 0) {// 文件名已存在
+			if (oldfiles != null && oldfiles.length > 0) {
+			    // 文件名已存在
 				index = (oldfiles.length + 1) + "";
 			}
 			savePath = path + DateUtil.getDateyyyyMMddHHmmss() + index + "." + fileFormat;

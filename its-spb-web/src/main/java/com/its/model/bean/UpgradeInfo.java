@@ -6,6 +6,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * 
+ * @author tzz
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "upgrade")
 @XmlType(propOrder = { "version" })

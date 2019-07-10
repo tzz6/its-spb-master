@@ -21,6 +21,7 @@ import java.util.Map;
 
 /**
  * 权限拦截器
+ * @author tzz
  */
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
@@ -48,14 +49,17 @@ public class LoginInterceptor implements HandlerInterceptor {
 		this.sysUserFacade = sysUserFacade;
 	}
 
+	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object obj, Exception ex)
 			throws Exception {
 	}
 
+	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object obj, ModelAndView model)
 			throws Exception {
 	}
 
+	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
@@ -65,54 +69,52 @@ public class LoginInterceptor implements HandlerInterceptor {
 		/** 登录后不需要过滤的url */
 		String[] loginNotFilterUrl = new String[] { "index", "css", "js", "images" };
 
-		String servletPath = request.getServletPath();// 请求的servletPath
+		// 请求的servletPath
+		String servletPath = request.getServletPath();
 		logger.info("servletPath:" + servletPath);
-		String contextPath = request.getContextPath();// 项目请求路径
+		// 项目请求路径
+		String contextPath = request.getContextPath();
 		logger.info("contextPath:" + contextPath);
 		String basePath = null;
-		if (request.getServerPort() > 80) {
+		int port = 80;
+		if (request.getServerPort() > port) {
 			basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 					+ contextPath;
 		} else {
 			basePath = request.getScheme() + "://" + request.getServerName() + contextPath;
 		}
 		logger.info("basePath:" + basePath);
-		SysUser currUser = UserSession.getUser();// 当前登录用户Session中的User
-		if (checkFilter(servletPath, notLoginFilterUrl)) {// 需要过滤的URL
-			if (null == currUser) {// 未登录
+		// 当前登录用户Session中的User
+		SysUser currUser = UserSession.getUser();
+		// 需要过滤的URL
+		if (checkFilter(servletPath, notLoginFilterUrl)) {
+			if (null == currUser) {
+			    // 未登录
 				response.sendRedirect(basePath + "/logout");
-			} else {// 已登录
+			} else {
+			    // 已登录
 				// 获取登录后需要拦截的权限URL
 				List<SysMenu> interceptorSysMenus = UserSession.getInterceptorSysMenu();
 				if (null == interceptorSysMenus) {
-					Map<String, Object> maps = new HashMap<String, Object>();
+					Map<String, Object> maps = new HashMap<String, Object>(16);
 					maps.put("sysNameCode", Constants.SYS_NAME_CODE);
 					interceptorSysMenus = sysMenuFacade.getInterceptorUserMenus(maps);
 					UserSession.setInterceptorSysMenu(interceptorSysMenus);
 				}
 				// 获取用户权限菜单
-				List<SysMenu> userMenus = UserSession.getSysMenu();
-				if (null == userMenus) {
-					SysUser user = sysUserFacade.getSysUserByStId(currUser);
-					if (user != null) {
-						String lang = currUser.getLanguage();
-						Map<String, Object> maps = new HashMap<String, Object>();
-						maps.put("stId", user.getStId());
-						maps.put("sysNameCode", Constants.SYS_NAME_CODE);
-						maps.put("lang", lang);
-						userMenus = sysMenuFacade.getSysMenuListByUser(maps);
-						UserSession.setSysMenu(userMenus);
-					}
-				}
+				getCurrMenus(currUser);
 				if (checkFilter(servletPath, loginNotFilterUrl)) {
-					if (checkFilter(servletPath, interceptorSysMenus)) {// 登录后需要拦截的URL
-						List<SysMenu> sysMenus = UserSession.getSysMenu();// 当前登录用户所拥有权限的URL
+				    // 登录后需要拦截的URL
+					if (checkFilter(servletPath, interceptorSysMenus)) {
+					    // 当前登录用户所拥有权限的URL
+						List<SysMenu> sysMenus = UserSession.getSysMenu();
 						if (checkFilter(servletPath, sysMenus)) {
 							return true;
 						} else {
 							String method = request.getMethod();
 							logger.info("method----------" + method);
-							if (method.equals("GET")) {
+							String get = "GET";
+							if (get.equals(method)) {
 								response.getWriter().write("<script>alert('没有权限');window.parent.location.href='"
 										+ basePath + "/logout" + "'</script>");
 							} else {
@@ -120,18 +122,38 @@ public class LoginInterceptor implements HandlerInterceptor {
 							}
 							return false;
 						}
-					} else {// 不需要权限控制的URL
+					} else {
+					    // 不需要权限控制的URL
 						return true;
 					}
-				} else {// 登录后不需要权限控制的URL
+				} else {
+				    // 登录后不需要权限控制的URL
 					return true;
 				}
 			}
-		} else {// 不需要过滤的URL
+		} else {
+		    // 不需要过滤的URL
 			return true;
 		}
 		return false;
 	}
+
+    /** 获取用户权限菜单 */
+    private void getCurrMenus(SysUser currUser) {
+        List<SysMenu> userMenus = UserSession.getSysMenu();
+        if (null == userMenus) {
+        	SysUser user = sysUserFacade.getSysUserByStId(currUser);
+        	if (user != null) {
+        		String lang = currUser.getLanguage();
+        		Map<String, Object> maps = new HashMap<String, Object>(16);
+        		maps.put("stId", user.getStId());
+        		maps.put("sysNameCode", Constants.SYS_NAME_CODE);
+        		maps.put("lang", lang);
+        		userMenus = sysMenuFacade.getSysMenuListByUser(maps);
+        		UserSession.setSysMenu(userMenus);
+        	}
+        }
+    }
 
 	/** 检查是否是要过滤的URL */
 	private boolean checkFilter(String servletPath, List<SysMenu> interceptorSysMenus) {

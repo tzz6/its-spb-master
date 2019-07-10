@@ -34,6 +34,7 @@ import com.its.web.util.UserSession;
 
 /**
  * 用户管理
+ * @author tzz
  */
 @Controller
 @RequestMapping(value = "/sysUser")
@@ -49,18 +50,6 @@ public class SysUserController {
     @Autowired
     private JobManagerService jobManagerService;
 
-    /**
-     * 用户管理列表页面
-     * 修改为SpringBoot方式addViewControllers实现
-     * @param request
-     * @param response
-     * @param modelMap
-     * @return
-
-     @RequestMapping(value = "/toSysUserManage")
-     public String index(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
-     return "sysUser/sysUserManage";
-     }*/
 
     /**
      * 用户管理列表数据
@@ -76,7 +65,7 @@ public class SysUserController {
     Datagrid<SysUser> sysUserManage(HttpServletRequest request,
                                     @RequestParam(value = "stCode", required = false) String stCode, @RequestParam(value = "page") Integer page,
                                     @RequestParam(value = "rows") Integer rows) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(16);
         map.put("stCode", stCode);
         int total = sysUserFacade.getSysUserCount(map);
         int startNum = (page - 1) * rows;
@@ -101,7 +90,8 @@ public class SysUserController {
 
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         try {
-            SysUser currSysUser = UserSession.getUser();// 当前登录用户
+            // 当前登录用户
+            SysUser currSysUser = UserSession.getUser();
 //			sysUser.setStName(URLDecoder.decode(sysUser.getStName(), "UTF-8"));
             sysUser.setStName(sysUser.getStName());
             // 判断用户工号重复性
@@ -151,7 +141,7 @@ public class SysUserController {
         SysUser sysUser = new SysUser();
         sysUser.setStId(stId);
         sysUser = sysUserFacade.getSysUserByStId(sysUser);
-        Map<String, Object> userMap = new HashMap<String, Object>();
+        Map<String, Object> userMap = new HashMap<String, Object>(16);
         userMap.put("stId", sysUser.getStId());
         userMap.put("stCode", sysUser.getStCode());
         userMap.put("stName", sysUser.getStName());
@@ -171,7 +161,8 @@ public class SysUserController {
 
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         try {
-            SysUser currSysUser = UserSession.getUser();// 当前登录用户
+            // 当前登录用户
+            SysUser currSysUser = UserSession.getUser();
             String stName = sysUser.getStName();
             if (stName != null && !"".equals(stName)) {
                 sysUser.setStName(stName);
@@ -287,4 +278,16 @@ public class SysUserController {
         }
     }
 
+    /**
+     * 用户管理列表页面
+     * 修改为SpringBoot方式addViewControllers实现
+     * @param request
+     * @param response
+     * @param modelMap
+     * @return
+
+     @RequestMapping(value = "/toSysUserManage")
+     public String index(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
+     return "sysUser/sysUserManage";
+     }*/
 }

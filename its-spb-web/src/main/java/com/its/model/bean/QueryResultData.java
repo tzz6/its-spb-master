@@ -1,7 +1,7 @@
 package com.its.model.bean;
 
 /** 
- *  
+ * @author tzz 
  */
 import java.io.Serializable;
 import java.util.List;

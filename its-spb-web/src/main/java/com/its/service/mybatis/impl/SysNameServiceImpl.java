@@ -12,7 +12,9 @@ import com.its.core.mybatis.dao.mapper.SysNameMapper;
 import com.its.model.mybatis.dao.domain.SysName;
 import com.its.service.mybatis.SysNameService;
 
-
+/**
+ * @author tzz
+ */
 @Service("sysNameService")
 public class SysNameServiceImpl implements SysNameService {
 

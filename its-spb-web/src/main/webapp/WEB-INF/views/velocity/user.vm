@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<graph caption='' xAxisName='$xAxisName' yAxisName='${yAxisName}'>
-	<user id='${user.id}'>${user.name}</user>
+<graph caption='' xAxisName='$!xAxisName' yAxisName='$!{yAxisName}'>
+	<user id='$!{user.id}'>$!{user.name}</user>
 	
 	#foreach($user in $users)
-    <list id='$user.id' value='$user.name' />
+    <list id='$!user.id' value='$!user.name' />
 	#end
 	
 	#foreach ( $map in $result.entrySet() )
-	<map key='$map.key' value='$map.value' />
+	<map key='$!map.key' value='$!map.value' />
     #end
     #foreach ( $key in $result.keySet() )
-    <map key='$key' value='$result.get($key)' />
+    <map key='$!key' value='$!result.get($key)' />
     #end
     
     #if($flag)
@@ -21,21 +21,21 @@
 	
 	<set>测试赋值
 	#set($id=1)
-	$id
+	$!id
 	#set($value=${maxValue})
-	$value
+	$!value
 	#set($arrs=["第一个","第二个"])
 	#foreach($e in $arrs)
-	$e
+	$!e
 	#end
 	#set($ints=[5..1])
 	#foreach($e in $ints)
-	$e
+	$!e
 	#end
 	</set>
 	
 	<date>
-	$dateTools.format('yyyy-MM-dd HH:mm:ss',$date)
+	$!dateTools.format('yyyy-MM-dd HH:mm:ss',$date)
 	</date>
 	
     

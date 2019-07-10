@@ -13,7 +13,9 @@ import com.its.core.mybatis.dao.mapper.SysUserMapper;
 import com.its.model.mybatis.dao.domain.SysUser;
 import com.its.service.mybatis.SysUserService;
 
-
+/**
+ * @author tzz
+ */
 @Service("sysUserService")
 public class SysUserServiceImpl implements SysUserService {
 
@@ -22,6 +24,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Autowired
 	private SysUserMapper sysUserMapper;
 
+	@Override
 	public List<SysUser> getSysUserListByStCode(String stCode) {
 		try {
 			return sysUserMapper.getSysUserListByStCode(stCode);

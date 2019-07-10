@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * its-spb-web启动入口<br>
  * scanBasePackages:修改自动扫描包的Package,默认只会扫描同级目录及子目录
+ * @author tzz
  */
 @SpringBootApplication(scanBasePackages = "com.its")
 @MapperScan("com.its.core.mybatis.dao.mapper")

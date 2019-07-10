@@ -13,11 +13,13 @@ import javax.sql.DataSource;
 
 /**
  * 阿里Druid数据源整合
+ * @author tzz
  */
 @Configuration
 public class DruidConfig {
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource") //加载时读取指定的配置信息
+    @ConfigurationProperties(prefix = "spring.datasource") 
+    /** 加载时读取指定的配置信息 */
     public DataSource druidDataSource() {
         return new DruidDataSource();
     }
@@ -31,7 +33,8 @@ public class DruidConfig {
         //org.springframework.boot.context.embedded.ServletRegistrationBean提供类的进行注册.
         ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<StatViewServlet>(new StatViewServlet(), "/druid/*");
         //添加初始化参数：initParams
-        bean.addInitParameter("allow", "127.0.0.1");//白名单：
+        //白名单：
+        bean.addInitParameter("allow", "127.0.0.1");
         //IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not permitted to view this page.
         bean.addInitParameter("deny", "192.168.1.73");
         //登录查看信息的账号密码.

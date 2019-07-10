@@ -15,6 +15,16 @@ import java.net.URL;
  */
 public final class HttpUtil {
 
+    public static void main(String[] args) {
+        String url = "http://sfbuy-admin.sf-express.com/package1/arrangeList";
+//        String url = "http://127.0.0.1:8085/package1/arrangeList";
+//        String content = "startDate=2019-2-27%2000:00:00&endDate=2019-3-29%2023:59:59&abordWhCode=JFK03A&source=CN&arrangeStatus=7&statusType=0&keyWord=&ports=&idType=";
+        
+        String content = "startDate=2019-2-27%2000:00:00&endDate=2019-3-29%2023:59:59&abordWhCode=JFK03A&source=CN&arrangeStatus=9&statusType=0&keyWord=&ports=&idType=";
+        String json = sendByPost(url, content);
+        System.out.println(json);
+    }
+    
 
 	/**
 	 * 

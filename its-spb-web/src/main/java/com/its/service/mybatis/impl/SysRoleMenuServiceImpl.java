@@ -12,7 +12,9 @@ import com.its.core.mybatis.dao.mapper.SysRoleMenuMapper;
 import com.its.model.mybatis.dao.domain.SysRoleMenu;
 import com.its.service.mybatis.SysRoleMenuService;
 
-
+/**
+ * @author tzz
+ */
 @Service("sysRoleMenuService")
 public class SysRoleMenuServiceImpl implements SysRoleMenuService {
 

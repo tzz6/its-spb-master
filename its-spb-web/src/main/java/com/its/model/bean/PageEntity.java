@@ -2,26 +2,34 @@ package com.its.model.bean;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author tzz
+ * @工号: 
+ * @date 2019/07/10
+ * @Introduce: PageEntity
+ */
 public class PageEntity implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6049458356491622982L;
 	
 	private static final int DEFAULT_PAGE_SIZE = 100;
 
-	private int page = 1;//curr page
-	
-	private int totalPage;
-	
-	private int rows = DEFAULT_PAGE_SIZE;//total records per pager
-	
-	private int total;
-	
-	private int from; //page records start index
-	
-	private int to;//page records end index
+    /** curr page */
+    private int page = 1;
+
+    private int totalPage;
+
+    /** total records per pager */
+    private int rows = DEFAULT_PAGE_SIZE;
+
+    private int total;
+
+    /** page records start index */
+    private int from;
+
+    /** page records end index */
+    private int to;
 	
 	public int getPage() {
 		return page;

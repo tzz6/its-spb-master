@@ -37,7 +37,7 @@ import com.its.web.util.UserSession;
 
 /**
  * 角色管理
- * 
+ * @author tzz
  */
 @Controller
 @RequestMapping(value = "/sysRole")
@@ -74,8 +74,9 @@ public class SysRoleController {
 			@RequestParam(value = "roleName", required = false) String roleName,
 			@RequestParam(value = "sysNameCode", required = false) String sysNameCode,
 			@RequestParam(value = "page") Integer page, @RequestParam(value = "rows") Integer rows) {
-		SysUser currSysUser = UserSession.getUser();// 当前登录用户
-		Map<String, Object> map = new HashMap<String, Object>();
+	    // 当前登录用户
+		SysUser currSysUser = UserSession.getUser();
+		Map<String, Object> map = new HashMap<String, Object>(16);
 		map.put("roleName", roleName);
 		map.put("sysNameCode", sysNameCode);
 		map.put("lang", currSysUser.getLanguage());
@@ -103,7 +104,7 @@ public class SysRoleController {
 			return null;
 		}
 		for (SysName sn : sysNames) {
-			Map<String, String> map = new HashMap<String, String>();
+			Map<String, String> map = new HashMap<String, String>(16);
 			map.put("sysNameCode", sn.getSysNameCode());
 			map.put("name", sn.getName());
 			result.add(map);
@@ -123,7 +124,8 @@ public class SysRoleController {
 
 		String successFlag = Constants.OPTION_FLAG_SUCCESS;
 		try {
-			SysUser currSysUser = UserSession.getUser();// 当前登录用户
+		    // 当前登录用户
+			SysUser currSysUser = UserSession.getUser();
 			sysRole.setRoleName(sysRole.getRoleName());
 			sysRole.setRoleId(PrimaryKeyUtil.genPrimaryKey());
 			Date currDate = new Date();
@@ -152,7 +154,7 @@ public class SysRoleController {
 	@RequestMapping(value = "/getSysRoleById")
 	public @ResponseBody Map<String, Object> getSysUserById(HttpServletRequest request, SysRole sysRole) {
 		sysRole = sysRoleFacade.getSysRoleById(sysRole);
-		Map<String, Object> userMap = new HashMap<String, Object>();
+		Map<String, Object> userMap = new HashMap<String, Object>(16);
 		userMap.put("roleId", sysRole.getRoleId());
 		userMap.put("roleName", sysRole.getRoleName());
 		userMap.put("sysNameCode", sysRole.getSysNameCode());
@@ -171,7 +173,8 @@ public class SysRoleController {
 		String successFlag = Constants.OPTION_FLAG_SUCCESS;
 		try {
 			sysRole.setRoleName(sysRole.getRoleName());
-			SysUser currSysUser = UserSession.getUser();// 当前登录用户
+			// 当前登录用户
+			SysUser currSysUser = UserSession.getUser();
 			Date currDate = new Date();
 			sysRole.setUpdateBy(currSysUser.getStCode());
 			sysRole.setCreateTm(currDate);
@@ -228,8 +231,9 @@ public class SysRoleController {
 			@RequestParam(value = "menuType", required = false) String menuType,
 			@RequestParam(value = "sysNameCode", required = true) String sysNameCode,
 			@RequestParam(value = "page") Integer page, @RequestParam(value = "rows") Integer rows) {
-		SysUser currSysUser = UserSession.getUser();// 当前登录用户
-		Map<String, Object> map = new HashMap<String, Object>();
+	    // 当前登录用户
+		SysUser currSysUser = UserSession.getUser();
+		Map<String, Object> map = new HashMap<String, Object>(16);
 		map.put("menuName", menuName);
 		map.put("menuType", menuType);
 		map.put("sysNameCode", sysNameCode);

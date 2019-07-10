@@ -3,6 +3,10 @@ package com.its.model.bean;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author tzz
+ */
 public class MenuBean{
 
 	private String menuId;

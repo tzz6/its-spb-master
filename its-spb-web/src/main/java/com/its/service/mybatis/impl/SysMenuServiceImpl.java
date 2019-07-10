@@ -13,7 +13,9 @@ import com.its.core.mybatis.dao.mapper.SysMenuMapper;
 import com.its.model.mybatis.dao.domain.SysMenu;
 import com.its.service.mybatis.SysMenuService;
 
-
+/**
+ * @author tzz
+ */
 @Service("sysMenuService")
 public class SysMenuServiceImpl implements SysMenuService {
 
@@ -22,6 +24,7 @@ public class SysMenuServiceImpl implements SysMenuService {
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
 
+	@Override
 	public List<SysMenu> getSysMenus() {
 		try {
 			return sysMenuMapper.getSysMenus();

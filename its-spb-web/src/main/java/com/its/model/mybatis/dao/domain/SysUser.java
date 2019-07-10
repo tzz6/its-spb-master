@@ -8,7 +8,7 @@ import com.its.model.annotation.Import;
 
 /**
  * SysUser
- *
+ * @author tzz
  */
 public class SysUser implements Serializable {
 

@@ -9,17 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.its.common.utils.BaseException;
-import com.its.core.mybatis.dao.mapper.SQLExecuteMapper;
+import com.its.core.mybatis.dao.mapper.SqlExecuteMapper;
 import com.its.service.mybatis.SysReportService;
 
+/**
+ * @author tzz
+ */
 @Service("sysReportService")
 public class SysReportServiceImpl implements SysReportService {
 
 	private static final Log log = LogFactory.getLog(SysUserServiceImpl.class);
 
 	@Autowired
-	private SQLExecuteMapper sqlExecuteMapper;
+	private SqlExecuteMapper sqlExecuteMapper;
 
+	@Override
 	public List<Map<String, Object>> execute(String sql) {
 		List<Map<String, Object>> list = null;
 		try {
@@ -32,6 +36,7 @@ public class SysReportServiceImpl implements SysReportService {
 
 	}
 
+	@Override
 	public List<Map<String, Object>> execute(String sql, String start, String end) {
 		List<Map<String, Object>> list = null;
 		String sqlstr = "SELECT * FROM (" + sql + ") R LIMIT " + start + "," + end;
@@ -44,11 +49,13 @@ public class SysReportServiceImpl implements SysReportService {
 		return list;
 	}
 
+	@Override
 	public long getCount(String sql) {
 		String sqlstr = "SELECT count(*) FROM ( " + sql + " ) R";
 		return sqlExecuteMapper.getCount(sqlstr);
 	}
 
+	@Override
 	public Object executeIUD(String sql) {
 		return sqlExecuteMapper.executeIUD(sql);
 	}

@@ -17,6 +17,7 @@ import java.util.Random;
 
 /**
  * 图形验证码
+ * @author tzz
  */
 public class VerifyCodeServlet extends HttpServlet {
 
@@ -26,10 +27,11 @@ public class VerifyCodeServlet extends HttpServlet {
 
 	public static Color getRandColor(int fc, int bc) {
 		Random random = new Random();
-		if (fc > 255){
+		int end = 255;
+		if (fc > end){
 		    fc = 255;
 		}
-		if (bc > 255){
+		if (bc > end){
 		    bc = 255;
 		}
 		int r = fc + random.nextInt(bc - fc);
@@ -38,6 +40,7 @@ public class VerifyCodeServlet extends HttpServlet {
 		return new Color(r, g, b);
 	}
 
+	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String num = this.getInitParameter("num");
@@ -48,7 +51,8 @@ public class VerifyCodeServlet extends HttpServlet {
 			n = Integer.valueOf(num);
 		} catch (NumberFormatException e) {
 		}
-		response.setContentType("image/jpeg"); // 设置输出类型
+		// 设置输出类型
+		response.setContentType("image/jpeg"); 
 		// 在内存中创建图象
 		int width = 80, height = 20;
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -69,7 +73,8 @@ public class VerifyCodeServlet extends HttpServlet {
 
 		// 随机产生155条干扰线，使图象中的认证码不易被其它程序探测到
 		g.setColor(getRandColor(160, 200));
-		for (int i = 0; i < 6; i++) {
+		int end = 6;
+		for (int i = 0; i < end; i++) {
 			int x = random.nextInt(width);
 			int y = random.nextInt(height);
 			int xl = random.nextInt(96);

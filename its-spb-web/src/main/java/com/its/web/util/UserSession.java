@@ -15,7 +15,7 @@ import com.its.model.mybatis.dao.domain.SysUser;
 /**
  * 当前登录用户Session操作
  * 
- *
+ * @author tzz
  */
 public class UserSession {
 

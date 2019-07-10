@@ -9,7 +9,9 @@ import com.its.model.mybatis.dao.domain.SysName;
 import com.its.servers.facade.dubbo.sys.service.SysNameFacade;
 import com.its.service.mybatis.SysNameService;
 
-
+/**
+ * @author tzz
+ */
 @Service("sysNameFacade")
 public class SysNameFacadeImpl implements SysNameFacade {
 

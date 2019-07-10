@@ -9,6 +9,9 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * @author tzz
+ */
 public class PropertiesUtil {
 
 	/**
@@ -46,7 +49,7 @@ public class PropertiesUtil {
 		Map<String, String> map = null;
 		try {
 			if (StringUtils.isNotBlank(path)) {
-				map = new HashMap<String, String>();
+				map = new HashMap<String, String>(128);
 				Properties properties = new Properties();
 				InputStream inputStream = PropertiesUtil.class.getResourceAsStream(path);
 				properties.load(inputStream);

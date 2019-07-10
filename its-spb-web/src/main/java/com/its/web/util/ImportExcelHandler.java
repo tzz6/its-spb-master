@@ -15,7 +15,7 @@ import com.its.model.mybatis.dao.domain.SysUser;
 
 /**
  * 服务范围Excel导入
- * 
+ * @author tzz
  *
  */
 public class ImportExcelHandler extends AbstractPoiSaxExcelHandler {
@@ -43,7 +43,8 @@ public class ImportExcelHandler extends AbstractPoiSaxExcelHandler {
 
 	@Override
 	public void getRows(int sheetIndex, int curRow, List<String> rowList) {
-		if (curRow == 0) {// 第一行,校验Excel表头
+		if (curRow == 0) {
+		    // 第一行,校验Excel表头
 			if (!validateHeader(rowList)) {
 				logger.info("Excel表头校验失败");
 				throw new RuntimeException("Excel表头校验失败");
@@ -52,7 +53,8 @@ public class ImportExcelHandler extends AbstractPoiSaxExcelHandler {
 			// 数据封装
 			SysUser sysUser = setSysUser(rowList, curRow);
 			if (sysUser != null) {
-				if (validateData(sysUser)) {// 数据完整信息校验成功
+				if (validateData(sysUser)) {
+				    // 数据完整信息校验成功
 					if (errors.size() == 0) {
 						datas.add(sysUser);
 					}
@@ -60,7 +62,8 @@ public class ImportExcelHandler extends AbstractPoiSaxExcelHandler {
 			}
 		}
 
-		if (errors.size() >= Constants.Excel.MAXROW) {// 如果错误信息超过限制行，则返回错误信息，不再继续解析数据
+		if (errors.size() >= Constants.Excel.MAXROW) {
+		    // 如果错误信息超过限制行，则返回错误信息，不再继续解析数据
 			logger.info("导入失败，错误信息超过" + Constants.Excel.MAXROW + "条");
 			throw new RuntimeException("导入失败，错误信息超过" + Constants.Excel.MAXROW + "条");
 		}
@@ -77,7 +80,8 @@ public class ImportExcelHandler extends AbstractPoiSaxExcelHandler {
 		UploadUtil<SysUser> uploadUtil = new UploadUtil<SysUser>();
 		ImportError errorForm = null;
 		try {
-			errorForm = uploadUtil.checkHead(SysUser.class, rowList, this.lang);// 校验Excel表头
+		    // 校验Excel表头
+			errorForm = uploadUtil.checkHead(SysUser.class, rowList, this.lang);
 		} catch (Exception e) {
 			errors.add(new ImportError(1 + "", ResourceBundleHelper.get(this.lang, Constants.Excel.EXCEL_HEADER_ERROR)));
 			iFlag = false;
@@ -123,7 +127,8 @@ public class ImportExcelHandler extends AbstractPoiSaxExcelHandler {
 	 * @return
 	 */
 	public SysUser setSysUser(List<String> rowList, int rowNum) {
-		if (null == rowList || rowList.size() < 3) {
+	    int end = 3;
+		if (null == rowList || rowList.size() < end) {
 			errors.add(new ImportError(rowNum + "", "数据行为空或缺少列"));
 			return null;
 		}

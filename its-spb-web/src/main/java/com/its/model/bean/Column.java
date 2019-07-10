@@ -3,7 +3,7 @@ package com.its.model.bean;
 
 /**
  * Column
- *
+ *  @author tzz
  */
 @SuppressWarnings("unused")
 public class Column {

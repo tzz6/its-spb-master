@@ -10,13 +10,16 @@ import com.its.model.mybatis.dao.domain.SysUser;
 import com.its.servers.facade.dubbo.sys.service.SysUserFacade;
 import com.its.service.mybatis.SysUserService;
 
-
+/**
+ * @author tzz
+ */
 @Service("sysUserFacade")
 public class SysUserFacadeImpl implements SysUserFacade {
 
 	@Autowired
 	private SysUserService sysUserService;
 
+	@Override
 	public List<SysUser> getSysUserListByStCode(String stCode) {
 		return sysUserService.getSysUserListByStCode(stCode);
 	}

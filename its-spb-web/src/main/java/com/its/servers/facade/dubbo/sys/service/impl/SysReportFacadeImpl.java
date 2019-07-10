@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import com.its.servers.facade.dubbo.sys.service.SysReportFacade;
 import com.its.service.mybatis.SysReportService;
 
+/**
+ * @author tzz
+ */
 @Service("sysReportFacade")
 public class SysReportFacadeImpl implements SysReportFacade {
 	@Autowired

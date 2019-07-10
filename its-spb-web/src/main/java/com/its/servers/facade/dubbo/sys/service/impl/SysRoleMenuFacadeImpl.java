@@ -9,7 +9,9 @@ import com.its.model.mybatis.dao.domain.SysRoleMenu;
 import com.its.servers.facade.dubbo.sys.service.SysRoleMenuFacade;
 import com.its.service.mybatis.SysRoleMenuService;
 
-
+/**
+ * @author tzz
+ */
 @Service("sysRoleMenuFacade")
 public class SysRoleMenuFacadeImpl implements SysRoleMenuFacade {
 

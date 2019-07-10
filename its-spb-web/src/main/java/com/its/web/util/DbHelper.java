@@ -9,9 +9,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DBHelper {
+/**
+ * 
+ * @author tzz
+ * @工号: 
+ * @date 2019/07/10
+ * @Introduce: DBHelper
+ */
+public class DbHelper {
 
-	private static final Logger logger = LogManager.getLogger(DBHelper.class);
+	private static final Logger logger = LogManager.getLogger(DbHelper.class);
 	
 	public static String url;
 	public static String name;
@@ -42,11 +49,13 @@ public class DBHelper {
 		return prepareStatement;
 	}
 
-	public DBHelper(String sql, boolean autoCommit) {
+	public DbHelper(String sql, boolean autoCommit) {
 		try {
-			Class.forName(name);// 指定连接类型
+		    // 指定连接类型
+			Class.forName(name);
 			connection = DriverManager.getConnection(url, user, password);
-			connection.setAutoCommit(autoCommit);// 设置事务为非自动提交
+			// 设置事务为非自动提交
+			connection.setAutoCommit(autoCommit);
 			prepareStatement = connection.prepareStatement(sql);
 		} catch (Exception e) {
 			logger.error("Exception", e);

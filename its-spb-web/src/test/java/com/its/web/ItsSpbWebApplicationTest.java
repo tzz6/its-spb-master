@@ -17,7 +17,11 @@ import java.util.List;
 //@ComponentScan(basePackages = {"com.its.core"})//增加自动扫描的包
 @Import(DruidConfig.class)
 @SpringBootTest
-public class ItsSpbWebApplicationTests {
+/**
+ * @author tzz
+ * Test
+ */
+public class ItsSpbWebApplicationTest {
 
 	@Autowired
 	private DataSource dataSource;

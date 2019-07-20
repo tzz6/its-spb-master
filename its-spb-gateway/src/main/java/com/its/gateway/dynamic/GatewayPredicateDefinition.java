@@ -9,14 +9,10 @@ import java.util.Map;
  */
 public class GatewayPredicateDefinition {
 
-    /**
-     * 断言对应的Name
-     */
+    /** 断言对应的Name */
     private String name;
 
-    /**
-     * 配置的断言规则
-     */
+    /** 配置的断言规则 */
     private Map<String, String> args = new LinkedHashMap<>();
 
     public String getName() {

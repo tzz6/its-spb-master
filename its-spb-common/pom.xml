@@ -28,6 +28,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- SpringBoot整合alibaba druid -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
+		</dependency>
 		<!-- log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
@@ -248,6 +254,11 @@
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 			<!-- <version>2.9.0</version> -->
+		</dependency>
+		<!-- spring boot redis -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 		<!-- kryo -->
 		<dependency>

@@ -9,6 +9,9 @@ spring:
   application: 
   ###服务别名--服务注册到注册中心名称
     name: its-spb-base-servers
+  profiles:
+    ###引用其他的yml文件
+    include: mybatis
   ###zipkin服务追踪
   zipkin: 
     base-url: http://${vm.ip}:9411/

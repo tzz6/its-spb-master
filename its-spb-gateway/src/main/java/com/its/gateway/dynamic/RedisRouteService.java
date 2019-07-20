@@ -39,7 +39,7 @@ public class RedisRouteService {
     public List<RouteDefinition> getRouteDefinitions() {
         List<RouteDefinition> routeDefinitions = new ArrayList<>();
         try {
-            // 删除
+            // 删除---用于测试，真实环境去掉redis删除代码
             gatewayRouteMapper.deleteGatewayRouteAll();
             // 新增
             GatewayRouter baseGatewayRouter = new GatewayRouter();
@@ -89,7 +89,7 @@ public class RedisRouteService {
                 }
                 // 添加路由设置
                 routeDefinitions.add(routeDefinition);
-                // redis删除,用于测试，真实环境去掉redis删除代码
+                // redis删除---用于测试，真实环境去掉redis删除代码
                 redisTemplate.opsForHash().delete(GATEWAY_ROUTES, routeDefinition.getId());
             });
         } catch (Exception e) {

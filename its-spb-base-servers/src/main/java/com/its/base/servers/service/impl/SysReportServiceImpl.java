@@ -1,4 +1,4 @@
-package com.its.service.mybatis.impl;
+package com.its.base.servers.service.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -8,9 +8,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.its.base.servers.api.sys.service.impl.SysUserServiceImpl;
+import com.its.base.servers.mapper.SqlExecuteMapper;
+import com.its.base.servers.service.SysReportService;
 import com.its.common.utils.BaseException;
-import com.its.core.mybatis.dao.mapper.SqlExecuteMapper;
-import com.its.service.mybatis.SysReportService;
 
 /**
  * @author tzz

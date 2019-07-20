@@ -1,0 +1,14 @@
+#gateway支持CORS配置,解决前端调用跨域问题
+spring: 
+  cloud:
+    gateway:
+      #CORS解决前端调用跨域问题
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            #允许跨域请求的域名或服务器IP,多个用逗号分隔，*为允许所有
+            allowedOrigins: "*"
+            #允许跨域的请求方法
+            allowedMethods:
+            - GET
+            - POST

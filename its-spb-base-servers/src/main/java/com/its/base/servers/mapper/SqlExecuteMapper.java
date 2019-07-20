@@ -1,4 +1,4 @@
-package com.its.core.mybatis.dao.mapper;
+package com.its.base.servers.mapper;
 
 import java.util.List;
 import java.util.Map;

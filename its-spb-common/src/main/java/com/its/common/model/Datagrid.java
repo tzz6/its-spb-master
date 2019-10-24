@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Datagrid
  * 
- *
- * @param <T>
+ * description: Datagrid
+ * company: 
+ * @author: tzz
+ * date: 2019/07/20 19:25
  */
 public class Datagrid<T> implements Serializable {
 	private static final long serialVersionUID = 2352904300281575563L;

@@ -22,3 +22,4 @@
 <script type="text/javascript" src="${ctx}/js/jquery.form.js?v=201703201200"> </script>
 <script type="text/javascript" src="${ctx}/js/json2.js?v=201703201200"></script>
 <script type="text/javascript" src="${ctx}/js/jquery.blockUI.js?v=201703201200"></script>
+<script type="text/javascript" src="${ctx}/js/ajaxExt.js?v=201908262100"> </script>

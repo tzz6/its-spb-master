@@ -46,6 +46,8 @@ public class Constants {
 		public static final String AUTO_LOGIN = "autoLogin";
 		public static final String USERNAME = "username";
 		public static final String PASSWORD = "password";
+		public static final String ITS_TOKEN = "its-token";
+		public static final String REFRESHTOKEN = "its-refreshToken";
 	}
 
 	public class Upgrade {

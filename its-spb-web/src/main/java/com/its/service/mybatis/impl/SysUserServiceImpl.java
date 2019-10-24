@@ -97,6 +97,16 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 	
 	@Override
+    public SysUser login(Map<String, Object> map) {
+        List<SysUser> list = getSysUserByMap(map);
+        if(list != null && list.size()>0){
+            return list.get(0);
+        }else{
+            return null;
+        }
+    }
+	
+	@Override
 	public List<SysUser> getSysUserByMap(Map<String, Object> map) {
 		try {
 			return sysUserMapper.getSysUserByMap(map);

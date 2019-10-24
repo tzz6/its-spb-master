@@ -119,6 +119,13 @@ function ajaxSubmit(){
 		success : function(data) {
 			var json = data;
 			if(json.status == 'success'){
+				var refreshToken = json.refreshToken;
+				var token = json.token;
+				window.sessionStorage.setItem("lang", lang);
+				window.sessionStorage.setItem("username", username);
+				window.sessionStorage.setItem("token", token);
+				window.sessionStorage.setItem("refreshToken", refreshToken);
+//				window.sessionStorage.clear();
 				var url = json.message;
 				window.location.href = json.message;
 			}else{

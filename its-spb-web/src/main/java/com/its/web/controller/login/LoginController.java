@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,12 +25,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.its.common.crypto.rsa.RsaCryptUtil;
 import com.its.common.crypto.simple.Md5ShaCryptoUtil;
+import com.its.common.redis.service.RedisService;
 import com.its.common.utils.Constants;
+import com.its.common.utils.PrimaryKeyUtil;
 import com.its.model.bean.MenuBean;
 import com.its.model.mybatis.dao.domain.SysMenu;
 import com.its.model.mybatis.dao.domain.SysUser;
-import com.its.servers.facade.dubbo.sys.service.SysUserFacade;
+import com.its.service.mybatis.SysUserService;
 import com.its.web.util.CookieUtil;
+import com.its.web.util.JwtUtil;
 import com.its.web.util.UserSession;
 
 /**
@@ -45,7 +49,9 @@ public class LoginController{
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
-	private SysUserFacade sysUserFacade;
+	private SysUserService sysUserService;
+	@Autowired
+    private RedisService redisService;
 
 	/**
 	   *  登录页面
@@ -120,14 +126,27 @@ public class LoginController{
 				password = new String(decodedData);
 				// SHA512加盐加密方式:密码+盐(盐可随机生成存储至数据库或使用用户名，当前使用简单方式即盐为用户名)
 				map.put("stPassword", Md5ShaCryptoUtil.sha512Encrypt(password + username));
-				SysUser sysUser = sysUserFacade.login(map);
+				SysUser sysUser = sysUserService.login(map);
 				if (sysUser != null) {
 					sysUser.setLanguage(lang);
 					UserSession.setUser(sysUser);
+                    // 生成JST token
+                    String token = JwtUtil.generateToken(username, lang);
+                    // 生成refreshToken
+                    String refreshToken = PrimaryKeyUtil.getUuId();
+                    //数据放入redis 
+                    redisService.hset(refreshToken, "token", token); 
+                    redisService.hset(refreshToken, "username", username); 
+                    redisService.hset(refreshToken, "lang", lang); 
+                    //设置token的过期时间 
+                    redisService.expire(refreshToken, JwtUtil.REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS); 
+				       
 					if (StringUtils.isNotBlank(savePassword)) {
 						CookieUtil.addCookie(response, Constants.CookieKey.SAVE_PASSWORD, savePassword);
 						CookieUtil.addCookie(response, Constants.CookieKey.USERNAME, username);
 						CookieUtil.addCookie(response, Constants.CookieKey.PASSWORD, password);
+                        CookieUtil.addCookie(response, Constants.CookieKey.ITS_TOKEN, token);
+                        CookieUtil.addCookie(response, Constants.CookieKey.REFRESHTOKEN, refreshToken);
 
 						if (StringUtils.isNotBlank(autologin)) {
 							CookieUtil.addCookie(response, Constants.CookieKey.AUTO_LOGIN, autologin);
@@ -139,9 +158,13 @@ public class LoginController{
 						CookieUtil.removeCookie(response, Constants.CookieKey.USERNAME);
 						CookieUtil.removeCookie(response, Constants.CookieKey.PASSWORD);
 						CookieUtil.removeCookie(response, Constants.CookieKey.AUTO_LOGIN);
+                        CookieUtil.removeCookie(response, Constants.CookieKey.ITS_TOKEN);
+                        CookieUtil.removeCookie(response, Constants.CookieKey.REFRESHTOKEN);
 					}
                     maps.put("status", "success");
                     maps.put("message", loginUrl);
+                    maps.put("refreshToken", refreshToken);
+                    maps.put("token", token);
 
 				} else {
                     maps.put("status", "userError");
@@ -171,6 +194,9 @@ public class LoginController{
         logger.info("logout");
         UserSession.removeUser();
         try {
+            CookieUtil.removeCookie(response, Constants.CookieKey.USERNAME);
+            CookieUtil.removeCookie(response, Constants.CookieKey.ITS_TOKEN);
+            CookieUtil.removeCookie(response, Constants.CookieKey.REFRESHTOKEN);
             response.sendRedirect("/login");
         } catch (IOException e) {
             logger.error("logout:" + e.getMessage(), e);

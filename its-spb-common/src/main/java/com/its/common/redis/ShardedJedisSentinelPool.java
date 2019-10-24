@@ -29,14 +29,14 @@ import redis.clients.util.Pool;
  * http://itindex.net/detail/48192-redis-sentinel-redis Redis HA方案
  * HA的关键在于避免单点故障及故障恢复，在Redis
  * Cluster未发布之前，Redis一般以主/从方式部署（这里讨论的应用从实例主要用于备份，主实例提供读写，有不少应用是读写分离的，
- * 读写操作需要取不同的Redis实例，该方案也可用于此种应用，原理都是相通的，区别在于数据操作层如何封装），该方式要实现HA主要有如下几种方案：
+  *  读写操作需要取不同的Redis实例，该方案也可用于此种应用，原理都是相通的，区别在于数据操作层如何封装），该方式要实现HA主要有如下几种方案：
  * 1，keepalived：通过keepalived的虚拟IP，提供主从的统一访问，在主出现问题时，通过keepalived运行脚本将从提升为主，待主恢复后先同步后自动变为主，
- * 该方案的好处是主从切换后，应用程序不需要知道(因为访问的虚拟IP不变)，坏处是引入keepalived增加部署复杂性；
+  * 该方案的好处是主从切换后，应用程序不需要知道(因为访问的虚拟IP不变)，坏处是引入keepalived增加部署复杂性；
  * 2，zookeeper：通过zookeeper来监控主从实例，维护最新有效的IP，应用通过zookeeper取得IP，对Redis进行访问；
  * 3，sentinel：通过Sentinel监控主从实例，自动进行故障恢复，该方案有个缺陷：因为主从实例地址(IP&amp;PORT)是不同的，当故障发生进行主从切换后，应用程序无法知道新地址，
- * 故在Jedis2.2.2中新增了对Sentinel的支持，应用通过redis.clients.jedis.JedisSentinelPool.getResource()取得的Jedis实例会及时更新到新的主实例地址。
- * 笔者所在的公司先使用了方案1一段时间后，发现keepalived在有些情况下会导致数据丢失，keepalived通过shell脚本进行主从切换，配置复杂，而且keepalived成为新的单点，
- * 后来选用了方案3，使用Redis官方解决方案；（方案2需要编写大量的监控代码，没有方案3简便，网上有人使用方案2读者可自行查看）
+  *  故在Jedis2.2.2中新增了对Sentinel的支持，应用通过redis.clients.jedis.JedisSentinelPool.getResource()取得的Jedis实例会及时更新到新的主实例地址。
+  *  笔者所在的公司先使用了方案1一段时间后，发现keepalived在有些情况下会导致数据丢失，keepalived通过shell脚本进行主从切换，配置复杂，而且keepalived成为新的单点，
+  *  后来选用了方案3，使用Redis官方解决方案；（方案2需要编写大量的监控代码，没有方案3简便，网上有人使用方案2读者可自行查看）
  * @author tzz
  **/
 @SuppressWarnings("rawtypes")

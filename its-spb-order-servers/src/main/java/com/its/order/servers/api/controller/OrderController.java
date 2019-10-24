@@ -49,15 +49,15 @@ public class OrderController {
 	/** 方式一：RestTemplate方式客户端调用 ---Order服务调用Base服务 */
 	@GetMapping("/restOrderToBase")
 	public String getOrderToBase() {
-		// 两种方式调用
-		// 方式一：使用服务别名调用
-		String url = "http://its-spb-base-servers/getMember";
-		// 方式二：直接调用，使用服务IP+端口的方式调用
-		// String url = "http://127.0.0.1:8001/getMember";
-		String result = restTemplate.getForObject(url, String.class);
-		result = "RestTemplate方式客户端调用 ---Order服务调用Base服务 result:" + result;
-		System.out.println(result);
-		return result;
+        // 两种方式调用
+        // 方式一：使用服务别名调用
+        String url = "http://its-spb-base-servers/getMember";
+        // 方式二：直接调用，使用服务IP+端口的方式调用，使用服务IP+端口的方式调用需要去掉@LoadBalanced
+        // String url = "http://127.0.0.1:8201/getMember";
+        String result = restTemplate.getForObject(url, String.class);
+        result = "RestTemplate方式客户端调用 ---Order服务调用Base服务 result:" + result;
+        System.out.println(result);
+        return result;
 	}
 
 	/** 方式二：Feign方式客户端调用 ---Order服务调用Base服务 */

@@ -62,6 +62,13 @@
 	$.ajax({
           url:'${apibase}/sysReport/tableHeart?random=' + new Date().getTime(),
           type: "GET",
+//           headers: {//请求头
+//           	'Accept': 'application/json; charset=utf-8',
+//           	'its-username': window.sessionStorage.getItem("username"),
+//           	'its-language': window.sessionStorage.getItem("lang"),
+//           	'its-refreshToken': window.sessionStorage.getItem("refreshToken"),
+//       		'its-token': window.sessionStorage.getItem("token")
+//           },
           async: false,
           success: function (resultData){
         	  tableHeartArr = resultData;
@@ -130,6 +137,11 @@
 					url : '',
 // 					url : '${apibase}/sysReport/sysReportManage?random='
 // 							+ new Date().getTime(),
+					headers: {//请求头
+		          		'Accept': 'application/json; charset=utf-8',
+		          		'its-username': 'admin',
+		      			'its-language': 'en'
+		          	},
 					pageList : [ 50, 100, 200 ],
 					pageSize : 50,
 					nowrap : true,

@@ -1,23 +1,25 @@
 package com.its.web.common.interceptor;
 
-import com.its.common.utils.Constants;
-import com.its.model.mybatis.dao.domain.SysMenu;
-import com.its.model.mybatis.dao.domain.SysUser;
-import com.its.servers.facade.dubbo.sys.service.SysMenuFacade;
-import com.its.servers.facade.dubbo.sys.service.SysUserFacade;
-import com.its.web.util.UserSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.its.common.utils.Constants;
+import com.its.model.mybatis.dao.domain.SysMenu;
+import com.its.model.mybatis.dao.domain.SysUser;
+import com.its.service.mybatis.SysMenuService;
+import com.its.service.mybatis.SysUserService;
+import com.its.web.util.UserSession;
 
 /**
  * 权限拦截器
@@ -26,30 +28,32 @@ import java.util.Map;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
-	private static final Logger logger = LogManager.getLogger(LoginInterceptor.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
 	@Autowired
-	private SysUserFacade sysUserFacade;
+	private SysUserService sysUserService;
 	@Autowired
-	private SysMenuFacade sysMenuFacade;
+	private SysMenuService sysMenuService;
 
-	public SysMenuFacade getSysMenuFacade() {
-		return sysMenuFacade;
-	}
+	
 
-	public void setSysMenuFacade(SysMenuFacade sysMenuFacade) {
-		this.sysMenuFacade = sysMenuFacade;
-	}
+	public SysUserService getSysUserService() {
+        return sysUserService;
+    }
 
-	public SysUserFacade getSysUserFacade() {
-		return sysUserFacade;
-	}
+    public void setSysUserService(SysUserService sysUserService) {
+        this.sysUserService = sysUserService;
+    }
 
-	public void setSysUserFacade(SysUserFacade sysUserFacade) {
-		this.sysUserFacade = sysUserFacade;
-	}
+    public SysMenuService getSysMenuService() {
+        return sysMenuService;
+    }
 
-	@Override
+    public void setSysMenuService(SysMenuService sysMenuService) {
+        this.sysMenuService = sysMenuService;
+    }
+
+    @Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object obj, Exception ex)
 			throws Exception {
 	}
@@ -98,7 +102,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 				if (null == interceptorSysMenus) {
 					Map<String, Object> maps = new HashMap<String, Object>(16);
 					maps.put("sysNameCode", Constants.SYS_NAME_CODE);
-					interceptorSysMenus = sysMenuFacade.getInterceptorUserMenus(maps);
+					interceptorSysMenus = sysMenuService.getInterceptorUserMenus(maps);
 					UserSession.setInterceptorSysMenu(interceptorSysMenus);
 				}
 				// 获取用户权限菜单
@@ -142,14 +146,14 @@ public class LoginInterceptor implements HandlerInterceptor {
     private void getCurrMenus(SysUser currUser) {
         List<SysMenu> userMenus = UserSession.getSysMenu();
         if (null == userMenus) {
-        	SysUser user = sysUserFacade.getSysUserByStId(currUser);
+        	SysUser user = sysUserService.getSysUserByStId(currUser);
         	if (user != null) {
         		String lang = currUser.getLanguage();
         		Map<String, Object> maps = new HashMap<String, Object>(16);
         		maps.put("stId", user.getStId());
         		maps.put("sysNameCode", Constants.SYS_NAME_CODE);
         		maps.put("lang", lang);
-        		userMenus = sysMenuFacade.getSysMenuListByUser(maps);
+        		userMenus = sysMenuService.getSysMenuListByUser(maps);
         		UserSession.setSysMenu(userMenus);
         	}
         }

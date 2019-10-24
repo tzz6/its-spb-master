@@ -167,7 +167,7 @@
 					<td><input id="roleName" name="roleName" type="text" style="width:110px" /></td>
 					<td><fmt:message key="sys.name.code" />:</td>
 					<td>
-					<input name="sysNameCode" id="sysNameCode_search" class="easyui-combobox" style="width:110px" data-options="panelHeight:'auto',valueField:'sysNameCode',textField:'name',url:'${ctx}/sysRole/getSysNameList'"/>
+					<input name="sysNameCode" id="sysNameCode_search" class="easyui-combobox" style="width:110px" data-options="panelHeight:'auto',valueField:'sysNameCode',textField:'name',url:'${apibase}/sysRole/getSysNameList'"/>
 					</td>
 					<td><a href="javascript:searchRole()" id="btnsearchPrice"
 						class="easyui-linkbutton" data-options="iconCls:'icon-search'"><fmt:message key="btn.search" /></a>
@@ -251,7 +251,7 @@
 	
 
 	function updateStName(obj) {
-		$.ajax({url : '${ctx}/sysUser/updateSysUser?random='+ new Date().getTime(),
+		$.ajax({url : '${apibase}/sysUser/updateSysUser?random='+ new Date().getTime(),
 			type : "POST",
 			data : {
 				'stId' : obj.id,
@@ -326,7 +326,7 @@
 		// 初始化系统列表
 		$('#user_table').datagrid(
 				{
-					url : '${ctx}/sysUser/sysUserManage?random='
+					url : '${apibase}/sysUser/sysUserManage?random='
 							+ new Date().getTime(),
 					pageList : [ 50, 100, 200,10000,50000,100000,1000000 ],
 					pageSize : 50,
@@ -475,7 +475,7 @@
 	// 提交保存录入的新增用户信息
 	function saveSysUser() {
 		$('#add_dialog_form').form('submit', {
-			url : '${ctx}/sysUser/addSysUser?random=' + new Date().getTime(),
+			url : '${apibase}/sysUser/addSysUser?random=' + new Date().getTime(),
 			contentType: 'application/x-www-form-urlencoded;charset=UTF-8', 
 			type: 'post', 
 			dataType: 'json', 
@@ -484,6 +484,7 @@
 				return $(this).form('validate');
 			},
 			success : function(resultData) {
+				alert("easyUI form提交,因跨域请求后，无法获取返回的response,手动刷新列表");
 				if (resultData == 'SUCCESS') {
 					$.messager.show({
 						title : Msg.sys_remaind1,
@@ -541,7 +542,7 @@
 	// 打开修改用户弹出框
 	function openUpdateDialog(stId) {
 		$.ajax({
-			url : '${ctx}/sysUser/getSysUserById?random='+ new Date().getTime(),
+			url : '${apibase}/sysUser/getSysUserById?random='+ new Date().getTime(),
 			type : "post",
 			data : {
 				"stId" : stId
@@ -601,8 +602,9 @@
 
 	// 提交保存录入的修改用户信息
 	function updateSysUser() {
+		debugger
 		$('#update_dialog_form').form('submit',{
-		url : '${ctx}/sysUser/updateSysUser?random='+ new Date().getTime(),
+		url : '${apibase}/sysUser/updateSysUser?random='+ new Date().getTime(),
 		onSubmit : function() {
 // 			$("#stName_update_h").val(encodeURI($("#stName_update").val()));
 			$("#stName_update_h").val($("#stName_update").val());
@@ -647,7 +649,7 @@
 							stId = stId+ row.stId+ ",";
 						}
 				});
-				$.ajax({url : '${ctx}/sysUser/deleteSysUser?random='+ new Date().getTime(),
+				$.ajax({url : '${apibase}/sysUser/deleteSysUser?random='+ new Date().getTime(),
 						type : "POST",
 						data : {'stId' : stId},
 						async : false,
@@ -677,7 +679,7 @@
 	
 	// Excel导出
 	$('#export_linkbutton').click(function() {
-		window.location.href = "${ctx}/excel/export";
+		window.location.href = "${apibase}/excel/export";
 	});
 
 	//--------------关联菜单---------------
@@ -708,7 +710,7 @@
 		//加载菜单信息
 		role_form = $('#role_form').form();
 		roleDg = $('#roleDg').datagrid({
-			url : '${ctx}/sysRole/sysRoleManage?random='+ new Date().getTime(),
+			url : '${apibase}/sysRole/sysRoleManage?random='+ new Date().getTime(),
 			queryParams : {
 				"roleName" : $('#roleName').val(),
 				"sysNameCode" : $('#sysNameCode_search').val()
@@ -738,7 +740,7 @@
 			} ] ],
 			onLoadSuccess : function() {
 				//$("#roleDg").datagrid("clearChecked");
-				$.post('${ctx}/sysUser/getSysUserRoleList?random='+ new Date().getTime(),{stId : items[0].stId},
+				$.post('${apibase}/sysUser/getSysUserRoleList?random='+ new Date().getTime(),{stId : items[0].stId},
 				function(data) {
 					if (data != null&& data.length > 0) {
 						userRoles = data;
@@ -811,7 +813,7 @@
 			stId : stIds,
 			roleId : roleIds
 		};
-		$.post("${ctx}/sysUser/saveSysUserRole", data, function(resultData) {
+		$.post("${apibase}/sysUser/saveSysUserRole", data, function(resultData) {
 			if (resultData == 'SUCCESS') {
 				$.messager.show({
 					title : Msg.sys_remaind1,
@@ -859,7 +861,7 @@
 		//清空datagrid
 // 		$('#resultTable').datagrid('loadData',{'total':0,'rows':[]}); 
 		$("#upload_dialog_form").form('submit',{
-			url : '${ctx}/excel/import?random='+ new Date().getTime(),
+			url : '${apibase}/excel/import?random='+ new Date().getTime(),
 			method : "post",
 			success : function(result) {
 			$("#msg_uploading").html("");

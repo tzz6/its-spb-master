@@ -17,7 +17,11 @@ import org.springframework.context.annotation.Bean;
 public class ItsSpbWebApplication {
 
     /**
-     * 注册图形验证码Servlert
+     * 
+     * description: 注册图形验证码Servlert
+     * @author: tzz
+     * date: 2019/08/29 20:38
+     * @return ServletRegistrationBean<VerifyCodeServlet>
      */
     @Bean
     public ServletRegistrationBean<VerifyCodeServlet> getVerifyCodeServlet() {

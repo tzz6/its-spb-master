@@ -8,7 +8,11 @@ spring:
           '[/**]':
             #允许跨域请求的域名或服务器IP,多个用逗号分隔，*为允许所有
             allowedOrigins: "*"
+            allowedHeaders: "*"
             #允许跨域的请求方法
             allowedMethods:
             - GET
             - POST
+            - HEAD
+            - PUT
+            - DELETE

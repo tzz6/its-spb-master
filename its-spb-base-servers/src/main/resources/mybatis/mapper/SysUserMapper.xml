@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.its.base.servers.mapper.SysUserMapper">
+	<!--
+    ehcache已经配置好了,然后只需要在想要缓存的mapper配置文件里面加入以下内容,该查询语句得到的结果将会被缓存
+   	 以下两个<cache>标签都可以,第一个可以输出日志,第二个不输出日志
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    select语句时：
+	flushCache默认为false，表示任何时候语句被调用，都不会去清空本地缓存和二级缓存。
+	useCache默认为true，表示会将本条语句的结果进行二级缓存。
+	insert、update、delete语句时：
+	flushCache默认为true，表示任何时候语句被调用，都会导致本地缓存和二级缓存被清空。
+	useCache属性在该情况下没有。
+	当为select语句的时候，如果没有去配置flushCache、useCache，那么默认是启用缓存的，所以，如果有必要，那么就需要人工修改配置，修改结果类似下面：
+    -->
+	<resultMap type="com.its.base.servers.api.sys.domain.SysUser" id="SysUser">
+		<result property="stId" column="ST_ID" />
+		<result property="stCode" column="ST_Code" />
+		<result property="stName" column="ST_Name" />
+		<result property="stPassword" column="ST_Password" />
+		<result property="createBy" column="CREATE_BY" />
+		<result property="createTm" column="CREATE_TM" />
+		<result property="updateBy" column="UPDATE_BY" />
+		<result property="updateTm" column="UPDATE_TM" />
+	</resultMap>
+
+	<select id="getSysUserListByStCode" resultMap="SysUser">
+		SELECT
+		ST_ID, ST_Code, ST_Name,CREATE_BY,
+		DATE_FORMAT(CREATE_TM,'%Y-%m-%d %H:%i:%S') CREATE_TM,
+		UPDATE_BY,
+		DATE_FORMAT(UPDATE_TM,'%Y-%m-%d %H:%i:%S') UPDATE_TM 
+		FROM sys_user
+		where 1 = 1
+		<if test="stCode !='' and stCode != null">
+			and ST_Code = #{stCode, jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<insert id="insertSysUser" parameterType="com.its.base.servers.api.sys.domain.SysUser">
+		INSERT INTO sys_user
+		(ST_ID,ST_Code,ST_Name,ST_Password,CREATE_BY,CREATE_TM,UPDATE_BY,UPDATE_TM) VALUES
+		(#{stId, jdbcType=VARCHAR}, 
+		#{stCode, jdbcType=VARCHAR}, 
+		#{stName, jdbcType=VARCHAR}, 
+		#{stPassword, jdbcType=VARCHAR}, 
+		#{createBy, jdbcType=VARCHAR}, 
+		DATE_FORMAT(#{createTm},'%Y-%m-%d %H:%i:%S'), 
+		#{updateBy,jdbcType=VARCHAR}, 
+		DATE_FORMAT(#{updateTm},'%Y-%m-%d %H:%i:%S'))
+	</insert>
+	
+	<update id="updateSysUser" parameterType="com.its.base.servers.api.sys.domain.SysUser">
+		update sys_user set 
+		ST_Code = #{stCode, jdbcType=VARCHAR}, 
+		ST_Name = #{stName, jdbcType=VARCHAR}, 
+		UPDATE_BY = #{updateBy, jdbcType=VARCHAR}, 
+		UPDATE_TM = DATE_FORMAT(#{updateTm},'%Y-%m-%d %H:%i:%S')  
+		where ST_ID =  #{stId,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getSysUserCount" parameterType="map" resultType="Integer">
+		SELECT count(1) FROM sys_user
+		where 1 = 1
+		<if test="stCode !='' and stCode != null">
+			and ST_Code like CONCAT('%',#{stCode, jdbcType=VARCHAR},'%') 
+		</if>
+	</select>
+	
+	<select id="getSysUserList" parameterType="map" resultMap="SysUser" useCache="true">
+		SELECT
+		ST_ID, ST_Code, ST_Name,CREATE_BY,
+		DATE_FORMAT(CREATE_TM,'%Y-%m-%d %H:%i:%S') CREATE_TM,
+		UPDATE_BY,
+		DATE_FORMAT(UPDATE_TM,'%Y-%m-%d %H:%i:%S') UPDATE_TM 
+		FROM sys_user
+		where 1 = 1
+		<if test="stCode !='' and stCode != null">
+			and ST_Code like CONCAT('%',#{stCode, jdbcType=VARCHAR},'%') 
+		</if>
+		ORDER BY ST_Code ASC LIMIT #{startNum, jdbcType=INTEGER},#{rows, jdbcType=INTEGER}
+	</select>
+	
+	<select id="getSysUserByStId" resultMap="SysUser">
+		SELECT
+		ST_ID, ST_Code, ST_Name,CREATE_BY,
+		DATE_FORMAT(CREATE_TM,'%Y-%m-%d %H:%i:%S') CREATE_TM,
+		UPDATE_BY,
+		DATE_FORMAT(UPDATE_TM,'%Y-%m-%d %H:%i:%S') UPDATE_TM 
+		FROM sys_user
+		where 1 = 1
+		<if test="stId !='' and stId != null">
+			and ST_ID = #{stId, jdbcType=VARCHAR}
+		</if>
+		<if test="stCode !='' and stCode != null">
+			and ST_Code = #{stCode, jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<delete id="deleteSysUser" parameterType="java.util.List" flushCache="true">
+     		DELETE FROM sys_user WHERE ST_ID in
+     		<foreach collection="list" item="stId" index="index"
+	            open="(" separator="," close=")">
+	            #{stId}
+	        </foreach>
+     </delete>
+     
+     <select id="getSysUserByMap" parameterType="map" resultMap="SysUser">
+		SELECT
+		ST_ID, ST_Code, ST_Name,CREATE_BY,
+		DATE_FORMAT(CREATE_TM,'%Y-%m-%d %H:%i:%S') CREATE_TM,
+		UPDATE_BY,
+		DATE_FORMAT(UPDATE_TM,'%Y-%m-%d %H:%i:%S') UPDATE_TM 
+		FROM sys_user
+		where 1 = 1
+		<if test="stCode !='' and stCode != null">
+			and ST_Code = #{stCode, jdbcType=VARCHAR} 
+		</if>
+		<if test="stPassword !='' and stPassword != null">
+			and ST_Password = #{stPassword, jdbcType=VARCHAR} 
+		</if>
+	</select>
+	<update id="updateSysUserPassword" parameterType="com.its.base.servers.api.sys.domain.SysUser">
+		update sys_user set 
+		ST_Password = #{stPassword, jdbcType=VARCHAR} where ST_Code =  #{stCode,jdbcType=VARCHAR}
+	</update>
+	<select id="getAllSysUserList" resultMap="SysUser">
+		SELECT
+		ST_ID, ST_Code, ST_Name,CREATE_BY,ST_Password,
+		DATE_FORMAT(CREATE_TM,'%Y-%m-%d %H:%i:%S') CREATE_TM,
+		UPDATE_BY,
+		DATE_FORMAT(UPDATE_TM,'%Y-%m-%d %H:%i:%S') UPDATE_TM 
+		FROM sys_user order by CREATE_BY ASC
+	</select>
+	
+</mapper>

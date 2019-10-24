@@ -25,7 +25,7 @@ public final class PrimaryKeyUtil {
 		}
 	}
 
-	private static String getUuId() {
+	public static String getUuId() {
 		UUID uuid = UUID.randomUUID();
 		String uuidStr = uuid.toString().replaceAll("-", "").toUpperCase();
 		return uuidStr;

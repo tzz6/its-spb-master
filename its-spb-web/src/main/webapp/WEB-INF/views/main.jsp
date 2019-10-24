@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title><fmt:message key="mcs.index" /></title>
+<title><fmt:message key="its.index" /></title>
 <style>
 #mainPage .panel {
 	float: left;

@@ -3,6 +3,7 @@ package com.its.common.redis.service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -14,12 +15,27 @@ import java.util.Set;
 public interface RedisService {
 
     /**
-     * 设置Redis失效时间
+     * 
+     * description: 设置Redis失效时间
+     * @author: tzz
+     * date: 2019/08/19 16:20
      * @param key 键
      * @param time 时间(秒)
-     * @return
+     * @return boolean
      */
     public boolean expire(String key, long time);
+    
+    /**
+     * 
+     * description: 设置Redis失效时间
+     * @author: tzz
+     * date: 2019/08/19 16:48
+     * @param key 键
+     * @param time 时间
+     * @param unit 单位
+     * @return boolean
+     */
+    public boolean expire(String key, long time, TimeUnit unit);
 
     /**
      * 

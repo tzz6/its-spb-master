@@ -29,8 +29,8 @@ public class ItsSpbOrderServersApplication {
     }
 
     /**
-     * 将RestTemplate注册到SpringBoot容器中，方便其他类使用@Autowired自动注入RestTemplate<br>
-     * 如果使用rest以别名方式进行调用依赖Ribbon负载均衡器@LoadBalanced<br>
+          *  将RestTemplate注册到SpringBoot容器中，方便其他类使用@Autowired自动注入RestTemplate<br>
+          *  如果使用rest以别名方式进行调用依赖Ribbon负载均衡器@LoadBalanced<br>
      * 
      * @LoadBalanced就能让这个RestTemplate在请求时拥有客服端负载均衡能力
      */

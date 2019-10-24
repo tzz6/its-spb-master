@@ -3,7 +3,8 @@ package com.its.common.model;
 
 /**
  * Column
- *
+ * 
+ * @author tzz
  */
 @SuppressWarnings("unused")
 public class Column {

@@ -1039,7 +1039,6 @@ var easyuiPanelOnMove = function(left, top) {
 	(function($){  
 	    //备份jquery的ajax方法  
 	    var _ajax=$.ajax;  
-	      
 	    //重写jquery的ajax方法  
 	    $.ajax=function(opt){  
 	        //备份opt中error和success方法  
@@ -1057,6 +1056,22 @@ var easyuiPanelOnMove = function(left, top) {
 	          
 	        //扩展增强处理  
 	        var _opt = $.extend(opt,{  
+	        	//20190829增加设置Headers扩展
+	        	beforeSend: function(xhr) {
+	        		debugger
+	        		var username = window.sessionStorage.getItem("username");
+	        		var lang = window.sessionStorage.getItem("lang");
+	        		var refreshToken = window.sessionStorage.getItem("refreshToken");
+	        		var token = window.sessionStorage.getItem("token");
+	        		xhr.setRequestHeader("its-username",username);
+	        		xhr.setRequestHeader("its-language",lang);
+	        		xhr.setRequestHeader("its-refreshToken",refreshToken);
+	        		xhr.setRequestHeader("its-token",token);
+	        		xhr.withCredentials = true; //支持跨域发送cookies
+	        	},
+	        	xhrFields: {
+			        withCredentials: true // 携带跨域cookie
+			    },
 	            error:function(XMLHttpRequest, textStatus, errorThrown){  
 	                //错误方法增强处理  
 	                fn.error(XMLHttpRequest, textStatus, errorThrown);  

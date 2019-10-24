@@ -1,5 +1,10 @@
 package com.its.web.redis;
 
+/**
+ * 
+ * @author: tzz
+ * date: 2019/07/20 19:24
+ */
 public class User {
 
     private Long id;

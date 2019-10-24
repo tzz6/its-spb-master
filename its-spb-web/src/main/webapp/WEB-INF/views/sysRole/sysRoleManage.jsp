@@ -17,7 +17,7 @@
 					<td class="content_input"><input type="text" name="roleName" id="roleName" /></td>
 					<td class="content_title">&nbsp;<fmt:message key="sys.name.code" />:</td>
 					<td class="content_input">
-					<input name="sysNameCode" id="sysNameCode" class="easyui-combobox" style="width:154px" data-options="panelHeight:'auto',valueField:'sysNameCode',textField:'name',url:'${ctx}/sysRole/getSysNameList'"/>
+					<input name="sysNameCode" id="sysNameCode" class="easyui-combobox" style="width:154px" data-options="panelHeight:'auto',valueField:'sysNameCode',textField:'name',url:'${apibase}/sysRole/getSysNameList'"/>
 					</td>
 					<td class="content_linkbutton" style="padding-left: 10px;"><a href="#" id="search_linkbutton" class="easyui-linkbutton" data-options="iconCls:'icon-search'"> <fmt:message
 								key="btn.search" /></a></td>
@@ -152,10 +152,10 @@
 </body>
 <script type="text/javascript">
 	$(function() {
-		// 初始化系统列表
+		// 初始化系统列表 重写jquery.easyui.min.js 11515 14335行 支持设置headers
 		$('#role_table').datagrid(
 				{
-					url : '${ctx}/sysRole/sysRoleManage?random=' + new Date().getTime(),
+					url : '${apibase}/sysRole/sysRoleManage?random=' + new Date().getTime(),
 					pageList : [ 50, 100, 200 ],
 					pageSize : 50,
 					rownumbers : true,
@@ -164,6 +164,7 @@
 					checkOnSelect : false,
 					selectOnCheck : false,
 					singleSelect : true,
+					headers:{'Content-Type':'application/json;charset=utf8','its-token':'1333333333'},
 					toolbar : '#tb',
 					columns : [ [ {
 						field : 'rowCheckBox',
@@ -197,6 +198,11 @@
 						width : 200,
 						align : 'center'
 					} ] ],
+					onBeforeLoad : function(xhr) {
+// 						alert("abc");
+// 						xhr.setRequestHeader("its-username","admin");
+// 		            	xhr.setRequestHeader("its-language","en");
+					},
 					onLoadSuccess : function(data) {
 						if (data.total == '0') { // 查询无记录时提醒
 							$("#not_exist").show();
@@ -204,34 +210,35 @@
 							$("#not_exist").hide();
 						}
 					}
-				});
+		});
 		//初始化角色所属系统
-		$.ajax({
-	  		url:'${ctx}/sysRole/getSysNameList?random='+new Date().getTime(),
-	  		type:"post",
-	  		async:true,
-	  		dataType:"json",
-	  		success: function (data) {
-	  			if(data){
-					$('#sys_name_add').combobox({
-			    		data:data,
-					    valueField:'sysNameCode',    
-					    textField:'name',
-					    editable:false,
-					    required:true
-					});
-					
-					$('#sys_name_update').combobox({
-			    		data:data,
-			    		valueField:'sysNameCode',    
-						textField:'name',
-					    editable:false,
-					    required:true
-					});
-					
-	  			}
-	          }
-	  	});
+		$(function(){
+			$.ajaxext('${apibase}/sysRole/getSysNameList?random='+new Date().getTime(), "post",true,"json","",
+	        	function(data){//success
+					if(data){
+						$('#sys_name_add').combobox({
+				    		data:data,
+						    valueField:'sysNameCode',    
+						    textField:'name',
+						    editable:false,
+						    required:true
+						});
+						
+						$('#sys_name_update').combobox({
+				    		data:data,
+				    		valueField:'sysNameCode',    
+							textField:'name',
+						    editable:false,
+						    required:true
+						});
+						
+		  			}
+	            }, 
+	            function(){//error
+	            	alert("error");
+	            }
+			);
+		});
 		_doResize($('#role_table'));
 	});
 	//控制页面大小不随展示行数变化
@@ -280,7 +287,7 @@
 	// 提交保存录入的新增用户信息
 	function saveSysRole() {
 		$('#add_dialog_form').form('submit', {
-			url : '${ctx}/sysRole/addSysRole?random=' + new Date().getTime(),
+			url : '${apibase}/sysRole/addSysRole?random=' + new Date().getTime(),
 			onSubmit : function() {
 				$("#roleName_add_h").val($("#roleName_add").val());
 				return $(this).form('validate');
@@ -339,20 +346,18 @@
 	
 	// 打开修改用户弹出框
 	function openUpdateDialog(roleId) {
-		$.ajax({
-			url : '${ctx}/sysRole/getSysRoleById?random=' + new Date().getTime(),
-			type : "post",
-			data : {
-				"roleId" : roleId
-			},
-			async : true,
-			dataType : "json",
-			success : function(data) {
-				var uform = $('#update_dialog_form');
-				$('#update_dialog_div').dialog('open');
-				$('#update_dialog_form').form('clear');
-				$('#update_dialog_form').form('load', {roleId:data.roleId,roleName_update:data.roleName, sysNameCode:data.sysNameCode});
-			}
+		$(function(){
+			$.ajaxext('${apibase}/sysRole/getSysRoleById?random=' + new Date().getTime(), "post",true,"json",{"roleId" : roleId},
+	        	function(data){//success
+					var uform = $('#update_dialog_form');
+					$('#update_dialog_div').dialog('open');
+					$('#update_dialog_form').form('clear');
+					$('#update_dialog_form').form('load', {roleId:data.roleId,roleName_update:data.roleName, sysNameCode:data.sysNameCode});
+	            }, 
+	            function(){//error
+	            	alert("error");
+	            }
+			);
 		});
 	}
 	
@@ -369,7 +374,7 @@
  	// 提交保存录入的修改用户信息
 	function updateSysRole() {
 		$('#update_dialog_form').form('submit', {
-			url : '${ctx}/sysRole/updateSysRole?random=' + new Date().getTime(),
+			url : '${apibase}/sysRole/updateSysRole?random=' + new Date().getTime(),
 			onSubmit : function() {
 				$("#roleName_update_h").val($("#roleName_update").val());
 				return $(this).form('validate');
@@ -421,7 +426,7 @@
   	                  }
   	              });
   	              $.ajax({
-  	                  url:'${ctx}/sysRole/deleteSysRole?random=' + new Date().getTime(),
+  	                  url:'${apibase}/sysRole/deleteSysRole?random=' + new Date().getTime(),
   	                  type: "POST",
   	                  data: {'roleId':roleId},
   	                  async: false,
@@ -496,7 +501,7 @@
 			//加载菜单信息
 			menu_form=$('#menu_form').form();	
 			menuDg=$('#menuDg').datagrid({
-				url :'${ctx}/sysRole/getSysMenuList?random='+new Date().getTime(),  		
+				url :'${apibase}/sysRole/getSysMenuList?random='+new Date().getTime(),  		
 				queryParams: {"menuName":$('#menuName').val(),"sysNameCode":$('#sysNameCode_menu').val(),"menuType":$('#menuType').val()},
 				    toolbar : '#tbMenu',
 				    height : 400,
@@ -523,7 +528,7 @@
 				    ]],
 				    onLoadSuccess:function(){
 				    	//$("#menuDg").datagrid("clearChecked");
-				    	$.post('${ctx}/sysRole/getSysRoleMenuList?random='+new Date().getTime(),{roleId:items[0].roleId},function(data){
+				    	$.post('${apibase}/sysRole/getSysRoleMenuList?random='+new Date().getTime(),{roleId:items[0].roleId},function(data){
 			    			if(data != null && data.length>0){
 			    				roleMenus=data;
 				    			for(var i=0;i<roleMenus.length;i++){
@@ -599,7 +604,7 @@
 				}
 			}
 			var data = {roleId:roleIds,menuId:menuIds};
-			$.post("${ctx}/sysRole/saveSysRoleMenu", data, function(resultData) {
+			$.post("${apibase}/sysRole/saveSysRoleMenu", data, function(resultData) {
 			if (resultData == 'SUCCESS') {
 				$.messager.show({
 					title : Msg.sys_remaind1,

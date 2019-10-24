@@ -29,8 +29,13 @@ public class ItsSpbWebMvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         //设置默认跳转首页
         registry.addViewController("/").setViewName("/WEB-INF/index.jsp");
+        //SpringBoot方式addViewControllers实现传统Controller跳转JSP文件
         //用户管理列表页面
         registry.addViewController("/sysUser/toSysUserManage").setViewName("sysUser/sysUserManage");
+        //角色管理列表页面
+        registry.addViewController("/sysRole/toSysRoleManage").setViewName("sysRole/sysRoleManage");
+        //报表管理列表页面
+        registry.addViewController("/sysReport/toSysReportManage").setViewName("sysReport/sysReportManage");
     }
 
 

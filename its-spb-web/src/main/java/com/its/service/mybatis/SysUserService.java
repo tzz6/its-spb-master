@@ -56,6 +56,16 @@ public interface SysUserService {
 	 * @param stIdList
 	 */
 	public void deleteSysUser(List<String> stIdList);
+	
+	/**
+	 * 
+	 * description: login
+	 * @author: tzz
+	 * date: 2019/08/29 17:08
+	 * @param map
+	 * @return SysUser
+	 */
+	public SysUser login(Map<String, Object> map);
 
 	/**
 	 * getSysUserByMap

@@ -141,26 +141,7 @@ public class LoginController{
                     //设置token的过期时间 
                     redisService.expire(refreshToken, JwtUtil.REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS); 
 				       
-					if (StringUtils.isNotBlank(savePassword)) {
-						CookieUtil.addCookie(response, Constants.CookieKey.SAVE_PASSWORD, savePassword);
-						CookieUtil.addCookie(response, Constants.CookieKey.USERNAME, username);
-						CookieUtil.addCookie(response, Constants.CookieKey.PASSWORD, password);
-                        CookieUtil.addCookie(response, Constants.CookieKey.ITS_TOKEN, token);
-                        CookieUtil.addCookie(response, Constants.CookieKey.REFRESHTOKEN, refreshToken);
-
-						if (StringUtils.isNotBlank(autologin)) {
-							CookieUtil.addCookie(response, Constants.CookieKey.AUTO_LOGIN, autologin);
-						} else {
-							CookieUtil.removeCookie(response, Constants.CookieKey.AUTO_LOGIN);
-						}
-					} else {
-						CookieUtil.removeCookie(response, Constants.CookieKey.SAVE_PASSWORD);
-						CookieUtil.removeCookie(response, Constants.CookieKey.USERNAME);
-						CookieUtil.removeCookie(response, Constants.CookieKey.PASSWORD);
-						CookieUtil.removeCookie(response, Constants.CookieKey.AUTO_LOGIN);
-                        CookieUtil.removeCookie(response, Constants.CookieKey.ITS_TOKEN);
-                        CookieUtil.removeCookie(response, Constants.CookieKey.REFRESHTOKEN);
-					}
+					setCookie(username, password, savePassword, autologin, response, token, refreshToken);
                     maps.put("status", "success");
                     maps.put("message", loginUrl);
                     maps.put("refreshToken", refreshToken);
@@ -180,6 +161,30 @@ public class LoginController{
 		}
 		return maps;
 	}
+
+    private void setCookie(String username, String password, String savePassword, String autologin,
+        HttpServletResponse response, String token, String refreshToken) {
+        if (StringUtils.isNotBlank(savePassword)) {
+        	CookieUtil.addCookie(response, Constants.CookieKey.SAVE_PASSWORD, savePassword);
+        	CookieUtil.addCookie(response, Constants.CookieKey.USERNAME, username);
+        	CookieUtil.addCookie(response, Constants.CookieKey.PASSWORD, password);
+            CookieUtil.addCookie(response, Constants.CookieKey.ITS_TOKEN, token);
+            CookieUtil.addCookie(response, Constants.CookieKey.REFRESHTOKEN, refreshToken);
+
+        	if (StringUtils.isNotBlank(autologin)) {
+        		CookieUtil.addCookie(response, Constants.CookieKey.AUTO_LOGIN, autologin);
+        	} else {
+        		CookieUtil.removeCookie(response, Constants.CookieKey.AUTO_LOGIN);
+        	}
+        } else {
+        	CookieUtil.removeCookie(response, Constants.CookieKey.SAVE_PASSWORD);
+        	CookieUtil.removeCookie(response, Constants.CookieKey.USERNAME);
+        	CookieUtil.removeCookie(response, Constants.CookieKey.PASSWORD);
+        	CookieUtil.removeCookie(response, Constants.CookieKey.AUTO_LOGIN);
+            CookieUtil.removeCookie(response, Constants.CookieKey.ITS_TOKEN);
+            CookieUtil.removeCookie(response, Constants.CookieKey.REFRESHTOKEN);
+        }
+    }
 
 	/**
 	 * 登出

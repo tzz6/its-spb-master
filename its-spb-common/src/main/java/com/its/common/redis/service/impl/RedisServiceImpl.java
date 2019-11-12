@@ -284,6 +284,73 @@ public class RedisServiceImpl implements RedisService {
             return 0;
         }
     }
+    
+    /** ================sort set================ */
+    @Override
+    public Set<Object> szGet(String key, long start, long end) {
+        try {
+            return redisTemplate.opsForZSet().range(key, start, end);
+        } catch (Exception e) {
+            logger.error("redis sGet:" + e.getMessage(), e);
+            return null;
+        }
+    }
+
+    @Override
+    public boolean szHasKey(String key, Object value) {
+        try {
+            return redisTemplate.opsForSet().isMember(key, value);
+        } catch (Exception e) {
+            logger.error("redis sHasKey:" + e.getMessage(), e);
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean szSet(String key, Object value, double score) {
+        try {
+            return redisTemplate.opsForZSet().add(key, value, score);
+        } catch (Exception e) {
+            logger.error("redis sSet:" + e.getMessage(), e);
+            return false;
+        }
+    }
+    
+    @Override
+    public boolean szSetAndTime(String key, long time, Object value, double score) {
+        boolean flag = true;
+        try {
+            flag = redisTemplate.opsForZSet().add(key, value, score);
+            if (time > 0) {
+                expire(key, time);
+            }
+        } catch (Exception e) {
+            logger.error("redis sSetAndTime:" + e.getMessage(), e);
+            flag = false;
+        }
+        return flag;
+    }
+    
+    @Override
+    public long szGetSetSize(String key) {
+        try {
+            return redisTemplate.opsForZSet().size(key);
+        } catch (Exception e) {
+            logger.error("redis sGetSetSize:" + e.getMessage(), e);
+            return 0;
+        }
+    }
+    
+    @Override
+    public long zsetRemove(String key, Object... values) {
+        try {
+            Long count = redisTemplate.opsForZSet().remove(key, values);
+            return count;
+        } catch (Exception e) {
+            logger.error("redis setRemove:" + e.getMessage(), e);
+            return 0;
+        }
+    }
 
     /** ================list================ */
     @Override

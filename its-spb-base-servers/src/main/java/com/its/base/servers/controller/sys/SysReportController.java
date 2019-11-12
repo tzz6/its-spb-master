@@ -133,9 +133,9 @@ public class SysReportController {
 					exeSql = exeSql.replaceAll(whereName, "");
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            log.error("SysReportController addWhereParam：" + e.getMessage(), e);
+        }
 		return exeSql;
 	}
 

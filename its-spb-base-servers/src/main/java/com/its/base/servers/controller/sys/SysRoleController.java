@@ -141,8 +141,7 @@ public class SysRoleController {
             log.info("新增角色成功---" + sysRole.getRoleName());
             return successFlag;
         } catch (Exception e) {
-            log.error("新增角色失败：", e);
-            e.printStackTrace();
+            log.error("新增角色失败：" + e.getMessage(), e);
             successFlag = Constants.OPTION_FLAG_FAIL;
             return successFlag;
         }
@@ -186,8 +185,7 @@ public class SysRoleController {
             log.info("编辑角色成功---ID:" + sysRole.getRoleId());
             return successFlag;
         } catch (Exception e) {
-            log.error("编辑角色失败：", e);
-            e.printStackTrace();
+            log.error("编辑角色失败：" + e.getMessage(), e);
             successFlag = Constants.OPTION_FLAG_FAIL;
             return successFlag;
         }
@@ -216,8 +214,7 @@ public class SysRoleController {
             sysRoleService.deleteSysRole(roleIdList);
             log.info("删除角色成功---ID" + roleId);
         } catch (Exception e) {
-            log.error("删除角色失败：", e);
-            e.printStackTrace();
+            log.error("删除角色失败：" + e.getMessage(), e);
             successFlag = Constants.OPTION_FLAG_FAIL;
         }
         return successFlag;
@@ -297,8 +294,7 @@ public class SysRoleController {
             log.info("保存角色菜单成功---roleId:" + roleId + "---menuId:" + menuId);
             return successFlag;
         } catch (Exception e) {
-            log.error("保存角色菜单失败：", e);
-            e.printStackTrace();
+            log.error("保存角色菜单失败：" + e.getMessage(), e);
             successFlag = Constants.OPTION_FLAG_FAIL;
             return successFlag;
         }

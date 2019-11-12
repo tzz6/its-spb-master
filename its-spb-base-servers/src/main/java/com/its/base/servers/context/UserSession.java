@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -21,6 +23,8 @@ import com.its.common.utils.Constants;
  */
 public class UserSession {
 
+    private static final Log log = LogFactory.getLog(UserSession.class);
+    
 	/** 获取当前登录用户Session中的User **/
 	public static SysUser getUser() {
 		HttpServletRequest request = null;
@@ -34,7 +38,7 @@ public class UserSession {
 		    sysUser.setStCode(userName);
 		    sysUser.setLanguage(lang);
 		} catch (Exception e) {
-			e.printStackTrace();
+            log.error("getUser：" + e.getMessage(), e);
 			return null;
 		}
 		return sysUser;
@@ -60,7 +64,7 @@ public class UserSession {
 		try {
 			request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		} catch (Exception e) {
-			e.printStackTrace();
+		    log.error("getTimezone：" + e.getMessage(), e);
 			return null;
 		}
 		return (String) request.getSession().getAttribute(Constants.SessionKey.SYS_TIME_ZONE);
@@ -81,7 +85,7 @@ public class UserSession {
 		try {
 			request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		} catch (Exception e) {
-			e.printStackTrace();
+		    log.error("getSysMenu：" + e.getMessage(), e);
 			return null;
 		}
 		return (List<SysMenu>) request.getSession().getAttribute(Constants.SessionKey.ITS_USER_MENU_SESSION);
@@ -102,7 +106,7 @@ public class UserSession {
 		try {
 			request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		} catch (Exception e) {
-			e.printStackTrace();
+		    log.error("getInterceptorSysMenu：" + e.getMessage(), e);
 			return null;
 		}
 		return (List<SysMenu>) request.getSession().getAttribute(Constants.SessionKey.ITS_INTERCEPTOR_USER_MENU_SESSION);

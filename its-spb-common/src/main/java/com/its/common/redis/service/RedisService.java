@@ -39,7 +39,7 @@ public interface RedisService {
 
     /**
      * 
-     * 根据key获取过期时间
+          * 根据key获取过期时间
      * 
      * @param key 键不能为null
      * @return 时间(秒) 返回0代表为永久有效
@@ -48,7 +48,7 @@ public interface RedisService {
 
     /**
      * 
-     * 判断key是否存在
+          * 判断key是否存在
      * 
      * @param key 键
      * @return true 存在 false不存在
@@ -57,7 +57,7 @@ public interface RedisService {
 
     /**
      * 
-     * 删除缓存
+          * 删除缓存
      * 
      * @param key 可以传一个值 或多个
      */
@@ -98,7 +98,7 @@ public interface RedisService {
 
     /**
      * 
-     * 递增
+          * 递增
      * 
      * @param key   键
      * @param delta 要增加几(大于0)
@@ -109,7 +109,7 @@ public interface RedisService {
 
     /**
      * 
-     * 递减
+          * 递减
      * 
      * @param key   键
      * @param delta 要减少几(小于0)
@@ -132,7 +132,7 @@ public interface RedisService {
 
     /**
      * 
-     * 获取hashKey对应的所有键值
+          * 获取hashKey对应的所有键值
      * 
      * @param key 键
      * @return 对应的多个键值
@@ -165,7 +165,7 @@ public interface RedisService {
 
     /**
      * 
-     * 向一张Hash表中放入数据,如果不存在将创建
+          * 向一张Hash表中放入数据,如果不存在将创建
      * 
      * @param key   redis key
      * @param item  hash key
@@ -177,7 +177,7 @@ public interface RedisService {
 
     /**
      * 
-     * 向一张Hash表中加入数据,如果不存在将创建
+          * 向一张Hash表中加入数据,如果不存在将创建
      * 
      * @param key   redis key
      * @param item  hash key
@@ -190,7 +190,7 @@ public interface RedisService {
 
     /**
      * 
-     * 删除Hash表中的值
+          * 删除Hash表中的值
      * 
      * @param key  redis key 不能为null
      * @param item hash key 可以使多个 不能为null
@@ -200,7 +200,7 @@ public interface RedisService {
 
     /**
      * 
-     * 判断Hash表中是否有该项的值
+          * 判断Hash表中是否有该项的值
      * 
      * @param key  redis key 不能为null
      * @param item hash key 不能为null
@@ -236,7 +236,7 @@ public interface RedisService {
     // ============================set=============================
     /**
      * 
-     * 根据key获取Set中的所有值
+          * 根据key获取Set中的所有值
      * 
      * @param key 键
      * @return
@@ -246,7 +246,7 @@ public interface RedisService {
 
     /**
      * 
-     * 根据value从一个set中查询,是否存在
+          * 根据value从一个set中查询,是否存在
      * 
      * @param key   键
      * @param value 值
@@ -257,7 +257,7 @@ public interface RedisService {
 
     /**
      * 
-     * 将数据放入set缓存
+          * 将数据放入set缓存
      * 
      * @param key    键
      * @param values 值 可以是多个
@@ -268,7 +268,7 @@ public interface RedisService {
 
     /**
      * 
-     * 将set数据放入缓存
+          * 将set数据放入缓存
      * 
      * @param key    键
      * @param time   时间(秒)
@@ -280,7 +280,7 @@ public interface RedisService {
 
     /**
      * 
-     * 获取set缓存的长度
+          * 获取set缓存的长度
      * 
      * @param key 键
      * @return
@@ -290,7 +290,7 @@ public interface RedisService {
 
     /**
      * 
-     * 移除值为value的
+          * 移除值为value的
      * 
      * @param key    键
      * @param values 值 可以是多个
@@ -298,11 +298,81 @@ public interface RedisService {
      * 
      */
     public long setRemove(String key, Object... values);
+    
+    // ============================sort set=============================
+    /**
+     * 
+     * description: 据key获取ZSet中的值
+     * @author: tzz
+     * date: 2019/11/12 18:44
+     * @param key
+     * @param start
+     * @param end
+     * @return Set<Object>
+     */
+    public Set<Object> szGet(String key, long start, long end);
+    
+    /**
+     * 
+     * 根据value从一个set中查询,是否存在
+     * 
+     * @param key   键
+     * @param value 值
+     * @return true 存在 false不存在
+     * 
+     */
+    public boolean szHasKey(String key, Object value);
+    
+    /**
+     * 
+          * 将数据放入set缓存
+     * 
+     * @param key    键
+     * @param value 值
+     * @param score 权重
+     * @return 是否成功
+     * 
+     */
+    public boolean szSet(String key, Object value, double score);
+    
+    /**
+     * 
+          * 将set数据放入缓存
+     * 
+     * @param key    键
+     * @param time   时间(秒)
+     * @param value 值
+     * @param score 权重
+     * @return 是否成功
+     * 
+     */
+    public boolean szSetAndTime(String key, long time, Object value, double score);
+    
+    /**
+     * 
+     * 获取set缓存的长度
+     * 
+     * @param key 键
+     * @return
+     * 
+     */
+    public long szGetSetSize(String key);
+    
+    /**
+     * 
+     * 移除值为value的
+     * 
+     * @param key    键
+     * @param values 值 可以是多个
+     * @return 移除的个数
+     * 
+     */
+    public long zsetRemove(String key, Object... values);
 
     // ===============================list=================================
     /**
      * 
-     * 获取list缓存的内容
+          * 获取list缓存的内容
      * 
      * @param key   键
      * @param start 开始
@@ -314,7 +384,7 @@ public interface RedisService {
 
     /**
      * 
-     * 获取list缓存的长度
+          * 获取list缓存的长度
      * 
      * @param key 键
      * @return
@@ -324,7 +394,7 @@ public interface RedisService {
 
     /**
      * 
-     * 通过索引 获取list中的值
+          * 通过索引 获取list中的值
      * 
      * @param key   键
      * @param index 索引 index>=0时， 0 表头，1 第二个元素，依次类推；index<0时，-1，表尾，-2倒数第二个元素，依次类推
@@ -335,7 +405,7 @@ public interface RedisService {
 
     /**
      * 
-     * 将list放入缓存
+          * 将list放入缓存
      * 
      * @param key   键
      * @param value 值
@@ -347,7 +417,7 @@ public interface RedisService {
 
     /**
      * 
-     * 将list放入缓存
+          * 将list放入缓存
      * 
      * @param key   键
      * @param value 值
@@ -359,7 +429,7 @@ public interface RedisService {
 
     /**
      * 
-     * 将list放入缓存
+          * 将list放入缓存
      * 
      * @param key   键
      * @param value 值
@@ -371,7 +441,7 @@ public interface RedisService {
 
     /**
      * 
-     * 将list放入缓存
+          * 将list放入缓存
      * 
      * @param key   键
      * @param value 值
@@ -383,7 +453,7 @@ public interface RedisService {
 
     /**
      * 
-     * 根据索引修改list中的某条数据
+          * 根据索引修改list中的某条数据
      * 
      * @param key   键
      * @param index 索引
@@ -395,7 +465,7 @@ public interface RedisService {
 
     /**
      * 
-     * 移除N个值为value
+          * 移除N个值为value
      * 
      * @param key   键
      * @param count 移除多少个

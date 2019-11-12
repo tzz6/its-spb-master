@@ -2,7 +2,10 @@ package com.its.web.redis;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +65,35 @@ public class RedisServiceTest extends BaseTest {
         System.out.println(redisService.hmget(key));
 //        redisService.del(key);
         System.out.println(redisService.hmget(key));
+    }
+    
+    @Test
+    public void testSet() {
+        String key = "testSet";
+        Set<String> sets = new HashSet<String>();
+        sets.add("a");
+        sets.add("b");
+        sets.add("c");
+        redisService.sSet(key, sets);
+        Set<Object> getSetS = redisService.sGet(key);
+        System.out.println(getSetS);
+        redisService.sSet(key, "d");
+        redisService.sSet(key, "e");
+        System.out.println(redisService.sGet(key));
+       
+        
+    }
+
+    @Test
+    public void testSortSet() {
+        String key = "testSortSet";
+        int max = 10;
+        for (int i = 0; i < max; i++) {
+            redisService.szSet(key, "zone" + i, new Random().nextInt(10));
+        }
+        Set<Object> getSetS = redisService.szGet(key, 0, 8);
+        System.out.println(getSetS);
+
     }
 
 }

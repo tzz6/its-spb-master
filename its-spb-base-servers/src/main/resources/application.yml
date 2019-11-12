@@ -11,7 +11,7 @@ spring:
     name: its-spb-base-servers
   profiles:
     ###引用其他的yml文件
-    include: mybatis
+    include: mybatis,redis
   ###zipkin服务追踪
   zipkin: 
     base-url: http://${vm.ip}:9411/

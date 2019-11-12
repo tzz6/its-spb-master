@@ -266,8 +266,7 @@ public class SysUserController {
             log.info("保存用户角色成功---stId:" + stId + "---roleId:" + roleId);
             return successFlag;
         } catch (Exception e) {
-            log.error("保存用户角色失败：", e);
-            e.printStackTrace();
+            log.error("保存用户角色失败：" + e.getMessage(), e);
             successFlag = Constants.OPTION_FLAG_FAIL;
             return successFlag;
         }

@@ -25,6 +25,9 @@
 		<org.xhtmlrenderer.version>9.0.6</org.xhtmlrenderer.version>
 		<itext.version>2.0.8</itext.version>
 		<poi.ooxml.version>4.1.1</poi.ooxml.version>
+		<jasperreports.version>6.0.0</jasperreports.version>
+		<xstream.version>1.4.8</xstream.version>
+		<dom4j.version>1.6.1</dom4j.version>
 	</properties>
 
 	<dependencies>
@@ -167,7 +170,7 @@
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<!-- <version>1.4.8</version> -->
+			<version>${xstream.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -189,13 +192,13 @@
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>6.0.0</version>
+			<version>${jasperreports.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports-fonts</artifactId>
-			<version>6.0.0</version>
+			<version>${jasperreports.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -240,7 +243,7 @@
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-			<!-- <version>1.6.1</version> -->
+			<version>${dom4j.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- commons-lang -->

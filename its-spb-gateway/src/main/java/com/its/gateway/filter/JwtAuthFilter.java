@@ -87,7 +87,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             redisToken = map.get("token").toString();
             //注意：从Redis获取到的字符数据需要去掉前后双引号
             // redis中保存的会话为空或与当前请求用户的token不一致，请求非法
-            if (redisToken == null || !token.equals(redisToken.replace("\"", ""))) {
+            String repStr = "\"";
+            if (redisToken == null || !token.equals(redisToken.replace(repStr, ""))) {
                 tokenFlag = false;
                 message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
             }

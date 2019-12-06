@@ -1,6 +1,6 @@
 ###虚拟机IP
 vm: 
-  ip: vm-04-ip
+  ip: vm-02-ip
 server:
   ###Base服务端口号
   port: 8201

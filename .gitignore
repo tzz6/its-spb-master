@@ -1,2 +1,14 @@
 /.settings/
 /.project
+/.idea/
+/its-spb-base-servers/its-spb-base-servers.iml
+/its-spb-base-servers-api/its-spb-base-servers-api.iml
+/its-spb-common/its-spb-common.iml
+/its-spb-config-servers/its-spb-config-servers.iml
+/its-spb-eureka/its-spb-eureka.iml
+/its-spb-gateway/its-spb-gateway.iml
+/its-spb-order-servers/its-spb-order-servers.iml
+/its-spb-order-servers-api/its-spb-order-servers-api.iml
+/its-spb-parent.iml
+/its-spb-web/its-spb-web.iml
+/its-spb-zuul/its-spb-zuul.iml

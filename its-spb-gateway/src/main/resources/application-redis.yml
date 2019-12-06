@@ -2,15 +2,15 @@
 spring:
    redis:
       #单节点
-      host: 10.202.107.207
-      port: 6379
+      #host: vm-01-ip
+      #port: 6379
       #哨兵模式
-      #sentinel:
-      #   master: its_sentinel
-      #   nodes: 
-      #      - vm-01-ip:26379
-      #      - vm-02-ip:26379
-      #      - vm-03-ip:26379
+      sentinel:
+         master: its_sentinel
+         nodes: 
+            - vm-01-ip:26379
+            - vm-02-ip:26379
+            - vm-03-ip:26379
       #密码
       password: 123456
       lettuce:

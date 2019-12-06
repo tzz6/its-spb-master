@@ -42,6 +42,8 @@ public class RedisTemplateTest extends BaseTest{
 
     @Test
     public void hmset() {
+        redisTemplate.opsForValue().set("token", "16235dd");
+        System.out.println(redisTemplate.opsForValue().get("token"));
         Map<String, String> map = new HashMap<String, String>(16);
         map.put("token", "16235dd");
         map.put("username", "abc");

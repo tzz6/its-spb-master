@@ -89,7 +89,7 @@ public class FileUtil {
 			response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
 			in = new FileInputStream(path);
 			out = response.getOutputStream();
-			byte buffer[] = new byte[1024];
+			byte [] buffer = new byte[1024];
 			int len = 0;
 			while ((len = in.read(buffer)) > 0) {
 				out.write(buffer, 0, len);

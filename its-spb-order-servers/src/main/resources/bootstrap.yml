@@ -1,6 +1,6 @@
 ###虚拟机IP
 vm: 
-  ip: vm-04-ip
+  ip: vm-02-ip
 ###使用Spring Cloud Config Server时，应在 bootstrap.yml 中指定注册中心配置
 ###bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。
 ###application.yml 可以用来定义应用级别的，如果搭配 spring-cloud-config 使用 application.yml 里面定义的文件可以实现动态替换。

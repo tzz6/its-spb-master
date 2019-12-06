@@ -77,7 +77,7 @@ public class PoiUtil {
     /** 获取单元格数据 */
     public static String getCellValue(Cell cell) {
         String value = "";
-        switch (cell.getCellTypeEnum()) {
+        switch (cell.getCellType()) {
         case STRING :
             value = cell.getStringCellValue();
             break;

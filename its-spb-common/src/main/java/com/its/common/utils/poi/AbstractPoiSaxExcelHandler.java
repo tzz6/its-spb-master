@@ -200,7 +200,7 @@ public abstract class AbstractPoiSaxExcelHandler extends DefaultHandler {
 		if (nextIsString) {
 			try {
 				int idx = Integer.parseInt(lastContents);
-				lastContents = new XSSFRichTextString(sst.getEntryAt(idx)).toString();
+				lastContents = sst.getItemAt(idx).toString();
 				nextIsString = false;
 			} catch (Exception e) {
 				// logger.info(nextIsString);

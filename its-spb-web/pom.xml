@@ -25,6 +25,14 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<!-- 热部署 -->
@@ -56,34 +64,81 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>log4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
 		</dependency>
 		<!-- 加上这个才能辨认到log4j2.yml文件 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-yaml</artifactId>
 		</dependency>
-
-		<!-- SpringBoot整合tomcat -->
+		<!-- SpringBoot整合jetty statrt -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jetty</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm-commons</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--jetty容器支持jsp start-->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+            <version>7.0.0.pre5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jsp-2.1</artifactId>
+            <version>7.0.0pre2</version>
+        </dependency>
+        <!--jetty容器支持jsp end-->
+		<!-- SpringBoot整合jetty end -->
+		
+		<!-- SpringBoot整合tomcat start -->
 		<!-- War包部署到外置Tomcat中已经包含了这些包，如部署到外置Tomcat -->
 		<!-- 则需要将scope设置为provided否则会和内嵌的Tomcat 容器发生冲突 -->
+		<!--<scope>provided</scope> 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<!--<scope>provided</scope> -->
-		</dependency>
+		</dependency>-->
+		<!-- SpringBoot整合tomcat end -->
 		<!--SpringBoot整合JSP start -->
-		<!--用于编译jsp -->
+		<!--用于编译jsp 
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
-			<!--<scope>provided</scope> -->
-		</dependency>
+		</dependency>-->
+		<!--SpringBoot整合JSP end -->
+		
 		<!--jsp页面使用jstl标签 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
-		<!--JSP end -->
 		<!-- commons-lang start -->
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -115,4 +170,12 @@
 		</dependency>
 		<!-- java-jwt end -->
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -79,7 +79,5 @@ public class UUIDGenerator {
                 .append(format(getLoTime())).append(SEP)
                 .append(format(getCount())).toString());
     }
-    public static void main(String args[]){
-        System.out.println(UUIDGenerator.generate());
-    }
+
 }

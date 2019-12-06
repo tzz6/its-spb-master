@@ -35,7 +35,7 @@ public class ItsServerFilter extends ZuulFilter {
 		// 不需登录要拦截的url
 		String[] notFilterUrl = new String[] { "v2/api-docs", "logout", "webcam", "test" };
 		// IP白名单
-		String[] ipFilter = new String[] { "127.0.0.1", "10.118.53.59", "10.118.14.45" };
+		String[] ipFilter = new String[] { "127.0.0.1", "10.118.53.59", "10.118.14.16" };
 		boolean flag = false;
 		String message = null;
 		if (!checkFilter(ip, ipFilter)) {

@@ -1,5 +1,18 @@
 package com.its.common.utils.poi;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.xssf.eventusermodel.XSSFReader;
+import org.apache.poi.xssf.model.SharedStringsTable;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLReaderFactory;
+
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -7,20 +20,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xssf.eventusermodel.XSSFReader;
-import org.apache.poi.xssf.model.SharedStringsTable;
-import org.apache.poi.xssf.usermodel.XSSFRichTextString;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Excel超大数据读取，抽象Excel2007读取器 excel2007的底层数据结构是xml文件，采用SAX的事件驱动的方法解析
@@ -107,7 +106,6 @@ public abstract class AbstractExcelHandler extends DefaultHandler {
 
 	@Override
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
-//		logger.info("startElement: " + localName + ", " + name + ", " + attributes);
 	    // c:单元格
 	    String s = "s";
 	    String c = "c";
@@ -156,7 +154,7 @@ public abstract class AbstractExcelHandler extends DefaultHandler {
 		if (nextIsString) {
 			try {
 				int idx = Integer.parseInt(lastContents);
-				lastContents = new XSSFRichTextString(sst.getEntryAt(idx)).toString();
+				lastContents = sst.getItemAt(idx).toString();
 			} catch (Exception e) {
 //				logger.info(nextIsString);
 			}
@@ -178,7 +176,7 @@ public abstract class AbstractExcelHandler extends DefaultHandler {
 			try {
 			    // 日期格式处理
 				if (dateFlag) {
-					Date date = HSSFDateUtil.getJavaDate(Double.valueOf(value));
+					Date date = DateUtil.getJavaDate(Double.valueOf(value));
 					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 //					value = dateFormat.format(date);
 				}

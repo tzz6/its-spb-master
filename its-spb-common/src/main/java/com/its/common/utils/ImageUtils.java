@@ -183,9 +183,9 @@ public final class ImageUtils {
 			// 计算比例
 			if ((bi.getHeight() > height) || (bi.getWidth() > width)) {
 				if (bi.getHeight() > bi.getWidth()) {
-					ratio = (new Integer(height)).doubleValue() / bi.getHeight();
+					ratio = height / bi.getHeight();
 				} else {
-					ratio = (new Integer(width)).doubleValue() / bi.getWidth();
+					ratio = width / bi.getWidth();
 				}
 				AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), null);
 				itemp = op.filter(bi, null);
@@ -304,11 +304,7 @@ public final class ImageUtils {
 			g.drawImage(image, 0, 0, width, height, null);
 			// 保存图片
 			ImageIO.write(bi, "jpg", new File(savePath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (AWTException e) {
+		} catch (IOException | URISyntaxException | AWTException e) {
 			e.printStackTrace();
 		}
 	}

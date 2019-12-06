@@ -42,7 +42,7 @@ public class IdcardValidator {
 	/**
 	 * 每位加权因子
 	 */
-	private static int power[] = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5,
+	private static int [] power = { 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5,
 			8, 4, 2 };
 
 	/**
@@ -142,9 +142,9 @@ public class IdcardValidator {
 		// 获取第18位
 		String idcard18Code = idcard.substring(17, 18);
 
-		char c[] = idcard17.toCharArray();
+		char [] c = idcard17.toCharArray();
 
-		int bit[] = converCharToInt(c);
+		int [] bit = converCharToInt(c);
 
 		int sum17 = 0;
 
@@ -265,11 +265,11 @@ public class IdcardValidator {
 
 		String idcard17 = idcard.substring(0, 6) + year + idcard.substring(8);
 
-		char c[] = idcard17.toCharArray();
+		char [] c = idcard17.toCharArray();
 		String checkCode = "";
 
 		// 将字符数组转为整型数组
-		int bit[] = converCharToInt(c);
+		int [] bit = converCharToInt(c);
 
 		int sum17 = 0;
 		sum17 = getPowerSum(bit);
@@ -402,7 +402,7 @@ public class IdcardValidator {
 		return a;
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void testAin(String[] args) throws Exception {
 		String idcard15 = "130321860311519";
 		String idcard18 = "44142119661022273X";
 		// 15位身份证

@@ -229,7 +229,7 @@ public class SaxExcelHandler {
 			// Do now, as characters() may be called more than once
 			if (nextIsString) {
 				int idx = Integer.parseInt(lastContents);
-				lastContents = new XSSFRichTextString(sst.getEntryAt(idx)).toString();
+				lastContents = sst.getItemAt(idx).toString();
 				nextIsString = false;
 			}
 
@@ -401,7 +401,7 @@ public class SaxExcelHandler {
 
 	static BufferedWriter writer = null;
 
-	public static void main(String[] args) throws Exception {
+	public static void testAin(String[] args) throws Exception {
 		SaxExcelHandler example = new SaxExcelHandler();
 		String str = "templete_1.1.1_正确_zh";
 		// String str = "templete_500000_正确_zh";

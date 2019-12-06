@@ -122,7 +122,7 @@ public class RandomUtil {
 		return result;
 	}
 
-	public static void main(String[] args) {
+	public void testAin() {
 		System.out.println("返回一个定长的随机字符串(只包含大小写字母、数字):" + generateString(10));
 		System.out.println("返回一个定长的随机纯字母字符串(只包含大小写字母):" + generateMixString(10));
 		System.out.println("返回一个定长的随机纯大写字母字符串(只包含大小写字母):" + generateLowerString(10));

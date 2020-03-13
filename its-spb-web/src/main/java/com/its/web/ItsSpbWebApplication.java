@@ -4,6 +4,8 @@ import com.its.web.controller.login.VerifyCodeServlet;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
@@ -12,7 +14,7 @@ import org.springframework.context.annotation.Bean;
  * scanBasePackages:修改自动扫描包的Package,默认只会扫描同级目录及子目录
  * @author tzz
  */
-@SpringBootApplication(scanBasePackages = "com.its")
+@SpringBootApplication(scanBasePackages = "com.its", exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @MapperScan("com.its.core.mybatis.dao.mapper")
 public class ItsSpbWebApplication {
 
@@ -25,7 +27,7 @@ public class ItsSpbWebApplication {
      */
     @Bean
     public ServletRegistrationBean<VerifyCodeServlet> getVerifyCodeServlet() {
-        ServletRegistrationBean<VerifyCodeServlet> registrationBean = new ServletRegistrationBean<VerifyCodeServlet>(new VerifyCodeServlet());
+        ServletRegistrationBean<VerifyCodeServlet> registrationBean = new ServletRegistrationBean<>(new VerifyCodeServlet());
         registrationBean.addUrlMappings("/verifyCodeServlet");
         registrationBean.addInitParameter("num", "4");
         registrationBean.addInitParameter("content", "a");

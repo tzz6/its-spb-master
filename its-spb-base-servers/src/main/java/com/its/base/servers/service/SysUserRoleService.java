@@ -11,26 +11,26 @@ public interface SysUserRoleService {
 
     /**
      * getSysUserRoleBystId
-     * @param stId
-     * @return
+     * @param stId stId
+     * @return List
      */
 	List<SysUserRole> getSysUserRoleBystId(String stId);
 
 	/**
 	 * saveSysUserRole
-	 * @param list
+	 * @param list list
 	 */
 	void saveSysUserRole(List<SysUserRole> list);
 
 	/**
 	 * deleteSysUserRoleByStId
-	 * @param stId
+	 * @param stId stId
 	 */
 	void deleteSysUserRoleByStId(String stId);
 
 	/**
 	 * deleteSysUserRoleByRoleId
-	 * @param roleId
+	 * @param roleId roleId
 	 */
 	void deleteSysUserRoleByRoleId(String roleId);
 

@@ -109,7 +109,6 @@ public class JacksonUtil {
 	 * 反序列化复杂Collection如List<Bean>,
 	 * 先使用createCollectionType()或contructMapType()构造类型, 然后调用本函数.
 	 * 
-	 * @see #createCollectionType(Class, Class...)
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> T fromJson(String jsonString, JavaType javaType) {

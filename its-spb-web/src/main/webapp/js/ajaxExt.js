@@ -19,7 +19,7 @@ $(function() {
 		type = (type == null || type == "" || typeof (type) == "undefined") ? "post" : type;
 		dataType = (dataType == null || dataType == "" || typeof (dataType) == "undefined") ? "json" : dataType;
 		data = (data == null || data == "" || typeof (data) == "undefined") ? {"date" : new Date().getTime()} : data;
-		debugger
+		//debugger
 		$.ajax({
 			url : url,
 			type : type,
@@ -51,3 +51,46 @@ $(function() {
 	};
 
 });
+
+//ajax扩展方法
+function ajaxBaseExt(url, type, async, dataType, data, successFunction, errorFunction) {
+
+	$.ajax({
+		url: url,
+		type: type,
+		async: async,
+		//dataType : dataType,
+		data: data,
+		success: function (result) {
+			debugger
+			if (result.code == '0') {
+				$.messager.show({
+					title: Msg.sys_remaind1,
+					msg: Msg.sys_success
+				});
+				successFunction(result);
+			} else if (result.code == '999') {
+				$.messager.show({
+					title: Msg.sys_remaind1,
+					msg: Msg.sys_save_txt3
+				});
+			} else {
+				if (result != null && result != undefined) {
+					var index = result.indexOf("/logout");
+					if (index != -1) {
+						$.messager.show({
+							title: Msg.sys_remaind1,
+							msg: Msg.sys_no_permissions_txt1
+						});
+						setTimeout(function () {
+							top.location.href = result;
+						}, 3000);
+					}
+				}
+			}
+		},
+		error: function () {
+			errorFunction();
+		}
+	});
+}

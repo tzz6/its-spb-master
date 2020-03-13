@@ -16,41 +16,41 @@ public interface SysReportService {
      * description: execute
      * @author: 01115486
      * date: 2019/07/20 19:23
-     * @param sql
+     * @param sql sql
      * @return List<Map<String,Object>>
      */
-	public List<Map<String, Object>> execute(String sql);
+	List<Map<String, Object>> execute(String sql);
 
 	/**
 	 * 
 	 * description: execute
 	 * @author: 01115486
 	 * date: 2019/07/20 19:23
-	 * @param sql
-	 * @param start
-	 * @param end
+	 * @param sql sql
+	 * @param start start
+	 * @param end end
 	 * @return List<Map<String,Object>>
 	 */
-	public List<Map<String, Object>> execute(String sql, String start, String end);
+	List<Map<String, Object>> execute(String sql, String start, String end);
 
 	/**
 	 * 
 	 * description: getCount
 	 * @author: 01115486
 	 * date: 2019/07/20 19:23
-	 * @param sql
-	 * @return long
+	 * @param sql sql
+	 * @return long long
 	 */
-	public long getCount(String sql);
+	long getCount(String sql);
 
 	/**
 	 * 
 	 * description: executeIUD
 	 * @author: 01115486
 	 * date: 2019/07/20 19:23
-	 * @param sql
+	 * @param sql sql
 	 * @return Object
 	 */
-	public Object executeIUD(String sql);
+	Object executeIUD(String sql);
 
 }

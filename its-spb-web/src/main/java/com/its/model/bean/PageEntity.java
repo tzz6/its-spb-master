@@ -3,12 +3,11 @@ package com.its.model.bean;
 import java.io.Serializable;
 
 /**
- * 
- * @author tzz
- * @工号: 
- * @date 2019/07/10
- * @Introduce: PageEntity
- */
+  * Description: PageEntity
+  * Company: tzz
+  * @Author: tzz
+  * Date: 2019/07/10 18:32
+  */
 public class PageEntity implements Serializable {
 	
 	private static final long serialVersionUID = -6049458356491622982L;

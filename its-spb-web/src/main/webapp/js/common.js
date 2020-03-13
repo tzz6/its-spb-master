@@ -1058,7 +1058,7 @@ var easyuiPanelOnMove = function(left, top) {
 	        var _opt = $.extend(opt,{  
 	        	//20190829增加设置Headers扩展
 	        	beforeSend: function(xhr) {
-	        		debugger
+	        		//debugger
 	        		var username = window.sessionStorage.getItem("username");
 	        		var lang = window.sessionStorage.getItem("lang");
 	        		var refreshToken = window.sessionStorage.getItem("refreshToken");

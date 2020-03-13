@@ -17,67 +17,67 @@ public interface SysUserMapper {
 
     /**
      * getSysUserListByStCode
-     * @param stCode
-     * @return
+     * @param stCode stCode
+     * @return List
      */
-	public List<SysUser> getSysUserListByStCode(@Param("stCode") String stCode);
+	List<SysUser> getSysUserListByStCode(@Param("stCode") String stCode);
 
 	/**
 	 * insertSysUser
-	 * @param sysUser
+	 * @param sysUser sysUser
 	 */
-	public void insertSysUser(SysUser sysUser);
+	void insertSysUser(SysUser sysUser);
 	
 	/**
 	 * updateSysUser
-	 * @param sysUser
+	 * @param sysUser sysUser
 	 */
-	public void updateSysUser(SysUser sysUser);
+	void updateSysUser(SysUser sysUser);
 
 	/**
 	 * getSysUserCount
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return int
 	 */
-	public int getSysUserCount(Map<String, Object> map);
+	int getSysUserCount(Map<String, Object> map);
 
 	/**
 	 * getSysUserList
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return List
 	 */
-	public List<SysUser> getSysUserList(Map<String, Object> map);
+	List<SysUser> getSysUserList(Map<String, Object> map);
 
 	/**
 	 * getSysUserByStId
-	 * @param sysUser
-	 * @return
+	 * @param sysUser sysUser
+	 * @return SysUser
 	 */
-	public SysUser getSysUserByStId(SysUser sysUser);
+	SysUser getSysUserByStId(SysUser sysUser);
 
 	/**
 	 * deleteSysUser
-	 * @param stIdList
+	 * @param stIdList stIdList
 	 */
-	public void deleteSysUser(List<String> stIdList);
+	void deleteSysUser(List<String> stIdList);
 
 	/**
 	 * getSysUserByMap
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return List
 	 */
-	public List<SysUser> getSysUserByMap(Map<String, Object> map);
+	List<SysUser> getSysUserByMap(Map<String, Object> map);
 
 	/**
 	 * updateSysUserPassword
-	 * @param sysUser
+	 * @param sysUser sysUser
 	 */
-	public void updateSysUserPassword(SysUser sysUser);
+	void updateSysUserPassword(SysUser sysUser);
 
 	/**
 	 * getAllSysUserList
-	 * @return
+	 * @return List
 	 */
-	public List<SysUser> getAllSysUserList();
+	List<SysUser> getAllSysUserList();
 
 }

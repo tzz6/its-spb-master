@@ -2,9 +2,9 @@ server:
   ###Order服务端口号
   port: 8301
   ###设置Tomcat最大线程数，默认200
-#  tomcat: 
+#  tomcat:
 #    max-threads: 50
-    
+
 ###使用Spring Cloud Config Server时，应在 bootstrap.yml 中指定注册中心配置
 ###bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。
 ###application.yml 可以用来定义应用级别的，如果搭配 spring-cloud-config 使用 application.yml 里面定义的文件可以实现动态替换。
@@ -19,8 +19,8 @@ ribbon:
 ###局部设置：
 ###service-id:
 #####ribbon:
-#######ReadTimeout:1000 
-#######ConnectTimeout:1000 
+#######ReadTimeout:1000
+#######ConnectTimeout:1000
 
 
 ### 方式二：@FeignClient中的fallback类级别实现，需要在yml中配置开启Feign的Hystrix熔断器(研发中主要使用这种方式)
@@ -38,11 +38,11 @@ hystrix:
     default:
       execution:
         timeout:
-          enabled: true 
-        isolation: 
-          thread: 
-            timeoutInMilliseconds: 2000
-            
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
 ## Hystrix 默认加载的配置文件
 ## 线程池大小
 #hystrix.threadpool.default.coreSize=1
@@ -123,7 +123,7 @@ hystrix:
 ###接口使用http+json格式restful目的为了实现跨平台、考虑高并发对接口服务实现保护（服务降级、熔断、隔离），最后使用统一API管理平台api swagger
 
 #Swagger配置
-swagger: 
+swagger:
   base-package: com.its.base.servers.api
 logging:
   level:

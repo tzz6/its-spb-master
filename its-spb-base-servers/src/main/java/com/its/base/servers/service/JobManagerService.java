@@ -14,21 +14,21 @@ public interface JobManagerService {
 
     /**
      * insertJobManager
-     * @param jobManager
+     * @param jobManager jobManager
      */
-	public void insertJobManager(JobManager jobManager);
+	void insertJobManager(JobManager jobManager);
 
 	/**
 	 * updateJobManager
-	 * @param jobManager
+	 * @param jobManager jobManager
 	 */
-	public void updateJobManager(JobManager jobManager);
+	void updateJobManager(JobManager jobManager);
 
 	/**
 	 * getJobManagerList
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return List
 	 */
-	public List<JobManager> getJobManagerList(Map<String, Object> map);
+	List<JobManager> getJobManagerList(Map<String, Object> map);
 
 }

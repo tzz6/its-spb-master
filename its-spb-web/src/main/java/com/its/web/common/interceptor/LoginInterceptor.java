@@ -149,7 +149,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         	SysUser user = sysUserService.getSysUserByStId(currUser);
         	if (user != null) {
         		String lang = currUser.getLanguage();
-        		Map<String, Object> maps = new HashMap<String, Object>(16);
+        		Map<String, Object> maps = new HashMap<>(16);
         		maps.put("stId", user.getStId());
         		maps.put("sysNameCode", Constants.SYS_NAME_CODE);
         		maps.put("lang", lang);

@@ -15,41 +15,41 @@ public interface SysRoleMapper {
 
     /**
      * getSysRoleCount
-     * @param map
-     * @return
+     * @param map map
+     * @return int
      */
-	public int getSysRoleCount(Map<String, Object> map);
+	int getSysRoleCount(Map<String, Object> map);
 
 	/**
 	 * getSysRoleList
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return List
 	 */
-	public List<SysRole> getSysRoleList(Map<String, Object> map);
+	List<SysRole> getSysRoleList(Map<String, Object> map);
 
 	/**
 	 * insertSysRole
-	 * @param sysRole
+	 * @param sysRole sysRole
 	 */
-	public void insertSysRole(SysRole sysRole);
+	void insertSysRole(SysRole sysRole);
 
 	/**
 	 * getSysRoleById
-	 * @param sysRole
-	 * @return
+	 * @param sysRole sysRole
+	 * @return SysRole
 	 */
-	public SysRole getSysRoleById(SysRole sysRole);
+	SysRole getSysRoleById(SysRole sysRole);
 
 	/**
 	 * updateSysRole
-	 * @param sysRole
+	 * @param sysRole sysRole
 	 */
-	public void updateSysRole(SysRole sysRole);
+	void updateSysRole(SysRole sysRole);
 
 	/**
 	 * deleteSysRole
-	 * @param roleIdList
+	 * @param roleIdList roleIdList
 	 */
-	public void deleteSysRole(List<String> roleIdList);
+	void deleteSysRole(List<String> roleIdList);
 
 }

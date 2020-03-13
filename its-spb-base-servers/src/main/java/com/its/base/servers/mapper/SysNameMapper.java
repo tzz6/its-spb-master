@@ -15,9 +15,9 @@ public interface SysNameMapper {
 
     /**
      * getSysNameByLang
-     * @param lang
-     * @return
+     * @param lang lang
+     * @return List
      */
-	public List<SysName> getSysNameByLang(@Param("lang") String lang);
+	List<SysName> getSysNameByLang(@Param("lang") String lang);
 
 }

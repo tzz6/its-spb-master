@@ -13,10 +13,10 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * 
+ *
  * Swagger2配置
- * 
- * @EnableSwagger2开启Swagger
+ *
+ * 注解@EnableSwagger2 开启Swagger
  * @author tzz
  */
 @Configuration
@@ -31,8 +31,8 @@ public class SwaggerConfig {
 
     /**
      * 创建API文档信息
-     * 
-     * @return
+     *
+     * @return ApiInfo
      */
     private ApiInfo apiInfo() {
 

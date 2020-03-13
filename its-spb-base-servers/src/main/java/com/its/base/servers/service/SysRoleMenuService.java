@@ -11,20 +11,20 @@ public interface SysRoleMenuService {
 
     /**
      * getSysRoleMenuByRoleId
-     * @param roleId
-     * @return
+     * @param roleId roleId
+     * @return List
      */
 	List<SysRoleMenu> getSysRoleMenuByRoleId(String roleId);
 
 	/**
 	 * saveSysRoleMenu
-	 * @param list
+	 * @param list List
 	 */
 	void saveSysRoleMenu(List<SysRoleMenu> list);
 
 	/**
 	 * deleteSysRoleMenuByRoleId
-	 * @param roleId
+	 * @param roleId roleId
 	 */
 	void deleteSysRoleMenuByRoleId(String roleId);
 }

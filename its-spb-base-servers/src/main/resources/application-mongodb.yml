@@ -1,0 +1,5 @@
+#配置mongodb数据源
+spring:
+  data:
+    mongodb:
+      uri: mongodb://vm-01-ip:27017/demo

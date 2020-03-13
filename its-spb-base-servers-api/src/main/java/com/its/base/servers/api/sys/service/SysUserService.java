@@ -9,7 +9,7 @@ import com.its.base.servers.api.sys.domain.SysUser;
 import com.its.common.model.ResponseBase;
 
 /**
- * 
+ *
  * @author tzz
  * @Introduce: SysUserService
  */
@@ -17,20 +17,20 @@ public interface SysUserService {
 
     /**
      * 根据id获取SysUser
-     * 
-     * @param stId
-     * @return
+     *
+     * @param stId stId
+     * @return SysUser
      */
     @GetMapping("/getSysUserByStId")
-    public SysUser getSysUserByStId(@RequestParam(value = "stId") String stId);
+    SysUser getSysUserByStId(@RequestParam(value = "stId") String stId);
 
     /**
      * 获取SysUser
-     * 
-     * @param sysUser
-     * @return
+     *
+     * @param sysUser sysUser
+     * @return ResponseBase
      */
     @PostMapping("/getSysUser")
-    public ResponseBase getSysUser(@RequestBody SysUser sysUser);
+    ResponseBase getSysUser(@RequestBody SysUser sysUser);
 
 }

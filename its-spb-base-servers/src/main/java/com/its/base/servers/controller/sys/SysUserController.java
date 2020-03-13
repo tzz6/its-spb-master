@@ -1,23 +1,5 @@
 package com.its.base.servers.controller.sys;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.its.base.servers.api.sys.domain.JobManager;
 import com.its.base.servers.api.sys.domain.SysUser;
 import com.its.base.servers.api.sys.domain.SysUserRole;
@@ -30,6 +12,16 @@ import com.its.common.model.Datagrid;
 import com.its.common.utils.Constants;
 import com.its.common.utils.IpUtil;
 import com.its.common.utils.PrimaryKeyUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.*;
 
 
 /**
@@ -40,32 +32,32 @@ import com.its.common.utils.PrimaryKeyUtil;
 @RequestMapping(value = "/sysUser")
 public class SysUserController {
 
-    private static final Log log = LogFactory.getLog(SysUserController.class);
+    private static final Logger log = LoggerFactory.getLogger(SysUserController.class);
 
-    @Autowired
     private SysUserService sysUserService;
-    @Autowired
     private SysUserRoleService sysUserRoleService;
+    private JobManagerService jobManagerService;
 
     @Autowired
-    private JobManagerService jobManagerService;
-    
+    public SysUserController(SysUserService sysUserService, SysUserRoleService sysUserRoleService, JobManagerService jobManagerService) {
+        this.sysUserService = sysUserService;
+        this.sysUserRoleService = sysUserRoleService;
+        this.jobManagerService = jobManagerService;
+    }
 
     /**
      * 用户管理列表数据
      *
-     * @param request
-     * @param stCode
-     * @param page
-     * @param rows
-     * @return
+     * @param stCode stCode
+     * @param page page
+     * @param rows rows
+     * @return Datagrid<SysUser>
      */
     @RequestMapping("/sysUserManage")
-    public @ResponseBody
-    Datagrid<SysUser> sysUserManage(HttpServletRequest request,
-                                    @RequestParam(value = "stCode", required = false) String stCode, @RequestParam(value = "page") Integer page,
-                                    @RequestParam(value = "rows") Integer rows) {
-        Map<String, Object> map = new HashMap<String, Object>(16);
+    public @ResponseBody Datagrid<SysUser> sysUserManage(
+            @RequestParam(value = "stCode", required = false) String stCode, @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "rows") Integer rows) {
+        Map<String, Object> map = new HashMap<>(16);
         map.put("stCode", stCode);
         int total = sysUserService.getSysUserCount(map);
         int startNum = (page - 1) * rows;
@@ -73,26 +65,22 @@ public class SysUserController {
         map.put("rows", rows);
         log.info("startNum:" + startNum + ",rows:" + rows + "," + total);
         List<SysUser> result = sysUserService.getSysUserList(map);
-        Datagrid<SysUser> datagrid = new Datagrid<SysUser>(total, result);
-        return datagrid;
+        return new Datagrid<>(total, result);
     }
 
     /**
      * 用户新增保存
      *
-     * @param request
-     * @param sysUser
-     * @return
+     * @param sysUser sysUser
+     * @return String
      */
     @RequestMapping(value = "/addSysUser")
-    public @ResponseBody
-    String addSysUser(HttpServletRequest request, SysUser sysUser) {
+    public @ResponseBody String addSysUser(SysUser sysUser) {
 
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         try {
             // 当前登录用户
             SysUser currSysUser = UserSession.getUser();
-//          sysUser.setStName(URLDecoder.decode(sysUser.getStName(), "UTF-8"));
             sysUser.setStName(sysUser.getStName());
             // 判断用户工号重复性
             String stCode = sysUser.getStCode();
@@ -103,9 +91,11 @@ public class SysUserController {
 
             sysUser.setStId(PrimaryKeyUtil.genPrimaryKey());
             Date currDate = new Date();
-            sysUser.setCreateBy(currSysUser.getStCode());
+            if (currSysUser != null) {
+                sysUser.setCreateBy(currSysUser.getStCode());
+                sysUser.setUpdateBy(currSysUser.getStCode());
+            }
             sysUser.setCreateTm(currDate);
-            sysUser.setUpdateBy(currSysUser.getStCode());
             sysUser.setCreateTm(currDate);
             String password = sysUser.getStCode();
             String salt = sysUser.getStCode();
@@ -130,33 +120,23 @@ public class SysUserController {
     /**
      * 查询对应ID的USER
      *
-     * @return
+     * @return SysUser
      */
     @RequestMapping(value = "/getSysUserById", method = {RequestMethod.POST})
-    public @ResponseBody
-    SysUser getSysUserById(HttpServletRequest request, HttpServletResponse response,
-                           @RequestParam(value = "stId", required = true) String stId) {
+    public @ResponseBody SysUser getSysUserById(@RequestParam(value = "stId") String stId) {
         SysUser sysUser = new SysUser();
         sysUser.setStId(stId);
-        sysUser = sysUserService.getSysUserByStId(sysUser);
-        Map<String, Object> userMap = new HashMap<String, Object>(16);
-        userMap.put("stId", sysUser.getStId());
-        userMap.put("stCode", sysUser.getStCode());
-        userMap.put("stName", sysUser.getStName());
-        return sysUser;
+        return sysUserService.getSysUserByStId(sysUser);
     }
 
     /**
      * 用户修改保存
      *
-     * @param request
-     * @param sysUser
-     * @return
+     * @param sysUser sysUser
+     * @return String
      */
     @RequestMapping(value = "/updateSysUser")
-    public @ResponseBody
-    String updateSysUser(HttpServletRequest request, SysUser sysUser) {
-
+    public @ResponseBody String updateSysUser(SysUser sysUser) {
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         try {
             // 当前登录用户
@@ -180,7 +160,9 @@ public class SysUserController {
             }
 
             Date currDate = new Date();
-            sysUser.setUpdateBy(currSysUser.getStCode());
+            if (currSysUser != null) {
+                sysUser.setUpdateBy(currSysUser.getStCode());
+            }
             sysUser.setUpdateTm(currDate);
             sysUserService.updateSysUser(sysUser);
             log.info("编辑用户成功---用户名为" + stCode);
@@ -194,18 +176,14 @@ public class SysUserController {
     /**
      * 删除
      *
-     * @param request
-     * @param response
-     * @param stId
-     * @return
+     * @param stId stId
+     * @return String
      */
     @RequestMapping(value = "/deleteSysUser")
-    public @ResponseBody
-    String deleteSysUser(HttpServletRequest request, HttpServletResponse response,
-                         @RequestParam(value = "stId") String stId) {
+    public @ResponseBody String deleteSysUser(@RequestParam(value = "stId") String stId) {
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         String[] stIds = stId.split(",");
-        List<String> stIdList = new ArrayList<String>();
+        List<String> stIdList = new ArrayList<>();
         try {
             for (String id : stIds) {
                 stIdList.add(id);
@@ -223,37 +201,30 @@ public class SysUserController {
     /**
      * 查询用户角色列表
      *
-     * @param request
-     * @param response
-     * @return
+     * @return List<SysUserRole>
      */
     @RequestMapping(value = "/getSysUserRoleList")
     @ResponseBody
-    public List<SysUserRole> getSysUserRoleList(HttpServletRequest request, HttpServletResponse response,
-                                                @RequestParam(value = "stId", required = true) String stId) {
-        List<SysUserRole> sysRoleMenuList = sysUserRoleService.getSysUserRoleBystId(stId);
-        return sysRoleMenuList;
+    public List<SysUserRole> getSysUserRoleList(@RequestParam(value = "stId") String stId) {
+        return sysUserRoleService.getSysUserRoleBystId(stId);
     }
 
     /**
      * 保存用户角色关联
      *
-     * @param request
-     * @param response
-     * @param stId
-     * @param roleId
-     * @return
+     * @param stId stId
+     * @param roleId roleId
+     * @return String
      */
     @RequestMapping(value = "/saveSysUserRole", method = RequestMethod.POST)
     public @ResponseBody
-    String saveSysUserRole(HttpServletRequest request, HttpServletResponse response,
-                           @RequestParam(value = "stId", required = true) String stId,
-                           @RequestParam(value = "roleId", required = true) String roleId) {
+    String saveSysUserRole(@RequestParam(value = "stId") String stId,
+                           @RequestParam(value = "roleId") String roleId) {
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         try {
             sysUserRoleService.deleteSysUserRoleByStId(stId);
             if (roleId != null && !"".equals(roleId)) {
-                List<SysUserRole> list = new ArrayList<SysUserRole>();
+                List<SysUserRole> list = new ArrayList<>();
                 String[] roleIds = roleId.split(",");
                 for (String rId : roleIds) {
                     SysUserRole sysUserRole = new SysUserRole();

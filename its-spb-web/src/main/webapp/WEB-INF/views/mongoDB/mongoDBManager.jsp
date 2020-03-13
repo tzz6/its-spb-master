@@ -55,7 +55,7 @@
 		// 初始化系统列表
 		$('#mongodb_table').datagrid(
 				{
-					url : '${ctx}/mongoDB/mongoDBManager?random='
+					url : '${apibase}/mongoDB/mongoDBManager?random='
 							+ new Date().getTime(),
 					pageList : [ 10, 100, 200,500,5000,10000,100000 ],
 					pageSize : 500,
@@ -91,10 +91,10 @@
 						field : 'createDate',
 						title : '创建时间',
 						width : 200,
-						align : 'center',
-						formatter: function(value, row){
-							return $.fn.timestampFormat(value,'yyyy-MM-dd HH:mm:ss');
-						}
+						align : 'center'
+						// formatter: function(value, row){
+						// 	return $.fn.timestampFormat(value,'yyyy-MM-dd HH:mm:ss');
+						// }
 					}, {
 						field : 'id',
 						hidden : true,
@@ -150,6 +150,7 @@
 	function openAddDialog() {
 		$('#mongodb_dialog_form').form('clear');
 		$('#mongodb_dialog_div').dialog('open');
+		$("#mongodb_dialog_linkbutton_save").linkbutton("enable");
 	}
 	
 	// 修改按钮点击事件
@@ -174,7 +175,7 @@
 	// 打开修改用户弹出框
 	function openUpdateDialog(id) {
 		$.ajax({
-			url : '${ctx}/mongoDB/getById?random=' + new Date().getTime(),
+			url : '${apibase}/mongoDB/getById?random=' + new Date().getTime(),
 			type : "post",
 			data : {
 				"id" : id
@@ -204,41 +205,8 @@
   	                	id = id + row.id + ",";
   	                  }
   	              });
-  	              $.ajax({
-  	                  url:'${ctx}/mongoDB/delete?random=' + new Date().getTime(),
-  	                  type: "POST",
-  	                  data: {'ids':id},
-  	                  async: false,
-  	                  success: function (resultData){
-  	                	  resultData = eval('(' + resultData + ')');
-  	                	  if (resultData == 'SUCCESS') {
-  	                		  $.messager.show({
-  	                			  title: Msg.sys_remaind1,
-  	                			  msg: Msg.sys_delete_txt1
-  	                		  });
-  	                		  queryMongoDBList(); // 重新查询用户列表
-  	                		  $('#mongodb_table').datagrid('uncheckAll');
-  	                	  } else if(resultData == 'FAIL'){
-  	                		 $.messager.show({
-                                 title: Msg.sys_remaind1,
-                                 msg:Msg.sys_delete_txt2
-                             });
-  	                	  }else {
-  	                		if (resultData != null && resultData != undefined) {
-	  	      					var index = resultData.indexOf("/logout");
-	  	      					if (index != -1) {
-		  	      					$.messager.show({
-	 	                                 title: Msg.sys_remaind1,
-	 	                                 msg:Msg.sys_no_permissions_txt1
-	 	                             });
-			  	      				setTimeout(function () { 
-			      						top.location.href = resultData;
-			      				    }, 3000);
-	  	      					}
-	  	      				}
-  	                	 }
-  	                  }
-  	              });
+				  ajaxBaseExt('${apibase}/mongoDB/delete?random=' + new Date().getTime(), "POST", false, "JSON", {'ids':id},
+						  deleteSuccessFunction, errorFunction);
   			  }
   		  });
   	  }else{
@@ -248,7 +216,18 @@
   		  });
   	  }
 	  });
-	  
+
+	function deleteSuccessFunction(result) {
+		queryMongoDBList(); // 重新查询用户列表
+		$('#mongodb_table').datagrid('uncheckAll');
+	}
+
+	function errorFunction() {
+		$.messager.show({
+			title: Msg.sys_remaind1,
+			msg: Msg.sys_err
+		});
+	}
 </script>
 </html>
 </fmt:bundle>

@@ -99,7 +99,7 @@ public class ShardedJedisSentinelPool extends Pool<ShardedJedis> {
 	/** 初始化哨兵 **/
 	private List<HostAndPort> initSentinels(Set<String> sentinels, final List<String> masters) {
 		Map<String, HostAndPort> masterMap = new HashMap<String, HostAndPort>(16);
-		List<HostAndPort> shardMasters = new ArrayList<HostAndPort>();
+		List<HostAndPort> shardMasters = new ArrayList<>();
 		log.info("Trying to find all master from available Sentinels...");
 		for (String masterName : masters) {
 			HostAndPort master = null;

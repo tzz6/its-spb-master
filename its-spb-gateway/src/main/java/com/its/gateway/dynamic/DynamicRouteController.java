@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * 单机环境动态路由配置
- * 
+ *
  * @author tzz
  * @date 2019/03/04
  * @Introduce: 单机环境动态路由配置
@@ -26,14 +26,18 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("/route")
 public class DynamicRouteController {
 
-    @Autowired
     private DynamicRouteServiceImpl dynamicRouteService;
+
+    @Autowired
+    public DynamicRouteController(DynamicRouteServiceImpl dynamicRouteService) {
+        this.dynamicRouteService = dynamicRouteService;
+    }
 
     /**
      * 增加路由
-     * 
-     * @param gwdefinition
-     * @return
+     *
+     * @param gwdefinition gwdefinition
+     * @return String
      */
     @PostMapping("/add")
     public String add(@RequestBody GatewayRouteDefinition gwdefinition) {
@@ -48,7 +52,7 @@ public class DynamicRouteController {
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable String id) {
-       
+
         return dynamicRouteService.delete(id);
     }
 

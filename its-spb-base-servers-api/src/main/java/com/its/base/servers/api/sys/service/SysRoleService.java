@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.its.common.model.ResponseBase;
 
 /**
- * 
+ *
  * @author tzz
  * @Introduce: SysRoleService
  */
@@ -15,18 +15,18 @@ public interface SysRoleService {
 
     /**
      * 根据id获取SysRole
-     * 
-     * @param id
-     * @return
+     *
+     * @param id id
+     * @return String
      */
     @GetMapping("/getSysRoleById")
-    public String getSysRoleById(@RequestParam(value = "id") String id);
+    String getSysRoleById(@RequestParam(value = "id") String id);
 
     /**
      * 获取SysRol
-     * @return
+     * @return ResponseBase
      */
     @PostMapping("/getSysRole")
-    public ResponseBase getSysRole();
+    ResponseBase getSysRole();
 
 }

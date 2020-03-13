@@ -15,20 +15,20 @@ public interface SysRoleMenuMapper {
 
     /**
      * getSysRoleMenuByRoleId
-     * @param roleId
-     * @return
+     * @param roleId roleId
+     * @return List
      */
 	List<SysRoleMenu> getSysRoleMenuByRoleId(@Param("roleId") String roleId);
 
 	/**
 	 * saveSysRoleMenu
-	 * @param list
+	 * @param list list
 	 */
 	void saveSysRoleMenu(List<SysRoleMenu> list);
 
 	/**
 	 * deleteSysRoleMenuByRoleId
-	 * @param roleId
+	 * @param roleId roleId
 	 */
 	void deleteSysRoleMenuByRoleId(@Param("roleId") String roleId);
 

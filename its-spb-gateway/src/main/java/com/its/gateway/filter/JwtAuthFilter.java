@@ -37,18 +37,23 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
     private final Logger log = LoggerFactory.getLogger(IpBlackListFilter.class);
     private static final String ITS_TOKEN = "its-token";
     private static final String REFRESHTOKEN = "its-refreshToken";
+    private static final String WEB_REFERER = "referer";
     /** refreshToken过期时间 */
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
-    @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    public JwtAuthFilter(StringRedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String url = exchange.getRequest().getURI().getPath();
 
-        // 不需要鉴权URL
-        String[] noAuthlist = new String[] {"/auth-service/", "/api-base/login", "/api-base/sysRole/updateSysRole"};
-        if (checkFilter(url, noAuthlist)) {
+        String referer=exchange.getRequest().getHeaders().getFirst(WEB_REFERER);
+        String url = exchange.getRequest().getURI().getPath();
+        String[] noAuthList = new String[] {"/api-docs", "/auth-service/", "/api-base/login", "/api-base/sysRole/updateSysRole"};
+        if (checkFilter(url, noAuthList) && checkReferer(referer)) {
             // 从请求头中取得token
             String refreshToken = exchange.getRequest().getHeaders().getFirst(REFRESHTOKEN);
             String token = exchange.getRequest().getHeaders().getFirst(ITS_TOKEN);
@@ -65,32 +70,29 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             log.info("its refreshToken: {} its token : {}", refreshToken, token);
             boolean tokenFlag = true;
             String message = null;
-            // token为空则鉴权失败
-            if ((token == null || "".equals(token))) {
+            Map<Object, Object> map = null;
+            if ((token == null || "".equals(token)||refreshToken == null || "".equals(refreshToken))) {
+                // token为空则鉴权失败
                 tokenFlag = false;
                 message = "{\"code\": \"401\",\"msg\": \"401 Unauthorized.\"}";
-
-            }
-            // token验证非法
-            boolean verifyResult = JwtUtil.verify(token);
-            if (!verifyResult) {
-                tokenFlag = false;
-                message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
-            }
-            // 请求中的token是否在redis中存在
-            String username = null;
-            String lang = null;
-            String redisToken = null;
-            Map<Object, Object> map = redisTemplate.opsForHash().entries(refreshToken);
-            username = map.get("username").toString();
-            lang = map.get("lang").toString();
-            redisToken = map.get("token").toString();
-            //注意：从Redis获取到的字符数据需要去掉前后双引号
-            // redis中保存的会话为空或与当前请求用户的token不一致，请求非法
-            String repStr = "\"";
-            if (redisToken == null || !token.equals(redisToken.replace(repStr, ""))) {
-                tokenFlag = false;
-                message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
+            } else {
+                boolean verifyResult = JwtUtil.verify(token);
+                // 从redis中获取单点登录认证信息
+                map = redisTemplate.opsForHash().entries(refreshToken);
+                if (!verifyResult||map == null) {
+                    // token验证非法或redis中无单点登录认证信息，则鉴权失败
+                    tokenFlag = false;
+                    message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
+                } else {
+                    String redisToken = map.get("token").toString();
+                    //注意：从Redis获取到的字符数据需要去掉前后双引号
+                    String repStr = "\"";
+                    // redis中保存的会话为空或与当前请求用户的token不一致，请求非法
+                    if (redisToken == null || !token.equals(redisToken.replace(repStr, ""))) {
+                        tokenFlag = false;
+                        message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
+                    }
+                }
             }
             if (!tokenFlag) {
                 // 鉴权失败
@@ -104,6 +106,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             } else {
                 // 鉴权成功
                 ServerHttpRequest request = exchange.getRequest();
+                String username = map.get("username").toString();
+                String lang = map.get("lang").toString();
                 if (username != null && lang != null) {
                     // 将用户信息添加至header,用于微服务后台获取当前登录用户名
                     request.mutate().header("its-username", username.replace("\"", ""))
@@ -113,23 +117,34 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                 redisTemplate.expire(refreshToken, REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
             }
         }
-
         return chain.filter(exchange);
     }
+
+
 
     @Override
     public int getOrder() {
         return -1;
     }
 
-    /** 检查是否是要过滤 */
-    protected boolean checkFilter(String value, String[] notFilter) {
+    /**
+     * 检查URL是否是要鉴权
+     */
+    private boolean checkFilter(String value, String[] notFilter) {
         for (String str : notFilter) {
-            if (str.equals(value)) {
+            if (value.contains(str)) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * 通过referer将swagger设置为不需要鉴权
+     */
+    private boolean checkReferer(String referer) {
+        String swaggerReferer = "http://127.0.0.1/swagger-ui.html";
+        return referer == null || !referer.contains(swaggerReferer);
     }
     
 }

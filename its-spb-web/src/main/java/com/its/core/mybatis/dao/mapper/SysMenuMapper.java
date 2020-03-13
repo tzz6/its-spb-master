@@ -13,50 +13,50 @@ public interface SysMenuMapper {
 
     /**
      * getSysMenus
-     * @return
+     * @return List
      */
-	public List<SysMenu> getSysMenus();
+	List<SysMenu> getSysMenus();
 
 	/**
 	 * getSysMenuListFirst
-	 * @param lang
-	 * @return
+	 * @param lang lang
+	 * @return List
 	 */
-	public List<SysMenu> getSysMenuListFirst(@Param("lang") String lang);
+	List<SysMenu> getSysMenuListFirst(@Param("lang") String lang);
 
 	/**
 	 * getSysMenuListByParentMenuId
-	 * @param parentMenuId
-	 * @param lang
-	 * @return
+	 * @param parentMenuId parentMenuId
+	 * @param lang lang
+	 * @return List
 	 */
-	public List<SysMenu> getSysMenuListByParentMenuId(@Param("parentMenuId") String parentMenuId, @Param("lang") String lang);
+	List<SysMenu> getSysMenuListByParentMenuId(@Param("parentMenuId") String parentMenuId, @Param("lang") String lang);
 
 	/**
 	 * getSysMenuCount
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return int
 	 */
-	public int getSysMenuCount(Map<String, Object> map);
+	int getSysMenuCount(Map<String, Object> map);
 
 	/**
 	 * getSysMenuList
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return List
 	 */
-	public List<SysMenu> getSysMenuList(Map<String, Object> map);
+	List<SysMenu> getSysMenuList(Map<String, Object> map);
 
 	/**
 	 * getSysMenuListByUser
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return List
 	 */
-	public List<SysMenu> getSysMenuListByUser(Map<String, Object> map);
+	List<SysMenu> getSysMenuListByUser(Map<String, Object> map);
 
 	/**
 	 * getInterceptorUserMenus
-	 * @param map
-	 * @return
+	 * @param map map
+	 * @return List
 	 */
-	public List<SysMenu> getInterceptorUserMenus(Map<String, Object> map);
+	List<SysMenu> getInterceptorUserMenus(Map<String, Object> map);
 }

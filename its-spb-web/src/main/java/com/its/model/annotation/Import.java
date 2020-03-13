@@ -23,6 +23,6 @@ public @interface Import {
     public boolean duplicable() default true;
     
     /** 描述 **/
-    public String description() default ""; 
+    public String description() default "";
 
 }

@@ -20,13 +20,6 @@ import com.its.model.mybatis.dao.domain.SysMenu;
 //@ComponentScan(basePackages = {"com.its.core"})//增加自动扫描的包
 @Import(DruidConfig.class)
 @SpringBootTest
-/**
- * 
- * @author tzz
- * @工号: 
- * @date 2019/07/11
- * @Introduce: DruidTest
- */
 public class DruidTest {
 
 	@Autowired

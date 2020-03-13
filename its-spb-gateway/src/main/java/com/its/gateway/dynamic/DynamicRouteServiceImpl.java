@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * 单机环境动态路由配置
- * 
+ *
  * @author tzz
  * @date 2019/03/04
  * @Introduce: 单机环境动态路由配置
@@ -27,18 +27,18 @@ import reactor.core.publisher.Mono;
 @Service
 public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
+    private ApplicationEventPublisher publisher;
+
     @Autowired
     private RouteDefinitionWriter routeDefinitionWriter;
 
-    private ApplicationEventPublisher publisher;
-
     /**
      * 增加路由
-     * 
-     * @param definition
-     * @return
+     *
+     * @param definition definition
+     * @return String
      */
-    public String add(RouteDefinition definition) {
+    String add(RouteDefinition definition) {
         routeDefinitionWriter.save(Mono.just(definition)).subscribe();
         this.publisher.publishEvent(new RefreshRoutesEvent(this));
         return "success";
@@ -46,9 +46,9 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
     /**
      * 更新路由
-     * 
-     * @param definition
-     * @return
+     *
+     * @param definition definition
+     * @return String
      */
     public String update(RouteDefinition definition) {
         try {
@@ -68,9 +68,9 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
 
     /**
      * 删除路由
-     * 
-     * @param id
-     * @return
+     *
+     * @param id id
+     * @return String
      */
     public String delete(String id) {
         try {
@@ -91,10 +91,9 @@ public class DynamicRouteServiceImpl implements ApplicationEventPublisherAware {
     /**
      * spring: cloud: gateway: routes: #当访问http://localhost:8080/baidu,直接转发到https://www.baidu.com/ - id: baidu_route
      * uri: http://baidu.com:80/ predicates: - Path=/baidu
-     * 
-     * @param args
+     *
+     * @param args args
      */
-
     public static void main(String[] args) {
         GatewayRouteDefinition definition = new GatewayRouteDefinition();
         GatewayPredicateDefinition predicate = new GatewayPredicateDefinition();

@@ -58,30 +58,26 @@
 			<version>${fastjson.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- json -->
+		<!-- jackson -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<!-- <version>${jackson.version}</version> -->
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<!-- <version>${jackson.version}</version> -->
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<!-- <version>${jackson.version}</version> -->
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jaxb-annotations</artifactId>
 			<!-- <version>${jackson.version}</version> -->
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
@@ -164,7 +160,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<!-- <version>1.7.13</version> -->
-			<scope>provided</scope>
+			<!-- <scope>provided</scope>-->
 		</dependency>
 		<!-- xstream -->
 		<dependency>
@@ -258,10 +254,21 @@
 			<artifactId>jedis</artifactId>
 			<!-- <version>2.9.0</version> -->
 		</dependency>
+		<!-- mongodb -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+		</dependency>
 		<!-- spring boot redis -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<!-- elasticsearch -->
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-high-level-client</artifactId>
+			<version>6.6.1</version>
 		</dependency>
 		<!-- kryo -->
 		<dependency>

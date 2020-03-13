@@ -1,6 +1,7 @@
 package com.its.gateway.filter;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
 import org.slf4j.Logger;
@@ -41,7 +42,6 @@ public class IpBlackListFilter implements GlobalFilter, Ordered {
             log.error("IpBlackListFilter error", e);
         }
         return chain.filter(exchange);
-
     }
 
     @Override
@@ -50,7 +50,7 @@ public class IpBlackListFilter implements GlobalFilter, Ordered {
     }
 
     /** 检查是否是要过滤 */
-    protected boolean checkFilter(String value, String[] notFilter) {
+    private boolean checkFilter(String value, String[] notFilter) {
         for (String str : notFilter) {
             if (str.equals(value)) {
                 return false;
@@ -59,12 +59,15 @@ public class IpBlackListFilter implements GlobalFilter, Ordered {
         return true;
     }
 
-    public static String getIpAddr(ServerWebExchange exchange) {
+    private static String getIpAddr(ServerWebExchange exchange) {
         String ip = null;
         String localHost = "127.0.0.1";
         String local = "0:0:0:0:0:0:0:1";
         try {
-            ip = exchange.getRequest().getHeaders().getHost().getHostName();
+            InetSocketAddress inetSocketAddress = exchange.getRequest().getHeaders().getHost();
+            if (inetSocketAddress != null) {
+                ip = inetSocketAddress.getHostName();
+            }
             if (localHost.equals(ip) || local.equals(ip)) {
                 ip = InetAddress.getLocalHost().getHostAddress();
             }

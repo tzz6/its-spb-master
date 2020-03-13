@@ -1,0 +1,14 @@
+#配置elasticsearch
+elasticsearch:
+  ip: vm-es-ip:9200
+#spring:
+#  data:
+#    elasticsearch:
+#      cluster-name: docker-cluster
+#      cluster-nodes: 192.168.99.100:9300
+#      repositories:
+#        enabled: true
+  # 异常处理
+#  elasticsearch:
+#    rest:
+#      uris: vm-es-ip:9200

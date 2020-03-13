@@ -1,31 +1,17 @@
 package com.its.base.servers.controller.sys;
 
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.its.base.servers.service.SysReportService;
 import com.its.common.model.Datagrid;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * 报表管理
@@ -36,19 +22,23 @@ import io.swagger.annotations.ApiOperation;
 @Api("报表管理")
 public class SysReportController {
 
-	private static final Log log = LogFactory.getLog(SysReportController.class);
+	private static final Logger log = LoggerFactory.getLogger(SysReportController.class);
 
-	@Autowired
 	private SysReportService sysReportService;
 
-	/** 存储报表SQL */
-	private static Map<String, String> reportSqlMap = null;
+	@Autowired
+    public SysReportController(SysReportService sysReportService) {
+        this.sysReportService = sysReportService;
+    }
+
+    /** 存储报表SQL */
+	private static Map<String, String> reportSqlMap;
 	/** 页面动态条件SQL */
-	private static Map<String, String> pageValueSqlMap = null;
+	private static Map<String, String> pageValueSqlMap;
 
 	// 使用Map模拟数据库存储
 	static {
-		reportSqlMap = new HashMap<String, String>();
+		reportSqlMap = new HashMap<>();
 		String sql = "select u.ST_Code as '工号',u.ST_Name as '姓名',date_format(u.CREATE_TM,'%Y-%m-%d %H:%i:%S') as '创建时间', date_format(u.UPDATE_TM,'%Y-%m-%d %H:%i:%S') as '修改时间', "
 				+ "r.ROLE_NAME as '角色名称',r.SYS_NAME_CODE as '系统名',m.MENU_NAME as '菜单名',m.MENU_URL as 'MENU_URL',m.MENU_TYPE as 'Menu_Type' "
 				+ "from sys_user u " + "left join sys_user_role ur on u.ST_ID = ur.ST_ID "
@@ -60,35 +50,33 @@ public class SysReportController {
 
 		reportSqlMap.put("USER_REPORT_SQL", sql);
 		String pageValueSql = "select EN_NAME,BLD_NAME from sys_name sn left join bld_language bld on sn.BLD_CODE = bld.BLD_CODE WHERE LANG = 'zh'";
-		pageValueSqlMap = new HashMap<String, String>();
+		pageValueSqlMap = new HashMap<>();
 		pageValueSqlMap.put("SYS_NAME", pageValueSql);
 	}
 
+
+
 	/**
      * 报表管理列表头
-     * 
-     * @param request
-     * @param response
-     * @param modelMap
-     * @return
+     *
+     * @return Set
      */
     @GetMapping(value = "/tableHeart")
-    public Set<String> index(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
-        String regex = "<where[^>]*?>[\\s\\S]*?<\\/where>";
+    public Set<String> index() {
+        String regex = "<where[^>]*?>[\\s\\S]*?</where>";
         String exeSql = reportSqlMap.get("USER_REPORT_SQL").replaceAll(regex, "");
         List<Map<String, Object>> result = sysReportService.execute(exeSql, 0 + "", 1 + "");
         Map<String, Object> map = result.get(0);
-        Set<String> hearts = map.keySet();
-        return hearts;
+        return map.keySet();
     }
-	
+
 	/**
 	 * 报表管理列表数据
-	 * 
-	 * @param request
-	 * @param page
-	 * @param rows
-	 * @return
+	 *
+	 * @param request request
+	 * @param page page
+	 * @param rows rows
+	 * @return Datagrid<Map<String, Object>>
 	 */
 	@ApiOperation("报表列表")
 	@PostMapping("/sysReportManage")
@@ -97,25 +85,23 @@ public class SysReportController {
 		String exeSql = addWhereParam(request, reportSqlMap.get("USER_REPORT_SQL"));
 		long total = sysReportService.getCount(exeSql);
 		int startNum = (page - 1) * rows;
+		log.info("exeSql:" + exeSql);
 		log.info("startNum:" + startNum + ",rows:" + rows + "," + total);
 		List<Map<String, Object>> result = sysReportService.execute(exeSql, startNum + "", rows + "");
-		Datagrid<Map<String, Object>> datagrid = new Datagrid<Map<String, Object>>(total, result);
-		return datagrid;
+		return new Datagrid<>(total, result);
 	}
 
 	/**
 	 * 组装条件
-	 * 
-	 * @param request
-	 * @param sql
-	 * @return
+	 *
+	 * @param request request
+	 * @param sql sql
+	 * @return String
 	 */
-	public String addWhereParam(HttpServletRequest request, String sql) {
+	private String addWhereParam(HttpServletRequest request, String sql) {
 		String exeSql = sql;
 		Enumeration<String> parameterNames = request.getParameterNames();
-		StringBuilder stringBuilder = new StringBuilder();
 		try {
-			stringBuilder.append("");
 			while (parameterNames.hasMoreElements()) {
 				String name = parameterNames.nextElement();
 				String paramValue = request.getParameter(name);
@@ -141,16 +127,13 @@ public class SysReportController {
 
 	/**
 	 * 报表管理列表页面条件查询动态参数
-	 * 
-	 * @param request
-	 * @param sqlKey
-	 * @return
+	 *
+	 * @param sqlKey sqlKey
+	 * @return List<Map<String, Object>>
 	 */
 	@PostMapping("/sysReportPageValue")
-	public @ResponseBody List<Map<String, Object>> sysReportPageValue(HttpServletRequest request,
-			@RequestParam(value = "sqlKey") String sqlKey) {
-		List<Map<String, Object>> result = sysReportService.execute(pageValueSqlMap.get(sqlKey));
-		return result;
+	public @ResponseBody List<Map<String, Object>> sysReportPageValue(@RequestParam(value = "sqlKey") String sqlKey) {
+		return sysReportService.execute(pageValueSqlMap.get(sqlKey));
 	}
 
 }

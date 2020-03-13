@@ -6,9 +6,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * 
- * description: BaseTest company: tzz
+ * description: BaseTest
+ * company: tzz
  * 
- * @author: tzz date: 2019/04/27 13:24
+ * @author: tzz
+ * date: 2019/04/27 13:24
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringJUnit4ClassRunner.class)

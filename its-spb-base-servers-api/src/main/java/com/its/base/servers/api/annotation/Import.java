@@ -9,20 +9,20 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Import {
-	
+
 	/**列名称**/
-    public String columnName() default "";
-    
+    String columnName() default "";
+
     /**列索引**/
-    public int columnIndex() default -1;
-    
+    int columnIndex() default -1;
+
     /**是否必填**/
-    public boolean required() default false;
-    
+    boolean required() default false;
+
     /**是否可以重复**/
-    public boolean duplicable() default true;
-    
+    boolean duplicable() default true;
+
     /** 描述 **/
-    public String description() default ""; 
+    String description() default "";
 
 }

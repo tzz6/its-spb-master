@@ -13,13 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.its.common.redis.service.RedisService;
 import com.its.web.BaseTest;
 
-/***
- * 
- * @author tzz
- * @工号:
- * @date 2019/07/11
- * @Introduce: RedisServiceTest
- */
+/**
+  * Description:
+  * Company: tzz
+  * @Author: tzz
+  * Date: 2019/07/11
+  */
 public class RedisServiceTest extends BaseTest {
 
     @Autowired
@@ -38,7 +37,7 @@ public class RedisServiceTest extends BaseTest {
     @Test
     public void testHash() {
         String key = "testHash";
-        HashMap<String, Object> map = new HashMap<String, Object>(16);
+        HashMap<String, Object> map = new HashMap<>(16);
         map.put("a", "a");
         map.put("b", 12);
         map.put("c", true);
@@ -70,7 +69,7 @@ public class RedisServiceTest extends BaseTest {
     @Test
     public void testSet() {
         String key = "testSet";
-        Set<String> sets = new HashSet<String>();
+        Set<String> sets = new HashSet<>();
         sets.add("a");
         sets.add("b");
         sets.add("c");

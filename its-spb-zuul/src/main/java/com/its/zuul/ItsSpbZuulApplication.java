@@ -27,12 +27,12 @@ import reactor.core.publisher.Mono;
  * its-spb-zuul服务启动<br>
  * Zuul集群:可采用Nginx+zuul 一主一备或多机轮询<br>
  * 客户端发送请求统一到Nginx,再使用Nginx(LVS+keepalived)实现反向代理和负载均衡，采用轮询算法转发到zuul网关<br>
- * 
+ *
  * @EnableEurekaClient 将当前服务注册到Eureka注册中心,如果注册中心是Eureka使用，向注册中心注册服务<br>
  * @EnableDiscoveryClient如果注册中心是Zookeeper、Connsul使用@EnableDiscoveryClient替换@EnableEurekaClient，向注册中心注册服务<br>
  * @EnableZuulProxy 开启Zuul网关代理<br>
  * @EnableSwagger2Doc开启Swagger<br>
- * 
+ *
  * @author tzz
  */
 @SpringBootApplication
@@ -52,7 +52,7 @@ public class ItsSpbZuulApplication {
 
 	/**
 	 * 通过将路由配置放到配置中心实现动态路由
-	 * 
+	 *
 	 * @return
 	 */
 	@RefreshScope
@@ -60,7 +60,7 @@ public class ItsSpbZuulApplication {
 	public ZuulProperties zuulProperties() {
 		return new ZuulProperties();
 	}
-	
+
     /** headers */
     private static final String ALLOWED_HEADERS =
         "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN,its-username,its-language,its-refreshToken,its-token,client";
@@ -72,7 +72,7 @@ public class ItsSpbZuulApplication {
     private static final String MAX_AGE = "18000";
 
     /**
-     * 
+     *
      * description: CORS解决前端调用跨域问题--请求带自定义Headers
      * @author: tzz
      * date: 2019/08/22 10:34

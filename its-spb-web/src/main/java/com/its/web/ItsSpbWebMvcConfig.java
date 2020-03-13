@@ -12,12 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.its.web.common.interceptor.LoginInterceptor;
 
 /**
- * 
- * @author tzz
- * @工号: 
- * @date 2019/07/10
- * @Introduce: ItsSpbWebMvcConfig
- */
+  * Description: ItsSpbWebMvcConfig
+  * Company: tzz
+  * @Author: tzz
+  * Date: 2019/07/10 18:22
+  */
 @Configuration
 public class ItsSpbWebMvcConfig implements WebMvcConfigurer {
 
@@ -36,6 +35,8 @@ public class ItsSpbWebMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/sysRole/toSysRoleManage").setViewName("sysRole/sysRoleManage");
         //报表管理列表页面
         registry.addViewController("/sysReport/toSysReportManage").setViewName("sysReport/sysReportManage");
+        //mongoDB管理列表页面
+        registry.addViewController("/mongoDB/toMongoDBManager").setViewName("mongoDB/mongoDBManager");
     }
 
 

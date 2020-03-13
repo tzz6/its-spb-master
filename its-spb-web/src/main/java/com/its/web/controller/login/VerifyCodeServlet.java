@@ -2,11 +2,10 @@ package com.its.web.controller.login;
 
 import com.its.common.utils.Constants;
 import com.its.web.util.IpUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,9 +22,9 @@ public class VerifyCodeServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -726272150926117174L;
 
-	protected final transient Logger log = LogManager.getLogger(VerifyCodeServlet.class);
+	private static final Logger log = LoggerFactory.getLogger(VerifyCodeServlet.class);
 
-	public static Color getRandColor(int fc, int bc) {
+	private static Color getRandColor(int fc, int bc) {
 		Random random = new Random();
 		int end = 255;
 		if (fc > end){
@@ -41,15 +40,16 @@ public class VerifyCodeServlet extends HttpServlet {
 	}
 
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		String num = this.getInitParameter("num");
 		String content = this.getInitParameter("content");
 		char[] chars = content.toCharArray();
 		int n = 5;
 		try {
-			n = Integer.valueOf(num);
+			n = Integer.parseInt(num);
 		} catch (NumberFormatException e) {
+			log.error("login:" + e.getMessage(), e);
 		}
 		// 设置输出类型
 		response.setContentType("image/jpeg"); 
@@ -83,7 +83,7 @@ public class VerifyCodeServlet extends HttpServlet {
 			g.drawLine(x, y, x + xl, y + yl);
 		}
 		// 取随机产生的认证码(4位数字)
-		String sRand = "";
+		StringBuilder sRand = new StringBuilder();
 		for (int i = 0; i < n; i++) {
 			String rand = null;
 			// 随机生成数字或者字母
@@ -102,7 +102,7 @@ public class VerifyCodeServlet extends HttpServlet {
 			}
 			// 设定字体
 			g.setFont(getRandomFont());
-			sRand += rand;
+			sRand.append(rand);
 			// 将认证码显示到图象中
 			g.setColor(new Color(random.nextInt(80), random.nextInt(80), random.nextInt(80)));
 			// 调用函数出来的颜色相同，可能是因为种子太接近，所以只能直接生成
@@ -112,7 +112,7 @@ public class VerifyCodeServlet extends HttpServlet {
 		// 将认证码存入SESSION
 		log.info("请求IP" + IpUtil.getIpAddr(request) + "  sessionID" + request.getSession().getId() + "  生成验证码：  ---> "
 				+ sRand);
-		request.getSession().setAttribute(Constants.SessionKey.VERIFY_CODE, sRand);
+		request.getSession().setAttribute(Constants.SessionKey.VERIFY_CODE, sRand.toString());
 		// 图象生效
 		g.dispose();
 		// 输出图象到页面
@@ -122,9 +122,9 @@ public class VerifyCodeServlet extends HttpServlet {
 	/**
 	 * 随机生成字体、文字大小
 	 * 
-	 * @return
+	 * @return Font
 	 */
-	public static Font getRandomFont() {
+	private static Font getRandomFont() {
 		String[] fonts = { "Georgia", "Arial Black", "Snap ITC", "Poor Richard", "Modern No. 20", "Tahoma", "Verdana",
 				"Arial", "Quantzite", "Time News Roman", "Courier New" };
 		int fontIndex = (int) Math.round(Math.random() * (fonts.length - 1));

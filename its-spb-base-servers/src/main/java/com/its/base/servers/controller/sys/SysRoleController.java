@@ -1,16 +1,13 @@
 package com.its.base.servers.controller.sys;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.its.base.servers.api.sys.domain.*;
+import com.its.base.servers.context.UserSession;
+import com.its.base.servers.service.*;
+import com.its.common.model.Datagrid;
+import com.its.common.utils.Constants;
+import com.its.common.utils.PrimaryKeyUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,20 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.its.base.servers.api.sys.domain.SysMenu;
-import com.its.base.servers.api.sys.domain.SysName;
-import com.its.base.servers.api.sys.domain.SysRole;
-import com.its.base.servers.api.sys.domain.SysRoleMenu;
-import com.its.base.servers.api.sys.domain.SysUser;
-import com.its.base.servers.context.UserSession;
-import com.its.base.servers.service.SysMenuService;
-import com.its.base.servers.service.SysNameService;
-import com.its.base.servers.service.SysRoleMenuService;
-import com.its.base.servers.service.SysRoleService;
-import com.its.base.servers.service.SysUserRoleService;
-import com.its.common.model.Datagrid;
-import com.its.common.utils.Constants;
-import com.its.common.utils.PrimaryKeyUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 
 /**
@@ -43,21 +29,24 @@ import com.its.common.utils.PrimaryKeyUtil;
 @RequestMapping(value = "/sysRole")
 public class SysRoleController {
 
-	private static final Log log = LogFactory.getLog(SysRoleController.class);
-
-	@Autowired
+    private static final Logger log = LoggerFactory.getLogger(SysRoleController.class);
 	private SysRoleService sysRoleService;
-	@Autowired
 	private SysNameService sysNameService;
-	@Autowired
 	private SysMenuService sysMenuService;
-	@Autowired
 	private SysRoleMenuService sysRoleMenuService;
-	@Autowired
 	private SysUserRoleService sysUserRoleService;
 
-	@RequestMapping(value = "/toSysRoleManage", method = RequestMethod.GET)
-    public String index(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
+	@Autowired
+    public SysRoleController(SysRoleService sysRoleService, SysNameService sysNameService, SysMenuService sysMenuService, SysRoleMenuService sysRoleMenuService, SysUserRoleService sysUserRoleService) {
+        this.sysRoleService = sysRoleService;
+        this.sysNameService = sysNameService;
+        this.sysMenuService = sysMenuService;
+        this.sysRoleMenuService = sysRoleMenuService;
+        this.sysUserRoleService = sysUserRoleService;
+    }
+
+    @RequestMapping(value = "/toSysRoleManage", method = RequestMethod.GET)
+    public String index(HttpServletResponse response, ModelMap modelMap) {
         return "sysRole/sysRoleManage";
     }
 
@@ -66,52 +55,54 @@ public class SysRoleController {
      * description: 角色管理列表数据
      * @author: tzz
      * date: 2019/08/26 20:02
-     * @param request
-     * @param roleName
-     * @param sysNameCode
-     * @param page
-     * @param rows
+     * @param roleName roleName
+     * @param sysNameCode sysNameCode
+     * @param page page
+     * @param rows rows
      * @return Datagrid<SysRole>
      */
     @RequestMapping(value = "/sysRoleManage")
-    public @ResponseBody Datagrid<SysRole> sysRoleManage(HttpServletRequest request,
+    public @ResponseBody Datagrid<SysRole> sysRoleManage(
             @RequestParam(value = "roleName", required = false) String roleName,
             @RequestParam(value = "sysNameCode", required = false) String sysNameCode,
             @RequestParam(value = "page") Integer page, @RequestParam(value = "rows") Integer rows) {
         // 当前登录用户
         SysUser currSysUser = UserSession.getUser();
-        Map<String, Object> map = new HashMap<String, Object>(16);
+        Map<String, Object> map = new HashMap<>(16);
         map.put("roleName", roleName);
         map.put("sysNameCode", sysNameCode);
-        map.put("lang", currSysUser.getLanguage());
+        if (currSysUser != null) {
+            map.put("lang", currSysUser.getLanguage());
+        }
         int total = sysRoleService.getSysRoleCount(map);
         int startNum = (page - 1) * rows;
         map.put("startNum", startNum);
         map.put("rows", rows);
         log.info("startNum:" + startNum + ",rows:" + rows + "," + total);
         List<SysRole> result = sysRoleService.getSysRoleList(map);
-        Datagrid<SysRole> datagrid = new Datagrid<SysRole>(total, result);
-        return datagrid;
+        return new Datagrid<>(total, result);
     }
 
     /**
      * 系统名称列表
      * 
-     * @return
+     * @return List<Map<String, String>>
      */
     @RequestMapping(value = "/getSysNameList")
     public @ResponseBody List<Map<String, String>> getSysNameList() {
         SysUser sysUser = UserSession.getUser();
-        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
-        List<SysName> sysNames = sysNameService.getSysNameByLang(sysUser.getLanguage());
-        if (null == sysNames || sysNames.size() == 0) {
-            return null;
-        }
-        for (SysName sn : sysNames) {
-            Map<String, String> map = new HashMap<String, String>(16);
-            map.put("sysNameCode", sn.getSysNameCode());
-            map.put("name", sn.getName());
-            result.add(map);
+        List<Map<String, String>> result = new ArrayList<>();
+        if (sysUser != null) {
+            List<SysName> sysNames = sysNameService.getSysNameByLang(sysUser.getLanguage());
+            if (null == sysNames || sysNames.size() == 0) {
+                return null;
+            }
+            for (SysName sn : sysNames) {
+                Map<String, String> map = new HashMap<>(16);
+                map.put("sysNameCode", sn.getSysNameCode());
+                map.put("name", sn.getName());
+                result.add(map);
+            }
         }
         return result;
     }
@@ -119,12 +110,11 @@ public class SysRoleController {
     /**
      * 新增保存
      * 
-     * @param request
-     * @param sysRole
-     * @return
+     * @param sysRole sysRole
+     * @return String
      */
     @RequestMapping(value = "/addSysRole", method = RequestMethod.POST)
-    public @ResponseBody String addSysRole(HttpServletRequest request, SysRole sysRole) {
+    public @ResponseBody String addSysRole(SysRole sysRole) {
 
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         try {
@@ -133,9 +123,11 @@ public class SysRoleController {
             sysRole.setRoleName(sysRole.getRoleName());
             sysRole.setRoleId(PrimaryKeyUtil.genPrimaryKey());
             Date currDate = new Date();
-            sysRole.setCreateBy(currSysUser.getStCode());
+            if (currSysUser != null) {
+                sysRole.setCreateBy(currSysUser.getStCode());
+                sysRole.setUpdateBy(currSysUser.getStCode());
+            }
             sysRole.setCreateTm(currDate);
-            sysRole.setUpdateBy(currSysUser.getStCode());
             sysRole.setCreateTm(currDate);
             sysRoleService.insertSysRole(sysRole);
             log.info("新增角色成功---" + sysRole.getRoleName());
@@ -150,14 +142,13 @@ public class SysRoleController {
     /**
      * 查询对应ID的Role
      * 
-     * @param request
-     * @param sysRole
-     * @return
+     * @param sysRole sysRole
+     * @return Map<String, Object>
      */
     @RequestMapping(value = "/getSysRoleById")
-    public @ResponseBody Map<String, Object> getSysUserById(HttpServletRequest request, SysRole sysRole) {
+    public @ResponseBody Map<String, Object> getSysUserById(SysRole sysRole) {
         sysRole = sysRoleService.getSysRoleById(sysRole);
-        Map<String, Object> userMap = new HashMap<String, Object>(16);
+        Map<String, Object> userMap = new HashMap<>(16);
         userMap.put("roleId", sysRole.getRoleId());
         userMap.put("roleName", sysRole.getRoleName());
         userMap.put("sysNameCode", sysRole.getSysNameCode());
@@ -167,19 +158,20 @@ public class SysRoleController {
     /**
      * 修改保存
      * 
-     * @param request
-     * @param sysRole
-     * @return
+     * @param sysRole sysRole
+     * @return String
      */
     @RequestMapping(value = "/updateSysRole", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
-    public @ResponseBody String updateSysRole(HttpServletRequest request, SysRole sysRole) {
+    public @ResponseBody String updateSysRole(SysRole sysRole) {
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         try {
             sysRole.setRoleName(sysRole.getRoleName());
             // 当前登录用户
             SysUser currSysUser = UserSession.getUser();
             Date currDate = new Date();
-            sysRole.setUpdateBy(currSysUser.getStCode());
+            if (currSysUser != null) {
+                sysRole.setUpdateBy(currSysUser.getStCode());
+            }
             sysRole.setCreateTm(currDate);
             sysRoleService.updateSysRole(sysRole);
             log.info("编辑角色成功---ID:" + sysRole.getRoleId());
@@ -194,17 +186,14 @@ public class SysRoleController {
     /**
      * 删除
      * 
-     * @param request
-     * @param response
-     * @param roleId
-     * @return
+     * @param roleId roleId
+     * @return String
      */
     @RequestMapping(value = "/deleteSysRole")
-    public @ResponseBody String deleteSysRole(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "roleId") String roleId) {
+    public @ResponseBody String deleteSysRole(@RequestParam(value = "roleId") String roleId) {
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         String[] roleIds = roleId.split(",");
-        List<String> roleIdList = new ArrayList<String>();
+        List<String> roleIdList = new ArrayList<>();
         try {
             for (String id : roleIds) {
                 sysUserRoleService.deleteSysUserRoleByRoleId(id);
@@ -223,66 +212,60 @@ public class SysRoleController {
     /**
      * 系统菜单
      * 
-     * @param request
-     * @return
+     * @return Datagrid<SysMenu>
      */
     @RequestMapping(value = "/getSysMenuList", method = RequestMethod.POST)
-    public @ResponseBody Datagrid<SysMenu> getSysMenuList(HttpServletRequest request,
+    public @ResponseBody Datagrid<SysMenu> getSysMenuList(
             @RequestParam(value = "menuName", required = false) String menuName,
             @RequestParam(value = "menuType", required = false) String menuType,
-            @RequestParam(value = "sysNameCode", required = true) String sysNameCode,
+            @RequestParam(value = "sysNameCode") String sysNameCode,
             @RequestParam(value = "page") Integer page, @RequestParam(value = "rows") Integer rows) {
         // 当前登录用户
         SysUser currSysUser = UserSession.getUser();
-        Map<String, Object> map = new HashMap<String, Object>(16);
+        Map<String, Object> map = new HashMap<>(16);
         map.put("menuName", menuName);
         map.put("menuType", menuType);
         map.put("sysNameCode", sysNameCode);
-        map.put("lang", currSysUser.getLanguage());
+        if (currSysUser != null) {
+            map.put("lang", currSysUser.getLanguage());
+        }
         int total = sysMenuService.getSysMenuCount(map);
         int startNum = (page - 1) * rows;
         map.put("startNum", startNum);
         map.put("rows", rows);
         log.info("startNum:" + startNum + ",rows:" + rows + "," + total);
         List<SysMenu> result = sysMenuService.getSysMenuList(map);
-        Datagrid<SysMenu> datagrid = new Datagrid<SysMenu>(total, result);
-        return datagrid;
+        return new Datagrid<>(total, result);
     }
 
     /**
      * 查询角色菜单列表
      * 
-     * @param request
-     * @param response
-     * @return
+     * @return List<SysRoleMenu>
      */
     @RequestMapping(value = "/getSysRoleMenuList")
     @ResponseBody
-    public List<SysRoleMenu> getSysRoleMenuList(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "roleId", required = true) String roleId) {
-        List<SysRoleMenu> sysRoleMenuList = sysRoleMenuService.getSysRoleMenuByRoleId(roleId);
-        return sysRoleMenuList;
+    public List<SysRoleMenu> getSysRoleMenuList(@RequestParam(value = "roleId") String roleId) {
+        return sysRoleMenuService.getSysRoleMenuByRoleId(roleId);
     }
 
     /**
      * 保存角色菜单关联
      * 
-     * @param request
-     * @param response
-     * @param roleId
-     * @param menuId
-     * @return
+     * @param roleId roleId
+     * @param menuId menuId
+     * @return String
      */
     @RequestMapping(value = "/saveSysRoleMenu", method = RequestMethod.POST)
-    public @ResponseBody String saveSysRoleMenu(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "roleId", required = true) String roleId,
-            @RequestParam(value = "menuId", required = true) String menuId) {
+    public @ResponseBody String saveSysRoleMenu(
+            @RequestParam(value = "roleId") String roleId,
+            @RequestParam(value = "menuId") String menuId) {
         String successFlag = Constants.OPTION_FLAG_SUCCESS;
         try {
             sysRoleMenuService.deleteSysRoleMenuByRoleId(roleId);
             if (menuId != null && !"".equals(menuId)) {
                 String[] menuIds = menuId.split(",");
-                List<SysRoleMenu> list = new ArrayList<SysRoleMenu>();
+                List<SysRoleMenu> list = new ArrayList<>();
                 for (String mId : menuIds) {
                     SysRoleMenu sysRoleMenu = new SysRoleMenu();
                     sysRoleMenu.setRoleId(roleId);

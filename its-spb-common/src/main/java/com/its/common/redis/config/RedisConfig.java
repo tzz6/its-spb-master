@@ -12,12 +12,11 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * 
- * @author tzz
- * @工号:
- * @date 2019/07/10
- * @Introduce: SpringBoot2.X版本 RedisConfig
- */
+  * Description: SpringBoot2.X版本 RedisConfig
+  * Company: tzz
+  * @Author: tzz
+  * Date: 2019/07/10 11:27
+  */
 @Configuration
 public class RedisConfig {
 
@@ -34,7 +33,7 @@ public class RedisConfig {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
 
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(Object.class);
+        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);

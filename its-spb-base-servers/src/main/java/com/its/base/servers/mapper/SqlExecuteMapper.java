@@ -10,21 +10,21 @@ public interface SqlExecuteMapper {
 
     /** 
      * execute
-     * @param sql
+     * @param sql sql
      * @return
      */
-    public List<Map<String, Object>> execute(String sql);
+    List<Map<String, Object>> execute(String sql);
 
     /**
      * get
-     * @param sql
+     * @param sql sql
      * @return
      */
-    public Long getCount(String sql);
+    Long getCount(String sql);
 
     /**
      * executeIUD
-     * @param sql
+     * @param sql sql
      * @return
      */
     Object executeIUD(String sql);

@@ -293,6 +293,7 @@
 				return $(this).form('validate');
 			},
 			success : function(resultData) {
+				alert("easyUI form提交,因跨域请求后，无法获取返回的response,手动刷新列表:"+resultData);
 				if (resultData == 'SUCCESS') {
 					$.messager.show({
 						title : Msg.sys_remaind1,
@@ -313,7 +314,7 @@
 	                             title: Msg.sys_remaind1,
 	                             msg:Msg.sys_no_permissions_txt1
 	                         });
-	      					setTimeout(function () { 
+	      					setTimeout(function () {
 	      						top.location.href = resultData;
 	      				    }, 3000);
 	      				}

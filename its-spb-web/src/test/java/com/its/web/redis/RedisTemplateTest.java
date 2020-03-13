@@ -11,13 +11,12 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 
 import com.its.web.BaseTest;
 
-/***
- * 
- * @author tzz
- * @工号: 
- * @date 2019/07/11
- * @Introduce: RedisTemplateTest
- */
+/**
+  * Description: RedisTemplateTest
+  * Company: tzz
+  * @Author: tzz
+  * Date: 2019/07/11
+  */
 public class RedisTemplateTest extends BaseTest{
     
     @Autowired(required = true)
@@ -44,7 +43,7 @@ public class RedisTemplateTest extends BaseTest{
     public void hmset() {
         redisTemplate.opsForValue().set("token", "16235dd");
         System.out.println(redisTemplate.opsForValue().get("token"));
-        Map<String, String> map = new HashMap<String, String>(16);
+        Map<String, String> map = new HashMap<>(16);
         map.put("token", "16235dd");
         map.put("username", "abc");
         map.put("lang", "zh");

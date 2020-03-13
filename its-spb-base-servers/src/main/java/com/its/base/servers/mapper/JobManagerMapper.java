@@ -18,21 +18,21 @@ public interface JobManagerMapper {
 
     /**
      * insert
-     * @param jobManager
+     * @param jobManager jobManager
      */
-	public void insertJobManager(JobManager jobManager);
+	void insertJobManager(JobManager jobManager);
 	
 	/**
 	 * update
-	 * @param jobManager
+	 * @param jobManager jobManager
 	 */
-	public void updateJobManager(JobManager jobManager);
+	void updateJobManager(JobManager jobManager);
 
 	/**
 	 * get
-	 * @param map
+	 * @param map map
 	 * @return
 	 */
-	public List<JobManager> getJobManagerList(Map<String, Object> map);
+	List<JobManager> getJobManagerList(Map<String, Object> map);
 
 }

@@ -17,9 +17,9 @@ import javax.sql.DataSource;
  */
 @Configuration
 public class DruidConfig {
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource") 
     /** 加载时读取指定的配置信息 */
+    @Bean
+    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSource druidDataSource() {
         return new DruidDataSource();
     }
@@ -31,7 +31,7 @@ public class DruidConfig {
     @Bean
     public ServletRegistrationBean<StatViewServlet> druidStatViewServlet() {
         //org.springframework.boot.context.embedded.ServletRegistrationBean提供类的进行注册.
-        ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<StatViewServlet>(new StatViewServlet(), "/druid/*");
+        ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
         //添加初始化参数：initParams
         //白名单：
         bean.addInitParameter("allow", "127.0.0.1");
@@ -50,7 +50,7 @@ public class DruidConfig {
      */
     @Bean
     public FilterRegistrationBean<WebStatFilter> druidStatFilter() {
-        FilterRegistrationBean<WebStatFilter> bean = new FilterRegistrationBean<WebStatFilter>(new WebStatFilter());
+        FilterRegistrationBean<WebStatFilter> bean = new FilterRegistrationBean<>(new WebStatFilter());
         bean.setFilter(new WebStatFilter());
         //添加不需要忽略的格式信息.
         bean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");

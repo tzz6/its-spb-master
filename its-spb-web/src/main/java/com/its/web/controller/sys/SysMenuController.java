@@ -22,13 +22,12 @@ public class SysMenuController {
 	/**
 	 * 菜单管理列表页面
 	 * 
-	 * @param request
-	 * @param response
-	 * @param modelMap
-	 * @return
+	 * @param response response
+	 * @param modelMap modelMap
+	 * @return String
 	 */
 	@RequestMapping(value = "/toSysMenuManage")
-	public String index(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
+	public String index(HttpServletResponse response, ModelMap modelMap) {
 		log.info("index");
 		return "sysMenu/sysMenuManage";
 	}

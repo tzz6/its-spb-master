@@ -37,38 +37,54 @@ import com.its.web.util.JwtUtil;
 import com.its.web.util.UserSession;
 
 /**
- * 
- * @author tzz
- * @工号: 
- * @date 2019/06/01
- * @Introduce: 登录
- */
+  * Description: Login
+  * Company: tzz
+  * @Author: tzz
+  * Date: 2019/06/01
+  */
 @Controller
 public class LoginController{
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
+	//constructor方式：是强制注入，Spring 开发团队建议：在JavaBean中永远使用构造方法进行依赖注入。对于必须的依赖，永远使用断言来确认。
+	//setter方式：是选择注入，为了可选的或者可变的依赖，在Spring 4.3及以后的版本中，setter上面的@Autowired 注解是可以不写的
+	//field变量方式：通过反射直接注入到fields@Autowired就是通过这种方式 尽量避免使用直接在属性上注入 field injection is not recommended
+	//field变量方式field injection的坏处
+	//1、你不能使用属性注入的方式构建不可变对象（对象不能标为final）
+	//2、你的类和依赖容器强耦合，不能再容器外使用
+	//3、你的类不能绕过反射（例如单元测试的时候）进行实例化，必须通过依赖容器才能实例化
+	//4、实际的依赖被隐藏在外面，不是在构造方法或者其它方法里面反射的。
+	//constructor方式坏处
+	//5、注入的对象特别多的时候，我们的构造器就会显得非常的冗余、不好看，非常影响美观和可读性，维护起来也较为困难,
+	// 一个类经常会有超过10个的依赖。如果使用构造方法的方式注入的话，构造方法会有10个参数。
+	// 但是如果使用属性注入的话就没有这样的限制。
+	// 但是一个类有很多的依赖，是一个危险的标志，因为很有可能这个类完成了超过一件事，违背了单一职责原则。
+
+	private SysUserService sysUserService;
+	private RedisService redisService;
 
 	@Autowired
-	private SysUserService sysUserService;
-	@Autowired
-    private RedisService redisService;
+	public LoginController(SysUserService sysUserService, RedisService redisService) {
+		this.sysUserService = sysUserService;
+		this.redisService = redisService;
+	}
 
 	/**
 	   *  登录页面
-	 * @param request
-	 * @param response
-	 * @param model
-	 * @return
+	 * @param request req
+	 * @param model model
+	 * @return login
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String toLogin(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+	public String toLogin(HttpServletRequest request, ModelMap model) {
 		String savePassword = CookieUtil.getCookie(request, Constants.CookieKey.SAVE_PASSWORD);
 		String autoLogin = CookieUtil.getCookie(request, Constants.CookieKey.AUTO_LOGIN);
 		String loginType = "1";
-		if (autoLogin != null && loginType.equals(autoLogin)) {
+		if (loginType.equals(autoLogin)) {
 			model.put("autoLogin", autoLogin);
 		}
-		if (savePassword != null && loginType.equals(savePassword)) {
+		if (loginType.equals(savePassword)) {
 			String username = CookieUtil.getCookie(request, Constants.CookieKey.USERNAME);
 			String password = CookieUtil.getCookie(request, Constants.CookieKey.PASSWORD);
 			model.put("savePassword", savePassword);
@@ -81,16 +97,15 @@ public class LoginController{
 
 	/**
 	  *  登录
-	 * @param username
-	 * @param password
-	 * @param verifyCode
-	 * @param lang
-	 * @param savePassword
-	 * @param autologin
-	 * @param model
-	 * @param request
-	 * @param response
-	 * @return
+	 * @param username 用户名
+	 * @param password 密码
+	 * @param verifyCode 验证码
+	 * @param lang 语言
+	 * @param savePassword 记住密码
+	 * @param autoLogin 自动登录
+	 * @param request request
+	 * @param response response
+	 * @return Map
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -98,7 +113,7 @@ public class LoginController{
 			@RequestParam(value = "verifyCode", required = false) String verifyCode,
 			@RequestParam(value = "lang", required = false) String lang,
 			@RequestParam(value = "savePassword", required = false) String savePassword,
-			@RequestParam(value = "autologin", required = false) String autologin, ModelMap model,
+			@RequestParam(value = "autoLogin", required = false) String autoLogin,
 			HttpServletRequest request, HttpServletResponse response) {
         Map<String, String> maps = new HashMap<>(16);
 		try {
@@ -107,7 +122,7 @@ public class LoginController{
             logger.debug("username: {} verifyCode: {} lang: {} ", username, verifyCode, lang);
 			String sessVerifyCode = (String) request.getSession().getAttribute(Constants.SessionKey.VERIFY_CODE);
 			if (verifyCode != null && sessVerifyCode.equals(verifyCode.toUpperCase())) {
-				Map<String, Object> map = new HashMap<String, Object>(16);
+				Map<String, Object> map = new HashMap<>(16);
 				map.put("stCode", username);
 				//RAS私钥
 				String privateKey = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOBIIIvxHcTZw0A7fxOQGyTpz9Da"
@@ -134,14 +149,14 @@ public class LoginController{
                     String token = JwtUtil.generateToken(username, lang);
                     // 生成refreshToken
                     String refreshToken = PrimaryKeyUtil.getUuId();
-                    //数据放入redis 
-                    redisService.hset(refreshToken, "token", token); 
-                    redisService.hset(refreshToken, "username", username); 
-                    redisService.hset(refreshToken, "lang", lang); 
-                    //设置token的过期时间 
-                    redisService.expire(refreshToken, JwtUtil.REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS); 
-				       
-					setCookie(username, password, savePassword, autologin, response, token, refreshToken);
+                    //数据放入redis
+                    redisService.hset(refreshToken, "token", token);
+                    redisService.hset(refreshToken, "username", username);
+                    redisService.hset(refreshToken, "lang", lang);
+                    //设置token的过期时间
+                    redisService.expire(refreshToken, JwtUtil.REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
+
+					setCookie(username, password, savePassword, autoLogin, response, token, refreshToken);
                     maps.put("status", "success");
                     maps.put("message", loginUrl);
                     maps.put("refreshToken", refreshToken);
@@ -188,14 +203,11 @@ public class LoginController{
 
 	/**
 	 * 登出
-	 * 
-	 * @param request
-	 * @param response
-	 * @param modelMap
-	 * @return
+	 *
+	 * @param response response
 	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public void logout(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
+	public void logout(HttpServletResponse response) {
         logger.info("logout");
         UserSession.removeUser();
         try {
@@ -210,15 +222,13 @@ public class LoginController{
 
 	/**
 	 * 首页
-	 * 
-	 * @param request
-	 * @param response
-	 * @param modelMap
-	 * @return
-	 * @throws JsonProcessingException
+	 *
+	 * @param modelMap modelMap
+	 * @return String
+	 * @throws JsonProcessingException ex
 	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public String index(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap)
+	public String index(ModelMap modelMap)
 			throws JsonProcessingException {
 		logger.info("to index");
 		String timezone = UserSession.getTimezone();
@@ -230,15 +240,15 @@ public class LoginController{
 
 	/**
 	 * 获取菜单
-	 * 
-	 * @return
-	 * @throws JsonProcessingException
+	 *
+	 * @return 菜单
+	 * @throws JsonProcessingException ex
 	 */
 	public String getMenu() throws JsonProcessingException {
 		List<SysMenu> userMenus = UserSession.getSysMenu();
-		List<MenuBean> menuBeans = new ArrayList<MenuBean>();
+		List<MenuBean> menuBeans = new ArrayList<>();
 		if (userMenus != null) {
-			List<SysMenu> firstMenus = new ArrayList<SysMenu>();
+			List<SysMenu> firstMenus = new ArrayList<>();
 			for (SysMenu sysMenu : userMenus) {
 				if (null == sysMenu.getParentMenuId() && sysMenu.getMenuType() != null
 						&& Constants.MenuType.MENU.equals(sysMenu.getMenuType())) {
@@ -247,7 +257,7 @@ public class LoginController{
 			}
 			for (SysMenu firstMenu : firstMenus) {
 				MenuBean menuBean = new MenuBean();
-				String menuId = firstMenu.getMenuId().toString();
+				String menuId = firstMenu.getMenuId();
 				menuBean.setIcon("icon-sys");
 				menuBean.setMiHierarchicalstructure(menuId);
 				menuBean.setUrl(firstMenu.getMenuUrl());
@@ -255,7 +265,7 @@ public class LoginController{
 				menuBean.setMenuId(firstMenu.getMenuId());
 				menuBean.setMenuname(firstMenu.getMenuName());
 
-				List<SysMenu> twomenus = new ArrayList<SysMenu>();
+				List<SysMenu> twomenus = new ArrayList<>();
 				for (SysMenu menu : userMenus) {
 					String parentMenuId = menu.getParentMenuId();
 					if (parentMenuId != null && parentMenuId.equals(firstMenu.getMenuId()) && menu.getMenuType() != null
@@ -264,7 +274,7 @@ public class LoginController{
 					}
 				}
 
-				List<MenuBean> twoMenuBeans = new ArrayList<MenuBean>();
+				List<MenuBean> twoMenuBeans = new ArrayList<>();
 				for (SysMenu twoMenu : twomenus) {
 					MenuBean twoMenuBean = new MenuBean();
 					String twoMenuId = twoMenu.getMenuId();
@@ -282,8 +292,7 @@ public class LoginController{
 		}
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		String menuJson = objectMapper.writeValueAsString(menuBeans);
-		return menuJson;
+		return objectMapper.writeValueAsString(menuBeans);
 	}
 
 }

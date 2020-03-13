@@ -11,9 +11,9 @@ public interface SysNameService {
 
     /**
      * getSysNameByLang
-     * @param lang
-     * @return
+     * @param lang lang
+     * @return List
      */
-	public List<SysName> getSysNameByLang(String lang);
+	List<SysName> getSysNameByLang(String lang);
 
 }

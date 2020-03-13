@@ -23,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * SysUser服务接口
- * 
+ *
  * @RefreshScope Spring Cloud Config 手动刷新
  * @author tzz
  * @date 2019/03/18
@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public String getOrderToBaseGetSysUserByStId(String stId) {
 		SysUser sysUser = sysUserServiceFeign.getSysUserByStId(stId);
-		String result = null;
+		String result;
 		if (sysUser != null) {
 			result = sysUser.getStId() + "--" + sysUser.getStCode();
 		} else {
@@ -108,8 +108,8 @@ public class OrderServiceImpl implements OrderService {
 	 * 当前方法使用方式一：通过注解实现<br/>
 	 * fallbackMethod 方法的作用 ：服务降级执行<br/>
 	 * Hystrix默认开启线程池隔离方式，服务降级，服务熔断<br/>
-	 * 
-	 * @return
+	 *
+	 * @return ResponseBase
 	 */
 	@ApiOperation("解决服务雪崩效应getOrderToBaseGetSysUserHystrix--方式一：通过@HystrixCommand注解实现")
 	@HystrixCommand(fallbackMethod = "getOrderToBaseGetSysUserHystrixFallback")
@@ -137,8 +137,8 @@ public class OrderServiceImpl implements OrderService {
 	/**
 	 * 解决服务雪崩效应 Hystrix <br/>
 	 * 方式二：@FeignClient中的fallback类级别实现，需要在yml中配置开启Feign的Hystrix熔断器<br/>
-	 * 
-	 * @return
+	 *
+	 * @return ResponseBase
 	 */
 	@ApiOperation(value = "解决服务雪崩效应 getOrderToBaseGetSysRoleHystrix方式二：@FeignClient中的fallback类级别实现", notes = "查询数据库中某个的学生信息")
 	@ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String")

@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.its.gateway.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.FilterDefinition;
 import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
@@ -26,7 +27,7 @@ import reactor.core.publisher.Mono;
 /**
  * 集群环境动态路由配置--通过自定义实现RouteDefinitionRepository接口从数据库、配置中心、Redis获取路由进行<br>
  * 当前自定义实现是使用Redis保存自定义路由配置（代替默认内存的实现方式InMemoryRouteDefinitionRepository）
- * 
+ *
  * @author tzz
  * @date 2019/03/04
  */
@@ -34,17 +35,19 @@ import reactor.core.publisher.Mono;
 @Component
 public class RedisRouteDefinitionRepository implements RouteDefinitionRepository {
 
-    public static final String GATEWAY_ROUTES = "its_geteway_routes";
-    @Autowired
     private RedisRouteService redisRouteService;
-    @Autowired
     private StringRedisTemplate redisTemplate;
 
-    public final Map<String, RouteDefinition> routes = synchronizedMap(new LinkedHashMap<String, RouteDefinition>());
+    @Autowired
+    public RedisRouteDefinitionRepository(RedisRouteService redisRouteService, StringRedisTemplate redisTemplate) {
+        this.redisRouteService = redisRouteService;
+        this.redisTemplate = redisTemplate;
+    }
+
+    public final Map<String, RouteDefinition> routes = synchronizedMap(new LinkedHashMap<>());
 
     @Override
     public Flux<RouteDefinition> getRouteDefinitions() {
-        List<RouteDefinition> routeDefinitions = new ArrayList<>();
         try {
             // 网关路由代码例子
             RouteDefinition routeDefinition = new RouteDefinition();
@@ -81,18 +84,18 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         // 网关路由JSON例子
         String itsSpbBaseServers =
             "{'id':'its-spb-base-servers','order':0,'uri':'lb://its-spb-base-servers','predicates':[{'args':{'_genkey_0':'/api-base/**'},'name':'Path'}],"
                 + "'filters':[{'args':{'_genkey_0':'1'},'name':'StripPrefix'},{'args':{'_genkey_0':'true'},'name':'RequestTime'}]}";
-        itsSpbBaseServers =
+        String itsSpbOrderServers =
             "{'id':'its-spb-order-servers','order':0,'uri':'lb://its-spb-order-servers','predicates':[{'args':{'_genkey_0':'/api-order/**'},'name':'Path'}],"
                 + "'filters':[{'args':{'_genkey_0':'1'},'name':'StripPrefix'},{'args':{'_genkey_0':'true'},'name':'RequestTime'}]}";
         System.out.println(itsSpbBaseServers);
-        
+        System.out.println(itsSpbOrderServers);
+
         // 获取服务网关动态路由(Redis/数据库)
-        routeDefinitions = redisRouteService.getRouteDefinitions();
+        List<RouteDefinition> routeDefinitions = redisRouteService.getRouteDefinitions();
         // 设置服务网关动态路由
         return Flux.fromIterable(routeDefinitions);
     }
@@ -100,7 +103,7 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
         return route.flatMap(routeDefinition -> {
-            redisTemplate.opsForHash().put(GATEWAY_ROUTES, routeDefinition.getId(), JSON.toJSONString(routeDefinition));
+            redisTemplate.opsForHash().put(RedisUtil.GATEWAY_ROUTES, routeDefinition.getId(), JSON.toJSONString(routeDefinition));
             return Mono.empty();
         });
     }
@@ -108,8 +111,8 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
     @Override
     public Mono<Void> delete(Mono<String> routeId) {
         return routeId.flatMap(id -> {
-            if (redisTemplate.opsForHash().hasKey(GATEWAY_ROUTES, id)) {
-                redisTemplate.opsForHash().delete(GATEWAY_ROUTES, id);
+            if (redisTemplate.opsForHash().hasKey(RedisUtil.GATEWAY_ROUTES, id)) {
+                redisTemplate.opsForHash().delete(RedisUtil.GATEWAY_ROUTES, id);
                 return Mono.empty();
             }
             return Mono.defer(() -> Mono.error(new NotFoundException("RouteDefinition not found: " + routeId)));

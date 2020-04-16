@@ -37,7 +37,7 @@ $(function() {
 			success : function(successData) {
 				var code = successData.code;
 				if (code != null && code != "") {
-					if (code == "401" || code == "1004") {
+					if (code == "09020101" || code == "09020102") {
 						alert("请重新登录")
 					}
 				} else {

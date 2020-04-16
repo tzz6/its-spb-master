@@ -1,6 +1,7 @@
 /.settings/
 /.project
 /.idea/
+/log/
 /its-spb-base-servers/its-spb-base-servers.iml
 /its-spb-base-servers-api/its-spb-base-servers-api.iml
 /its-spb-common/its-spb-common.iml

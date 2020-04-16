@@ -15,8 +15,8 @@ import com.auth0.jwt.interfaces.JWTVerifier;
  * @author: 01115486
  * date: 2019/08/19 15:17
  */
-public class JwtUtil { 
-    
+public class JwtUtil {
+
     // JWT(JSON WEB TOKEN)是基于RFC
     // 7519标准定义的一种可以安全传输的小巧和自包含的JSON对象。由于数据是使用数字签名的，所以是可信任的和安全的。JWT可以使用HMAC算法对secret进行加密或者使用RSA的公钥私钥对来进行签名。
     // JWT通常由头部(Header)，负载(Payload)，签名(Signature)三个部分组成，中间以.号分隔，其格式为Header.Payload.Signature
@@ -34,20 +34,20 @@ public class JwtUtil {
     //  jti (JWT ID)：JWT唯一标识，能用于防止JWT重复使用
 
     private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
-   
+
     /** 秘钥 */
     public static final String SECRET_KEY = "JWT!2#4%6";
     /** token过期时间30分钟 */
     public static final long TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
     /** refreshToken过期时间 */
-    public static final long REFRESH_TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
+    public static final long REFRESH_TOKEN_EXPIRE_TIME = 30 * 1000;
     /** 签发人 */
     private static final String ISSUER = "issuer";
 
     /**
-     * 
+     *
      * description: 生成签名token
-     * 
+     *
      * @author: tzz date: 2019/08/19 15:21
      * @param username 身份标识
      * @param language 语言
@@ -69,10 +69,10 @@ public class JwtUtil {
     }
 
     /**
-     * 
+     *
      * description: 验证token
-     * 
-     * @author: tzz 
+     *
+     * @author: tzz
      * date: 2019/08/19 15:22
      * @param token
      * @return boolean
@@ -91,10 +91,10 @@ public class JwtUtil {
     }
 
     /**
-     * 
+     *
      * description: 从token获取username
-     * 
-     * @author: tzz 
+     *
+     * @author: tzz
      * date: 2019/08/19 15:23
      * @param token
      * @return String

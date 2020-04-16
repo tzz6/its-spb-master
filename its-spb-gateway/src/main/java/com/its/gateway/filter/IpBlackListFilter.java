@@ -3,20 +3,26 @@ package com.its.gateway.filter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
+import com.alibaba.fastjson.JSON;
+import com.its.gateway.domain.BaseResponse;
+import com.its.gateway.domain.ResponseEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
 import reactor.core.publisher.Mono;
 
 /**
- * 
+ *
  * description: IP白名单
  * company: tzz
  * @author: tzz
@@ -29,6 +35,8 @@ public class IpBlackListFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        boolean flag = true;
+        BaseResponse<String> res = new BaseResponse<>();
         try {
             // IP白名单
             String [] ipWhitelist = new String[] {"localhost", "127.0.0.1", "10.118.14.16", "10.118.14.12",
@@ -36,11 +44,24 @@ public class IpBlackListFilter implements GlobalFilter, Ordered {
             String ip = getIpAddr(exchange);
             if (checkFilter(ip, ipWhitelist)) {
                 log.info("intercept invalid request from forbidden ip {}", ip);
-                exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
-                return Mono.empty();
+                flag = false;
+                res.fail(ResponseEnum.IP_BLACK_LIST);
             }
         } catch (Exception e) {
+            flag = false;
+            res.fail(ResponseEnum.GATEWAY_SYS_EXCEPTION);
             log.error("IpBlackListFilter error", e);
+        }
+        if (!flag) {
+            // IP非法
+            ServerHttpResponse response = exchange.getResponse();
+            response.setStatusCode(HttpStatus.FORBIDDEN);
+            response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
+            String message  = JSON.toJSONString(res);
+            log.info(message);
+            byte[] responseByte = message.getBytes(StandardCharsets.UTF_8);
+            DataBuffer buffer = response.bufferFactory().wrap(responseByte);
+            return response.writeWith(Mono.just(buffer));
         }
         return chain.filter(exchange);
     }

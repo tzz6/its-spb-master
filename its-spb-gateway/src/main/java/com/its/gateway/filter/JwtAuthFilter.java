@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.alibaba.fastjson.JSON;
+import com.its.gateway.domain.BaseResponse;
+import com.its.gateway.domain.ResponseEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +29,7 @@ import com.its.gateway.util.JwtUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * 
+ *
  * description: JWT鉴权
  * company: tzz
  * @author: tzz
@@ -39,7 +42,7 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
     private static final String REFRESHTOKEN = "its-refreshToken";
     private static final String WEB_REFERER = "referer";
     /** refreshToken过期时间 */
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 30 * 1000;
     private StringRedisTemplate redisTemplate;
 
     @Autowired
@@ -69,20 +72,23 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             }
             log.info("its refreshToken: {} its token : {}", refreshToken, token);
             boolean tokenFlag = true;
-            String message = null;
+            BaseResponse<String> res = new BaseResponse<>();
+
             Map<Object, Object> map = null;
             if ((token == null || "".equals(token)||refreshToken == null || "".equals(refreshToken))) {
                 // token为空则鉴权失败
                 tokenFlag = false;
-                message = "{\"code\": \"401\",\"msg\": \"401 Unauthorized.\"}";
+                res.fail(ResponseEnum.ACCOUNT_NO_TOKEN);
+//                message = "{\"code\": \"401\",\"msg\": \"401 Unauthorized.\"}";
             } else {
                 boolean verifyResult = JwtUtil.verify(token);
                 // 从redis中获取单点登录认证信息
                 map = redisTemplate.opsForHash().entries(refreshToken);
-                if (!verifyResult||map == null) {
+                if (!verifyResult || map == null || map.size() == 0) {
                     // token验证非法或redis中无单点登录认证信息，则鉴权失败
                     tokenFlag = false;
-                    message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
+                    res.fail(ResponseEnum.ACCOUNT_OTHER_LOGIN);
+//                    message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
                 } else {
                     String redisToken = map.get("token").toString();
                     //注意：从Redis获取到的字符数据需要去掉前后双引号
@@ -90,7 +96,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                     // redis中保存的会话为空或与当前请求用户的token不一致，请求非法
                     if (redisToken == null || !token.equals(redisToken.replace(repStr, ""))) {
                         tokenFlag = false;
-                        message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
+                        res.fail(ResponseEnum.ACCOUNT_OTHER_LOGIN);
+//                        message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
                     }
                 }
             }
@@ -99,7 +106,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                 ServerHttpResponse response = exchange.getResponse();
                 response.setStatusCode(HttpStatus.UNAUTHORIZED);
                 response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
-                log.info("401 Unauthorized");
+                String message  = JSON.toJSONString(res);
+                log.info(message);
                 byte[] responseByte = message.getBytes(StandardCharsets.UTF_8);
                 DataBuffer buffer = response.bufferFactory().wrap(responseByte);
                 return response.writeWith(Mono.just(buffer));
@@ -146,5 +154,5 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         String swaggerReferer = "http://127.0.0.1/swagger-ui.html";
         return referer == null || !referer.contains(swaggerReferer);
     }
-    
+
 }

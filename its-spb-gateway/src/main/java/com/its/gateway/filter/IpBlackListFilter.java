@@ -39,8 +39,8 @@ public class IpBlackListFilter implements GlobalFilter, Ordered {
         BaseResponse<String> res = new BaseResponse<>();
         try {
             // IP白名单
-            String [] ipWhitelist = new String[] {"localhost", "127.0.0.1", "10.118.14.16", "10.118.14.12",
-			"192.168.163.1" };
+            String[] ipWhitelist = new String[]{"localhost", "its.com", "spb.com", "127.0.0.1",
+                    "10.118.12.94", "10.118.14.12", "192.168.163.1"};
             String ip = getIpAddr(exchange);
             if (checkFilter(ip, ipWhitelist)) {
                 log.info("intercept invalid request from forbidden ip {}", ip);

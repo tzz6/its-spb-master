@@ -1,19 +1,19 @@
 ###虚拟机IP
-vm: 
+vm:
   ip: vm-02-ip
 server:
   ###Base服务端口号
   port: 8201
-    
-spring: 
-  application: 
+
+spring:
+  application:
   ###服务别名--服务注册到注册中心名称
     name: its-spb-base-servers
   profiles:
     ###引用其他的yml文件
     include: mybatis,redis,mongodb,es
   ###zipkin服务追踪
-  zipkin: 
+  zipkin:
     base-url: http://${vm.ip}:9411/
   ###采样比例默认的为 0.1可设置介于 0到 1之间，1则表示全部采集
   sleuth:
@@ -40,14 +40,14 @@ eureka:
     ###EurekaServer在收到最后一次心跳之后的等待时间上限,单位为秒,超时则剔除
     leaseExpirationDurationInSeconds: 60
 #Zookeeper注册中心配置
-#  cloud: 
-#    zookeeper: 
-#      connect-string: 10.202.107.143:2181    
+#  cloud:
+#    zookeeper:
+#      connect-string: 10.202.107.143:2181
 
 #Swagger配置
-swagger: 
+swagger:
   base-package: com.its.base.servers.api
-  
+
 logging:
   level:
     root: info

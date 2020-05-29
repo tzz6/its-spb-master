@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:choose>
-   <c:when test="${!(empty cookie.lang.value)}"> 
-   <c:set var="lang" value="${cookie.lang.value}"/> 
+   <c:when test="${!(empty cookie.lang.value)}">
+   <c:set var="lang" value="${cookie.lang.value}"/>
    </c:when>
    <c:otherwise>
    <%
@@ -53,6 +53,7 @@ br {display: block;margin: 1px 0;line-height:1px;}
 		<h2>ITS后台管理平台</h2>
 		<form id="login_form" action="${ctx }/login" method="post">
 		<input type="hidden" id="lang" name="lang" value="${lang}" />
+		<input type="hidden" id="redirectUrl" name="redirectUrl" value="${redirectUrl}" />
 		<table>
 			<tr>
 			<td>
@@ -68,7 +69,7 @@ br {display: block;margin: 1px 0;line-height:1px;}
 			</tr>
 			<tr>
 			<td>
-			<input class="input_cls" style="width: 90px;" type="text" id="verifyCode" name="verifyCode" placeholder="验证码"/> 
+			<input class="input_cls" style="width: 90px;" type="text" id="verifyCode" name="verifyCode" placeholder="验证码"/>
 			<img height="26" src="${ctx }/verifyCodeServlet" width="88" height="32" style="vertical-align: middle;" id="securityCodeImg">
 			</td>
 			</tr>
@@ -83,7 +84,7 @@ br {display: block;margin: 1px 0;line-height:1px;}
 			</tr>
 			<tr>
 			<td>
-			<input type="checkbox" id="savePassword" name="savePassword" value="1" 
+			<input type="checkbox" id="savePassword" name="savePassword" value="1"
 			<c:if test="${savePassword == '1' }">checked="checked"</c:if>> <fmt:message key="login.savePassword" />
 			</td>
 			</tr>

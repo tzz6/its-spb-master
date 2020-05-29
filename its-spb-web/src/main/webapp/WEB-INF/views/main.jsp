@@ -3,7 +3,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/commons/common.jsp"%>
+<c:set var="scheme" value="${pageContext.request.scheme}"></c:set>
+<c:set var="serverName" value="${pageContext.request.serverName}"></c:set>
+<c:set var="serverPort" value="${pageContext.request.serverPort}"></c:set>
+<c:set var="ctx" value="${pageContext.request.contextPath}"></c:set>
 <script type="text/javascript" src="${ctx}/js/outlook.js"> </script>
+<script type="text/javascript" src="${ctx}/js/login/caslogin.js"> </script>
 <%@ include file="/commons/language.jsp"%>
 
 <fmt:bundle basename="com.its.resource.lang">
@@ -24,13 +29,15 @@
 }
 </style>
 
-<script type="text/javascript"> 
+<script type="text/javascript">
 $(function(){
     $('#loginOut').click(function() {
 		$.messager.confirm(Msg.sys_remaind1, Msg.sys_logout, function(r) {
 	    if (r) {
-	    	window.location.href = $("#ctx").val() + '/logout';
-	    }
+	    	// window.location.href = $("#ctx").val() + '/logout';
+			window.location.href = 'http://cas.com:8080/logout' + '?redirectUrl=' + $("#scheme").val()
+					+ '://' + $("#serverName").val() + ':' + $("#serverPort").val()  + $("#ctx").val();
+		}
 		});
 	});
 });
@@ -47,12 +54,15 @@ $(function(){
 		</div>
 	</noscript>
 	<input type="hidden" name="ctx" id="ctx" value="${ctx }">
+	<input type="hidden" name="scheme" id="scheme" value="${scheme }">
+	<input type="hidden" name="serverName" id="serverName" value="${serverName }">
+	<input type="hidden" name="serverPort" id="serverPort" value="${serverPort }">
 	<div region="north" split="true" border="false"
 		style="overflow: hidden; height: 45px; background: #6C98D1; line-height: 15px; color: #fff; font-family: Verdana, 微软雅黑, 黑体">
 		<span style="float: right; padding-right: 20px; margin-top: 12px;"
 			class="head"><fmt:message key="main.welcome" />&nbsp; ${ITS_USER_SESSION.stCode } <!-- 登出 --> &nbsp;&nbsp;<a
 			href="###" id="loginOut"> <fmt:message key="main.logout" /></a>
-		</span> 
+		</span>
 <!-- 		<span -->
 <!-- 			style="padding-left: 10px; font-size: 16px; float: left; margin-top: 5px;"><img -->
 <!-- 			src="images/logo.png" width="80" height="30" align="absmiddle" /> -->
@@ -61,7 +71,7 @@ $(function(){
 	<div region="south" split="true"
 		style="height: 40px; background: #D2E0F2;">
 		<div class="footer">&copy;2017&nbsp;&nbsp;<fmt:message key="main.sf" />&nbsp;&nbsp;<fmt:message key="main.arr" /></div>
-		
+
 	</div>
 	<div id="mm" class="easyui-menu" style="width: 150px;">
 		<div id="mm-tabupdate"><fmt:message key="main.refresh" /></div>
@@ -89,11 +99,11 @@ $(function(){
 					<div>
 						<span style="font-size: 14px"><fmt:message key="main.howdy" />，${ITS_USER_SESSION.stCode }<br /></span>
 						<span style="font-size: 14px">EhCache页面缓存
-							<%  
+							<%
 								SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-							    out.print(format.format(new Date()));  
-							    System.out.println(System.currentTimeMillis());  
-							%>  
+							    out.print(format.format(new Date()));
+							    System.out.println(System.currentTimeMillis());
+							%>
 						</span>
 					</div>
 				</div>

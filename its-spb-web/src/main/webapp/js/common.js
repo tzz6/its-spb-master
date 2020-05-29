@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 function myformatter(date){
 		var y = date.getFullYear();
@@ -129,12 +129,12 @@ $.extend($.fn.validatebox.defaults.rules, {
         },
         message: '身份证号码格式不正确'
     },
-    maxLength: {    
-        validator: function(value, param){    
+    maxLength: {
+        validator: function(value, param){
         	var len = value.length;
-            return len <= param[0];    
-        },    
-        message: '输入内容长度必须小于等于{0}个字符'   
+            return len <= param[0];
+        },
+        message: '输入内容长度必须小于等于{0}个字符'
     },
     minLength: {
         validator: function (value, param) {
@@ -154,7 +154,7 @@ $.extend($.fn.validatebox.defaults.rules, {
             return /^((\(\d{2,3}\))|(\d{3}\-))?(\(0\d{2,3}\)|0\d{2,3}-)?[1-9]\d{6,7}(\-\d{1,4})?$/i.test(value);
         },
         message: '格式不正确,请使用下面格式:020-88888888'
-    }, 
+    },
 	chinesePhone: {// 验证电话号码支持前缀+86|#
         validator: function (value) {
             return /^(\+86|#)?((0\d{2,3})-?)(\d{7,8})$/i.test(value);
@@ -189,12 +189,12 @@ $.extend($.fn.validatebox.defaults.rules, {
         },
         message: '手机号码格式不正确'
     },
-    positive_int:{  
-        validator:function(value){  
-             return /^[1-9]\d*$/.test(value);  
-        },  
-        message:'只能输入正数'  
-    }, 
+    positive_int:{
+        validator:function(value){
+             return /^[1-9]\d*$/.test(value);
+        },
+        message:'只能输入正数'
+    },
     intOrFloat: {// 验证整数或小数
         validator: function (value) {
             return /^\d+(\.\d+)?$/i.test(value);
@@ -276,7 +276,7 @@ $.extend($.fn.validatebox.defaults.rules, {
         	str = str.toUpperCase(str);
         	$(param[0]).val(str);
         	return /^[^\u4e00-\u9fa5]{0,}$/i.test(str); ///^[A-Za-z0-9]+$/i.test(str)
-        },  
+        },
         message: '邮政编码请输入英文字符'
     },
     /*
@@ -294,14 +294,14 @@ $.extend($.fn.validatebox.defaults.rules, {
         	return /^[^\u4e00-\u9fa5]{0,}$/i.test(str);
         },
         message: '网点代码请输入英文字符'
-    },   
+    },
     consigneeEmpCodes: {// 验证收件员工号
         validator: function (value) {
         	var str = value.replace(/(^\s*)|(\s*$)/g,"");
         	return /^[^\u4e00-\u9fa5]{0,}$/i.test(str);
         },
         message: '收件员工号请输入英文字符'
-    },   
+    },
     ip: {// 验证IP地址
         validator: function (value) {
             return /d+.d+.d+.d+/i.test(value);
@@ -361,32 +361,32 @@ $.extend($.fn.validatebox.defaults.rules, {
     	message: '【合同编号】格式错误，只能包含数字、字母和中横杠'
     },
     checkContractNo:{
-    	validator : function(value,param){ 
+    	validator : function(value,param){
     	      var flag;
               if(""!=$.trim(value)){
-              	$.ajax({  
-              		url : 'checkContractNo.do',  
-              		type: "POST", 
-              		data: {"contractNo":$.trim(value),"spFullName":$.trim($('#spFullName').val()),"sspFullName":$.trim($('#sspFullName').val())}, 
+              	$.ajax({
+              		url : 'checkContractNo.do',
+              		type: "POST",
+              		data: {"contractNo":$.trim(value),"spFullName":$.trim($('#spFullName').val()),"sspFullName":$.trim($('#sspFullName').val())},
               		async: false,
-              		dataType: "json",   
+              		dataType: "json",
               		success : function(data) {
-              			if (!data.result) {  
-              				flag = true;      
-              			}else{  
-              				flag = false;  
-              			}  
-              		}  
-              	});  
+              			if (!data.result) {
+              				flag = true;
+              			}else{
+              				flag = false;
+              			}
+              		}
+              	});
               }else{
               	flag = true;
               }
-              if(flag){  
-                  $("#contractNo").removeClass('validatebox-invalid');  
-              }  
-              return flag;  
-        },  
-    	message: '合同编号已经存在，请确认合同编号！'  
+              if(flag){
+                  $("#contractNo").removeClass('validatebox-invalid');
+              }
+              return flag;
+        },
+    	message: '合同编号已经存在，请确认合同编号！'
     },
     sppMonthlyCard:{
     	validator: function (value) {
@@ -395,139 +395,139 @@ $.extend($.fn.validatebox.defaults.rules, {
     	message: '【月结卡号】格式错误，只能包含数字'
     },
     checkMonthlyCard:{
-        validator : function(value,param){  
+        validator : function(value,param){
             var flag;
             if(""!=$.trim(value)){
-            	$.ajax({  
-            		url : 'checkMonthlyCard.do',  
-            		type: "POST", 
-            		data: {"monthlyCard":$.trim(value),"cmId":$.trim($('#cmId2').val()),"spFullName":$.trim($('#spFullName').val()),"sspFullName":$.trim($('#sspFullName').val())}, 
+            	$.ajax({
+            		url : 'checkMonthlyCard.do',
+            		type: "POST",
+            		data: {"monthlyCard":$.trim(value),"cmId":$.trim($('#cmId2').val()),"spFullName":$.trim($('#spFullName').val()),"sspFullName":$.trim($('#sspFullName').val())},
             		async: false,
-            		dataType: "json",   
+            		dataType: "json",
             		success : function(data) {
-            			if (!data.result) {  
-            				flag = true;      
-            			}else{  
-            				flag = false;  
-            			}  
-            		}  
-            	});  
+            			if (!data.result) {
+            				flag = true;
+            			}else{
+            				flag = false;
+            			}
+            		}
+            	});
             }else{
             	flag = true;
             }
-            if(flag){  
-                $("#spMonthlyCard1").removeClass('validatebox-invalid');  
-                $("#spMonthlyCard2").removeClass('validatebox-invalid');  
-            }  
-            return flag;  
-        },  
-        message: '月结卡号已经存在，请确认月结卡号！' 
+            if(flag){
+                $("#spMonthlyCard1").removeClass('validatebox-invalid');
+                $("#spMonthlyCard2").removeClass('validatebox-invalid');
+            }
+            return flag;
+        },
+        message: '月结卡号已经存在，请确认月结卡号！'
     },
-    
-    checkLoginName :{  
-        validator : function(value,param){  
+
+    checkLoginName :{
+        validator : function(value,param){
             var flag;
             if(""!=$.trim(value)){
-            	$.ajax({  
-            		url : 'checkLoginName.do',  
-            		type: "POST", 
-            		data: {"loginName":$.trim(value),"ssoUserId":$("#ssoUserId").val()}, 
+            	$.ajax({
+            		url : 'checkLoginName.do',
+            		type: "POST",
+            		data: {"loginName":$.trim(value),"ssoUserId":$("#ssoUserId").val()},
             		async: false,
-            		dataType: "json",   
+            		dataType: "json",
             		success : function(data) {
-            			if (!data.result) {  
-            				flag = true;      
-            			}else{  
-            				flag = false;  
-            			}  
-            		}  
-            	});  
+            			if (!data.result) {
+            				flag = true;
+            			}else{
+            				flag = false;
+            			}
+            		}
+            	});
             }else{
             	flag = true;
             }
-            if(flag){  
-                $("#loginname").removeClass('validatebox-invalid');  
-            }  
-            return flag;  
-        },  
-        message: '用户账号已经存在，请确认用户账号！'  
+            if(flag){
+                $("#loginname").removeClass('validatebox-invalid');
+            }
+            return flag;
+        },
+        message: '用户账号已经存在，请确认用户账号！'
     },
-    checkCoOrderNo :{  
-    	validator : function(value,param){  
+    checkCoOrderNo :{
+    	validator : function(value,param){
     		var flag;
     		if(""!=$.trim(value)){
-    			$.ajax({  
-    				url : 'checkCode.do',  
-    				type: "POST", 
-    				data: {"coOrderNo":$.trim(value)}, 
+    			$.ajax({
+    				url : 'checkCode.do',
+    				type: "POST",
+    				data: {"coOrderNo":$.trim(value)},
     				async: false,
-    				dataType: "json",   
+    				dataType: "json",
     				success : function(data) {
-    					if (data!=""&&data!=null) {  
+    					if (data!=""&&data!=null) {
     						var cmCode = $.trim($("#CM_Code").val());
     						if(''==cmCode){
     							$("#CM_Code").val(data.CM_Code);
     							$("#cm_id").val(data.CM_ID_Shipper);
-    							flag = true; 
+    							flag = true;
     							$("#CM_Code").removeClass('validatebox-invalid');
     						}else if(data.CM_Code==cmCode){
-    							flag = true; 
+    							flag = true;
     						}else{
     							flag = false;
     						}
-    					}else{  
-    						flag = true;  
-    					}  
-    				}  
-    			});  
+    					}else{
+    						flag = true;
+    					}
+    				}
+    			});
     		}else{
     			flag = true;
     		}
-    		if(flag){  
-    			$("#CO_OrderNo").removeClass('validatebox-invalid');  
-    		}  
-    		return flag;  
-    	},  
-    	message: '客户单号不属于当前客户代码,请确认客户单号！'  
+    		if(flag){
+    			$("#CO_OrderNo").removeClass('validatebox-invalid');
+    		}
+    		return flag;
+    	},
+    	message: '客户单号不属于当前客户代码,请确认客户单号！'
     },
-    checkCoOrderNoSame :{  
-    	validator : function(value,param){  
+    checkCoOrderNoSame :{
+    	validator : function(value,param){
     		var flag;
     		if(""!=$.trim(value)){
-    			$.ajax({  
-    				url : 'getCheckCoOrder.do',  
-    				type: "POST", 
-    				data: {"coOrderNo":$.trim(value)}, 
+    			$.ajax({
+    				url : 'getCheckCoOrder.do',
+    				type: "POST",
+    				data: {"coOrderNo":$.trim(value)},
     				async: false,
-    				dataType: "text",   
+    				dataType: "text",
     				success : function(data) {
-    					if (data=="1") {  
-    						flag = true;  
-    					}else{  
-    						flag = false;  
-    					}  
-    				}  
-    			});  
+    					if (data=="1") {
+    						flag = true;
+    					}else{
+    						flag = false;
+    					}
+    				}
+    			});
     		}else{
     			flag = true;
     		}
-    		if(flag){  
-    			$("#CO_OrderNo").removeClass('validatebox-invalid');  
-    		}  
-    		return flag;  
-    	},  
-    	message: '客户单号与服务商单号重复,请确认客户单号！'  
+    		if(flag){
+    			$("#CO_OrderNo").removeClass('validatebox-invalid');
+    		}
+    		return flag;
+    	},
+    	message: '客户单号与服务商单号重复,请确认客户单号！'
     },
-    checkCmCode :{  
-    	validator : function(value,param){  
+    checkCmCode :{
+    	validator : function(value,param){
     		var flag = false;
     		if(""!=$.trim(value)){
-    			$.ajax({  
-    				url : 'checkedCmCode.do',  
-    				type: "POST", 
-    				data: {"cmCode":$.trim(value)}, 
+    			$.ajax({
+    				url : 'checkedCmCode.do',
+    				type: "POST",
+    				data: {"cmCode":$.trim(value)},
     				async: false,
-    				dataType: "text",   
+    				dataType: "text",
     				success : function(data) {
     					if(data!=""&&data!=null){
     						$("#cm_id").val(data);
@@ -536,21 +536,21 @@ $.extend($.fn.validatebox.defaults.rules, {
     	 					$("#cm_id").val("");
     	 					flag = false;
     	 				}
-    				}  
-    			});  
+    				}
+    			});
     		}else{
     			$("#cm_id").val("");
     			flag = true;
     		}
-    		if(flag){  
-    			$("#CM_Code").removeClass('validatebox-invalid');  
-    		}  
-    		return flag;  
-    	},  
-    	message: '客户代码不存在，请确认客户代码！'  
+    		if(flag){
+    			$("#CM_Code").removeClass('validatebox-invalid');
+    		}
+    		return flag;
+    	},
+    	message: '客户代码不存在，请确认客户代码！'
     },
-    checkCity :{  
-        validator : function(value,param){  
+    checkCity :{
+        validator : function(value,param){
             var flag=false;
             if(""!=$.trim(value)){
             	var result=$('#idCy'+param[0]).combobox('getData');
@@ -563,15 +563,15 @@ $.extend($.fn.validatebox.defaults.rules, {
             }else{
             	flag = true;
             }
-            if(flag){  
-                $("#idCy"+param[0]).removeClass('validatebox-invalid');  
-            }  
-            return flag;  
-        },  
-        message: '请输入或选择有效的城市！'  
+            if(flag){
+                $("#idCy"+param[0]).removeClass('validatebox-invalid');
+            }
+            return flag;
+        },
+        message: '请输入或选择有效的城市！'
     },
-    checkUserName :{  
-    	validator : function(value,param){  
+    checkUserName :{
+    	validator : function(value,param){
     		var flag=false;
     		if(""!=$.trim(value)){
     			var result=$('#user_'+param[0]).combobox('getData');
@@ -584,15 +584,15 @@ $.extend($.fn.validatebox.defaults.rules, {
     		}else{
     			flag = true;
     		}
-    		if(flag){  
-    			$("#user_"+param[0]).removeClass('validatebox-invalid');  
-    		}  
-    		return flag;  
-    	},  
-    	message: '请输入或选择正确的工号姓名！'  
+    		if(flag){
+    			$("#user_"+param[0]).removeClass('validatebox-invalid');
+    		}
+    		return flag;
+    	},
+    	message: '请输入或选择正确的工号姓名！'
     },
-    checkCountry :{  
-        validator : function(value, param){  
+    checkCountry :{
+        validator : function(value, param){
             var flag=false;
             if(""!=$.trim(value)){
             	var result=$('#'+param[0]).combobox('getData');
@@ -605,15 +605,15 @@ $.extend($.fn.validatebox.defaults.rules, {
             }else{
             	flag = true;
             }
-            if(flag){  
-                $('#'+param[0]).removeClass('validatebox-invalid');  
-            }  
-            return flag;  
-        },  
-        message: '请输入或选择有效的国家！'  
+            if(flag){
+                $('#'+param[0]).removeClass('validatebox-invalid');
+            }
+            return flag;
+        },
+        message: '请输入或选择有效的国家！'
     },
-    checkCountryName :{  
-        validator : function(value, param){  
+    checkCountryName :{
+        validator : function(value, param){
             var flag=false;
             if(""!=$.trim(value)){
             	var result=$('#'+param[0]).combobox('getData');
@@ -626,15 +626,15 @@ $.extend($.fn.validatebox.defaults.rules, {
             }else{
             	flag = true;
             }
-            if(flag){  
-                $('#'+param[0]).removeClass('validatebox-invalid');  
-            }  
-            return flag;  
-        },  
-        message: '请输入或选择有效的国家！'  
+            if(flag){
+                $('#'+param[0]).removeClass('validatebox-invalid');
+            }
+            return flag;
+        },
+        message: '请输入或选择有效的国家！'
     },
-    checkPort :{  
-    	validator : function(value, param){  
+    checkPort :{
+    	validator : function(value, param){
     		var flag=false;
     		if(""!=$.trim(value)){
     			var result=$('#'+param[0]).combobox('getData');
@@ -647,20 +647,20 @@ $.extend($.fn.validatebox.defaults.rules, {
     		}else{
     			flag = true;
     		}
-    		if(flag){  
-    			$('#'+param[0]).removeClass('validatebox-invalid');  
-    		}  
-    		return flag;  
-    	},  
-    	message: '口岸编辑错误'  
+    		if(flag){
+    			$('#'+param[0]).removeClass('validatebox-invalid');
+    		}
+    		return flag;
+    	},
+    	message: '口岸编辑错误'
     },
-    equaldDate: {  
-        validator: function (value, param) {  
-            var start = $(param[0]).datetimebox('getValue');  //获取开始时间    
-            return value > start;                             //有效范围为当前时间大于开始时间    
-        },  
-        message: '结束日期应大于开始日期!'                     //匹配失败消息  
-    } 
+    equaldDate: {
+        validator: function (value, param) {
+            var start = $(param[0]).datetimebox('getValue');  //获取开始时间
+            return value > start;                             //有效范围为当前时间大于开始时间
+        },
+        message: '结束日期应大于开始日期!'                     //匹配失败消息
+    }
 });
 
 /**
@@ -805,13 +805,13 @@ function addByTransDate(dateParameter, num) {
     newDate = newDate.valueOf();
     newDate = newDate + num * 24 * 60 * 60 * 1000;
     newDate = new Date(newDate);
-    //如果月份长度少于2，则前加 0 补位  
+    //如果月份长度少于2，则前加 0 补位
     if ((newDate.getMonth() + 1).toString().length == 1) {
        monthString = 0 + "" + (newDate.getMonth() + 1).toString();
     } else {
        monthString = (newDate.getMonth() + 1).toString();
     }
-    //如果天数长度少于2，则前加 0 补位  
+    //如果天数长度少于2，则前加 0 补位
     if (newDate.getDate().toString().length == 1) {
        dayString = 0 + "" + newDate.getDate().toString();
     } else {
@@ -834,13 +834,13 @@ function reduceByTransDate(dateParameter, num) {
     newDate = newDate.valueOf();
     newDate = newDate - num * 24 * 60 * 60 * 1000;
     newDate = new Date(newDate);
-    //如果月份长度少于2，则前加 0 补位  
+    //如果月份长度少于2，则前加 0 补位
     if ((newDate.getMonth() + 1).toString().length == 1) {
       monthString = 0 + "" + (newDate.getMonth() + 1).toString();
     } else {
       monthString = (newDate.getMonth() + 1).toString();
     }
-    //如果天数长度少于2，则前加 0 补位  
+    //如果天数长度少于2，则前加 0 补位
     if (newDate.getDate().toString().length == 1) {
       dayString = 0 + "" + newDate.getDate().toString();
     } else {
@@ -849,7 +849,7 @@ function reduceByTransDate(dateParameter, num) {
     dateString = newDate.getFullYear() + "-" + monthString + "-" + dayString;
     return dateString;
 }
- 
+
 //得到日期  主方法
 function showTime(pdVal) {
     var trans_day = "";
@@ -1017,7 +1017,7 @@ var easyuiPanelOnMove = function(left, top) {
 	var buttom = top + height;
 	var parentWidth = $(window).width();
 	var parentHeight = 768;
-	
+
 	if(parentObj.css("overflow")=="hidden"){
 	if(left > parentWidth-width){
 	$(this).window('move', {
@@ -1035,36 +1035,32 @@ var easyuiPanelOnMove = function(left, top) {
 	$.fn.window.defaults.onMove = easyuiPanelOnMove;
 	$.fn.dialog.defaults.onMove = easyuiPanelOnMove;
 
-	
-	(function($){  
-	    //备份jquery的ajax方法  
-	    var _ajax=$.ajax;  
-	    //重写jquery的ajax方法  
-	    $.ajax=function(opt){  
-	        //备份opt中error和success方法  
-	        var fn = {  
-	            error:function(XMLHttpRequest, textStatus, errorThrown){},  
+
+	(function($){
+	    //备份jquery的ajax方法
+	    var _ajax=$.ajax;
+	    //重写jquery的ajax方法
+	    $.ajax=function(opt){
+	        //备份opt中error和success方法
+	        var fn = {
+	            error:function(XMLHttpRequest, textStatus, errorThrown){},
 	            success:function(data, textStatus){
-	            }  
-	        }; 
-	        if(opt.error){  
-	            fn.error=opt.error;  
-	        }  
-	        if(opt.success){  
-	            fn.success=opt.success;  
-	        }  
-	          
-	        //扩展增强处理  
-	        var _opt = $.extend(opt,{  
+	            }
+	        };
+	        if(opt.error){
+	            fn.error=opt.error;
+	        }
+	        if(opt.success){
+	            fn.success=opt.success;
+	        }
+
+	        //扩展增强处理
+	        var _opt = $.extend(opt,{
 	        	//20190829增加设置Headers扩展
 	        	beforeSend: function(xhr) {
 	        		//debugger
-	        		var username = window.sessionStorage.getItem("username");
-	        		var lang = window.sessionStorage.getItem("lang");
-	        		var refreshToken = window.sessionStorage.getItem("refreshToken");
-	        		var token = window.sessionStorage.getItem("token");
-	        		xhr.setRequestHeader("its-username",username);
-	        		xhr.setRequestHeader("its-language",lang);
+	        		var refreshToken = window.localStorage.getItem("refreshToken");
+	        		var token = window.localStorage.getItem("token");
 	        		xhr.setRequestHeader("its-refreshToken",refreshToken);
 	        		xhr.setRequestHeader("its-token",token);
 	        		xhr.withCredentials = true; //支持跨域发送cookies
@@ -1072,20 +1068,26 @@ var easyuiPanelOnMove = function(left, top) {
 	        	xhrFields: {
 			        withCredentials: true // 携带跨域cookie
 			    },
-	            error:function(XMLHttpRequest, textStatus, errorThrown){  
-	                //错误方法增强处理  
-	                fn.error(XMLHttpRequest, textStatus, errorThrown);  
-	            },  
+	            error:function(XMLHttpRequest, textStatus, errorThrown){
+	                //错误方法增强处理
+	                fn.error(XMLHttpRequest, textStatus, errorThrown);
+	            },
 	            success:function(data, textStatus){
-	                fn.success(data, textStatus);  
+                    var code = data.code;
+                    if (code != null && code != "") {
+                        if (code == "09020101" || code == "09020102") {
+                            alert("common.js请重新登录," + code + "," + data.msg)
+                        }
+                    }
+	                fn.success(data, textStatus);
 	            },
 	            complete: function(XMLHttpRequest, textStatus) {
-	                var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，  
+	                var sessionstatus = XMLHttpRequest.getResponseHeader("sessionstatus"); //通过XMLHttpRequest取得响应头，sessionstatus，
 	                if (sessionstatus == "timeout") {
 	                	window.location.replace("getMenu.do");
 	                }
 	            }
-	        });  
-	        _ajax(_opt);  
-	    };  
-	})(jQuery);  
+	        });
+	        _ajax(_opt);
+	    };
+	})(jQuery);

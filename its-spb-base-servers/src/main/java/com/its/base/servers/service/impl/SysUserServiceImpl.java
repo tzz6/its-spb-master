@@ -44,7 +44,7 @@ public class SysUserServiceImpl implements SysUserService {
 			throw new BaseException("后台用新增用户服务错误", e);
 		}
 	}
-	
+
 	@Override
 	public void updateSysUser(SysUser sysUser) {
 		try {
@@ -93,9 +93,19 @@ public class SysUserServiceImpl implements SysUserService {
 			log.error("后台删除用户服务错误", e);
 			throw new BaseException("后台删除用户服务错误", e);
 		}
-		
+
 	}
-	
+
+	@Override
+	public SysUser login(Map<String, Object> map) {
+		List<SysUser> list = getSysUserByMap(map);
+		if(list != null && list.size()>0){
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+
 	@Override
 	public List<SysUser> getSysUserByMap(Map<String, Object> map) {
 		try {

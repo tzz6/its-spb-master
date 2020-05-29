@@ -59,16 +59,16 @@
 					<tr style="height:30px;">
 						<td style="width:90px;font-size:14px;"><fmt:message key="sys.name.code" /></td>
 						<td>
-							<input name="sysNameCode" id="sys_name_add" class="easyui-combobox" style="width:200px;font-size:14px;"  data-options="panelHeight:'auto',required:true" >  
+							<input name="sysNameCode" id="sys_name_add" class="easyui-combobox" style="width:200px;font-size:14px;"  data-options="panelHeight:'auto',required:true" >
 						</td>
 					</tr>
 					<tr style="height:30px;">
 						<td style="width:90px;font-size:14px;"><fmt:message key="role.name" /></td>
 						<td>
-							<input id="roleName_add" name="roleName_add" style="width:200px;font-size:14px;" class="easyui-validatebox" data-options="required:true,validType:'length[1,16]'">  
+							<input id="roleName_add" name="roleName_add" style="width:200px;font-size:14px;" class="easyui-validatebox" data-options="required:true,validType:'length[1,16]'">
 						</td>
-					</tr>	
-					 
+					</tr>
+
 				</table>
 			</div>
         </form>
@@ -89,25 +89,25 @@
 					<tr style="height:30px;">
 						<td style="width:90px;font-size:14px;"><fmt:message key="sys.name.code" /></td>
 						<td>
-							<input name="sysNameCode" id="sys_name_update" class="easyui-combobox" style="width:200px;font-size:14px;"  data-options="panelHeight:'auto',required:true" >  
+							<input name="sysNameCode" id="sys_name_update" class="easyui-combobox" style="width:200px;font-size:14px;"  data-options="panelHeight:'auto',required:true" >
 						</td>
 					</tr>
 					<tr style="height:30px;">
 						<td style="width:90px;font-size:14px;"><fmt:message key="role.name" /></td>
 						<td>
-							<input id="roleName_update" name="roleName_update" style="width:200px;font-size:14px;" class="easyui-validatebox" data-options="required:true,validType:'length[1,16]'">  
+							<input id="roleName_update" name="roleName_update" style="width:200px;font-size:14px;" class="easyui-validatebox" data-options="required:true,validType:'length[1,16]'">
 						</td>
-					</tr>	
-					 
+					</tr>
+
 				</table>
 		</form>
 		<div id="update_dialog_button_div" style="text-align: center;">
 			<a href="#" id="update_dialog_linkbutton_save" class="easyui-linkbutton" data-options="iconCls:'icon-save'"><fmt:message key="btn.save" /></a>
-			&nbsp;&nbsp;&nbsp;&nbsp; 
+			&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="#" id="update_dialog_linkbutton_cancel" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"><fmt:message key="btn.close" /></a>
 		</div>
 	</div>
-	
+
 	<!-- 设置角色菜单    start -->
     <div id="tbMenu" style="padding: 5px; display: none;">
 		<div>
@@ -218,22 +218,22 @@
 					if(data){
 						$('#sys_name_add').combobox({
 				    		data:data,
-						    valueField:'sysNameCode',    
+						    valueField:'sysNameCode',
 						    textField:'name',
 						    editable:false,
 						    required:true
 						});
-						
+
 						$('#sys_name_update').combobox({
 				    		data:data,
-				    		valueField:'sysNameCode',    
+				    		valueField:'sysNameCode',
 							textField:'name',
 						    editable:false,
 						    required:true
 						});
-						
+
 		  			}
-	            }, 
+	            },
 	            function(){//error
 	            	alert("error");
 	            }
@@ -245,7 +245,7 @@
 	$(window).resize(function(){
 		 _doResize($('#role_table'));
 	});
-	// 查询按钮点击事件 		
+	// 查询按钮点击事件
 	$('#search_linkbutton').click(function() {
 		querySysRoleList();
 	});
@@ -260,7 +260,7 @@
 	}
 	// 重置查询列表框
 	function resetSearchForm() {
-		 $('#search_form').form('clear');  
+		 $('#search_form').form('clear');
 	}
 
 	// 新增按钮点击事件
@@ -293,7 +293,7 @@
 				return $(this).form('validate');
 			},
 			success : function(resultData) {
-				alert("easyUI form提交,因跨域请求后，无法获取返回的response,手动刷新列表:"+resultData);
+				alert("easyUI form提交,因跨域请求后，无法获取返回的response,手动刷新列表,可修改为ajax解决,如用户管理:"+resultData);
 				if (resultData == 'SUCCESS') {
 					$.messager.show({
 						title : Msg.sys_remaind1,
@@ -323,7 +323,7 @@
 			}
 		});
 	}
-	
+
 
 	// 修改按钮点击事件
 	$('#update_linkbutton').click(function() {
@@ -343,8 +343,8 @@
 			});
 		}
 	});
-	
-	
+
+
 	// 打开修改用户弹出框
 	function openUpdateDialog(roleId) {
 		$(function(){
@@ -354,24 +354,24 @@
 					$('#update_dialog_div').dialog('open');
 					$('#update_dialog_form').form('clear');
 					$('#update_dialog_form').form('load', {roleId:data.roleId,roleName_update:data.roleName, sysNameCode:data.sysNameCode});
-	            }, 
+	            },
 	            function(){//error
 	            	alert("error");
 	            }
 			);
 		});
 	}
-	
+
 	  // 修改用户窗口保存按钮点击事件
     $('#update_dialog_linkbutton_save').click(function (){
         updateSysRole();
     });
-    
+
     // 修改用户窗口关闭按钮点击事件
     $('#update_dialog_linkbutton_cancel').click(function (){
         $('#update_dialog_div').dialog('close');
     });
-    
+
  	// 提交保存录入的修改用户信息
 	function updateSysRole() {
 		$('#update_dialog_form').form('submit', {
@@ -401,22 +401,22 @@
 	                                 title: Msg.sys_remaind1,
 	                                 msg:Msg.sys_no_permissions_txt1
 	                             });
-	  	      				setTimeout(function () { 
+	  	      				setTimeout(function () {
 	      						top.location.href = resultData;
 	      				    }, 3000);
 	      					}
-	      				
+
               	 	}
 				}
 			}
 		});
 	}
- 	
+
 	// 删除按钮点击事件
 	$('#delete_linkbutton').click(function(){
 	 var roleId = "";  // ID
   	 var rows = $('#role_table').datagrid('getChecked'); // 获取选中的行数据
-  	 if(rows.length > 0){ 
+  	 if(rows.length > 0){
   		  $.messager.confirm( Msg.sys_confirm2,Msg.sys_deleate,function(flag){
   			  if(flag){
   				  $.each(rows, function(index, row){
@@ -452,7 +452,7 @@
 	 	                                 title: Msg.sys_remaind1,
 	 	                                 msg:Msg.sys_no_permissions_txt1
 	 	                             });
-			  	      				setTimeout(function () { 
+			  	      				setTimeout(function () {
 			      						top.location.href = resultData;
 			      				    }, 3000);
 	  	      					}
@@ -469,8 +469,8 @@
   		  });
   	  }
 	  });
-	
-	   
+
+
 	   //--------------关联菜单---------------
 	    var roleMenus;
 		var addMenus=new Array();
@@ -483,7 +483,7 @@
 			addMenus=new Array();
 			removeMenus=new Array();
 			var items = $("#role_table").datagrid('getChecked');
-			if(items.length>1){ 
+			if(items.length>1){
 				$.messager.show({
 					title:Msg.sys_remaind1,
 					msg:Msg.sys_only_select_one
@@ -495,14 +495,14 @@
 					msg:Msg.frequency_11
 				});
 				return;
-			}		
+			}
 			$('#setMenuPage').dialog('open');
 			$('#menu_form').form('clear');
 			$("#sysNameCode_menu").val(items[0].sysNameCode);
 			//加载菜单信息
-			menu_form=$('#menu_form').form();	
+			menu_form=$('#menu_form').form();
 			menuDg=$('#menuDg').datagrid({
-				url :'${apibase}/sysRole/getSysMenuList?random='+new Date().getTime(),  		
+				url :'${apibase}/sysRole/getSysMenuList?random='+new Date().getTime(),
 				queryParams: {"menuName":$('#menuName').val(),"sysNameCode":$('#sysNameCode_menu').val(),"menuType":$('#menuType').val()},
 				    toolbar : '#tbMenu',
 				    height : 400,
@@ -510,8 +510,8 @@
 				    idField : 'menuId',
 				    pageList : [ 50, 100, 200 ],
 					pageSize : 50,
-				    singleSelect : false, //是否单选 
-					pagination : true,//分页控件 
+				    singleSelect : false, //是否单选
+					pagination : true,//分页控件
 					rownumbers : true, //行号
 				    columns:[[
 				        {field:"ck",title:'选中',checkbox:true},
@@ -539,56 +539,56 @@
 				    						var rowIndex = $('#menuDg').datagrid("getRowIndex",rows[j].menuId);
 				    						$('#menuDg').datagrid("checkRow",rowIndex)//选中行
 				    									.datagrid("refreshRow",rowIndex);//刷新行
-				    						
+
 				    					}
 				    				}
 				    			}
 			    			}
 			    		},"json");
 				    }
-			}); 
-			
+			});
+
 // 			$('#setMenuPage').dialog({
 // 				title:Msg.set_associated_roles,
 // 				height:500,
 // 				width:550,
-// 				 onOpen:function(){   
-// 			          //dialog原始left  
-// 			          default_left=$('#setMenuPage').panel('options').left;   
-// 			          //dialog原始top  
-// 			          default_top=$('#setMenuPage').panel('options').top;  
-// 			        },  
-// 			        onMove:function(left,top){  //鼠标拖动时事件  
-// 			           var body_width=document.body.offsetWidth;//body的宽度  
-// 			           var body_height=document.body.offsetHeight;//body的高度  
-// 			           var dd_width= $('#setMenuPage').panel('options').width;//dialog的宽度  
-// 			           var dd_height= $('#setMenuPage').panel('options').height;//dialog的高度                     
-// 			           if(left<1||left>(body_width-dd_width)||top<1||top>(body_height-dd_height)){  
-// 			              $('#setMenuPage').dialog('move',{      
-// 			                    //left:default_left,      
-// 			                    //top:default_top      
-// 			              });  
-// 			          }  
+// 				 onOpen:function(){
+// 			          //dialog原始left
+// 			          default_left=$('#setMenuPage').panel('options').left;
+// 			          //dialog原始top
+// 			          default_top=$('#setMenuPage').panel('options').top;
+// 			        },
+// 			        onMove:function(left,top){  //鼠标拖动时事件
+// 			           var body_width=document.body.offsetWidth;//body的宽度
+// 			           var body_height=document.body.offsetHeight;//body的高度
+// 			           var dd_width= $('#setMenuPage').panel('options').width;//dialog的宽度
+// 			           var dd_height= $('#setMenuPage').panel('options').height;//dialog的高度
+// 			           if(left<1||left>(body_width-dd_width)||top<1||top>(body_height-dd_height)){
+// 			              $('#setMenuPage').dialog('move',{
+// 			                    //left:default_left,
+// 			                    //top:default_top
+// 			              });
+// 			          }
 // 			        }
-				
+
 // 			}).dialog('open');
 		}
-		
+
 		// 查询
 		function searchMenu(){
 			menuDg.datagrid('reload', $.serializeObject(menu_form));
 	    }
-		
+
 		// 重置
 		$('#reset_linkbutton_set').click(function() {
-			 $('#menu_form').form('clear');  
+			 $('#menu_form').form('clear');
 		});
-		
+
 		 function closeMenu(){
 		    	$("#menuDg").datagrid("clearChecked");
 		    	$('#setMenuPage').dialog('close')
 		    }
-		    
+
 		//----------保存角色设置按钮点击事件----------
 		function saveMenu(){
 			var roleIds="";
@@ -627,7 +627,7 @@
                                  title: Msg.sys_remaind1,
                                  msg:Msg.sys_no_permissions_txt1
                              });
-  	      				setTimeout(function () { 
+  	      				setTimeout(function () {
       						top.location.href = resultData;
       				    }, 3000);
       					}

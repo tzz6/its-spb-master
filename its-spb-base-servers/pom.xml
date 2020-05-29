@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.its.base.servers</groupId>
-	<artifactId>its-spb-base-servers</artifactId>
-	<version>1.0.0</version>
-	<name>its-spb-base-servers</name>
-	<description>its-spb-base-servers</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.its.base.servers</groupId>
+    <artifactId>its-spb-base-servers</artifactId>
+    <version>1.0.0</version>
+    <name>its-spb-base-servers</name>
+    <description>its-spb-base-servers</description>
 
-	<parent>
-		<groupId>com.its.parent</groupId>
-		<artifactId>its-spb-parent</artifactId>
-		<version>1.0</version>
-	</parent>
+    <parent>
+        <groupId>com.its.parent</groupId>
+        <artifactId>its-spb-parent</artifactId>
+        <version>1.0</version>
+    </parent>
 
-	<dependencies>
-		<!-- SpringBoot整合Eureka客户端 -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<!-- SpringBoot整合Zookeeper客户端 需要注意Zookeeper的安装版本 <dependency> <groupId>org.springframework.cloud</groupId> 
-			<artifactId>spring-cloud-starter-zookeeper-discovery</artifactId> </dependency> -->
-		<!-- SpringBoot 整合 swagger-spring-boot-starter(对swagger2次开源整合) 实现API管理 -->
-		<dependency>
-			<groupId>com.spring4all</groupId>
-			<artifactId>swagger-spring-boot-starter</artifactId>
-			<version>1.7.0.RELEASE</version>
-		</dependency>
-	<!-- SpringBoot整合zipkin实现服务追踪-2.X版本 -->
-	<!-- SpringBoot 2.0 版本之后，官方已不推荐自己搭建定制，而是直接提供了编译好的 jar包 -->
-	<!-- 使用命令java -jar： -->
-	<!-- Linux -->
-	<!-- curl -sSL https://zipkin.io/quickstart.sh | bash -s -->
-	<!-- java -jar zipkin.jar -->
-	<!-- Windocs -->
-	<!-- https://zipkin.io/pages/quickstart.html官网下载zipkin-server-2.12.0-exec.jar包 -->
-	<!-- java -jar zipkin-server-2.12.0-exec.jar -->
-	<!-- 使用 docker 的方式 -->
-	<!-- docker run -d -p 9411:9411 openzipkin/zipkin -->
-	<!-- java -jar zipkin.jar -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-zipkin</artifactId>
-		</dependency>
+    <dependencies>
+        <!-- SpringBoot整合Eureka客户端 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+        <!-- SpringBoot整合Zookeeper客户端 需要注意Zookeeper的安装版本 <dependency> <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId> </dependency> -->
+        <!-- SpringBoot 整合 swagger-spring-boot-starter(对swagger2次开源整合) 实现API管理 -->
+        <dependency>
+            <groupId>com.spring4all</groupId>
+            <artifactId>swagger-spring-boot-starter</artifactId>
+            <version>1.7.0.RELEASE</version>
+        </dependency>
+        <!-- SpringBoot整合zipkin实现服务追踪-2.X版本 -->
+        <!-- SpringBoot 2.0 版本之后，官方已不推荐自己搭建定制，而是直接提供了编译好的 jar包 -->
+        <!-- 使用命令java -jar： -->
+        <!-- Linux -->
+        <!-- curl -sSL https://zipkin.io/quickstart.sh | bash -s -->
+        <!-- java -jar zipkin.jar -->
+        <!-- Windocs -->
+        <!-- https://zipkin.io/pages/quickstart.html官网下载zipkin-server-2.12.0-exec.jar包 -->
+        <!-- java -jar zipkin-server-2.12.0-exec.jar -->
+        <!-- 使用 docker 的方式 -->
+        <!-- docker run -d -p 9411:9411 openzipkin/zipkin -->
+        <!-- java -jar zipkin.jar -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+        </dependency>
+        <!-- its-spb-base-servers-api -->
+        <dependency>
+            <groupId>com.its.base.servers.api</groupId>
+            <artifactId>its-spb-base-servers-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
-		<!-- its-spb-base-servers-api -->
-		<dependency>
-			<groupId>com.its.base.servers.api</groupId>
-			<artifactId>its-spb-base-servers-api</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		
-		<!-- SpringBoot整合mysql -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<!-- <version>8.0.16</version> -->
-		</dependency>
-		<!-- SpringBoot整合mybatis -->
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>${mybatis-spring-boot-starter.version}</version>
-		</dependency>
+        <!-- SpringBoot整合mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <!-- <version>8.0.16</version> -->
+        </dependency>
+        <!-- SpringBoot整合mybatis -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis-spring-boot-starter.version}</version>
+        </dependency>
+        <!-- elasticsearch -->
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
@@ -71,14 +71,32 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
+        </dependency>
+        <!-- hutool工具包 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.3.2</version>
+        </dependency>
+        <!--图片高斯过滤-->
+        <dependency>
+            <groupId>com.jhlabs</groupId>
+            <artifactId>filters</artifactId>
+            <version>2.0.235-1</version>
+        </dependency>
+        <!-- image util -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.8</version>
         </dependency>
     </dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

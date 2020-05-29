@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
@@ -16,10 +17,11 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication(scanBasePackages = "com.its", exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @MapperScan("com.its.core.mybatis.dao.mapper")
+@ServletComponentScan(basePackages = "com.its.web.common.listener")
 public class ItsSpbWebApplication {
 
     /**
-     * 
+     *
      * description: 注册图形验证码Servlert
      * @author: tzz
      * date: 2019/08/29 20:38

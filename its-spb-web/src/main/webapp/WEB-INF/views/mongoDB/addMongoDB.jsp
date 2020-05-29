@@ -2,8 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <script type="text/javascript" src="${ctx}/js/ajaxExt.js?v=201908262100"> </script>
+<!-- 服务网关 start-->
+<!-- 跨域访问-->
 <c:set var="apibase" value="http://localhost/api-base"></c:set>
 <c:set var="apiorder" value="http://localhost/api-order"></c:set>
+<!-- 同域访问nginx配置为同域
+<c:set var="apibase" value="/api-base"></c:set>
+<c:set var="apiorder" value="/api-order"></c:set>-->
+<!-- 服务网关 end-->
 <c:set var="lang" value="${ITS_USER_SESSION.language}" />
 <input type="hidden" id="lang" value="${lang}" />
 <fmt:setLocale value="${lang}" />

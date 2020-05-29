@@ -56,7 +56,6 @@
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
-			<scope>provided</scope>
 		</dependency>
 		<!-- jackson -->
 		<dependency>
@@ -234,7 +233,7 @@
 			<artifactId>easyexcel</artifactId>
 			<version>2.1.0-beta4</version>
 		</dependency>
-			
+
 		<!-- dom4j -->
 		<dependency>
 			<groupId>dom4j</groupId>
@@ -282,5 +281,12 @@
 			<!-- <version>${spring.version}</version> -->
 			<!-- <scope>provided</scope> -->
 		</dependency>
+		<!-- java-jwt start -->
+		<dependency>
+			<groupId>com.auth0</groupId>
+			<artifactId>java-jwt</artifactId>
+			<version>3.8.2</version>
+		</dependency>
+		<!-- java-jwt end -->
 	</dependencies>
 </project>

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
@@ -51,7 +50,7 @@ public class SysRoleController {
     }
 
     /**
-     * 
+     *
      * description: 角色管理列表数据
      * @author: tzz
      * date: 2019/08/26 20:02
@@ -85,7 +84,7 @@ public class SysRoleController {
 
     /**
      * 系统名称列表
-     * 
+     *
      * @return List<Map<String, String>>
      */
     @RequestMapping(value = "/getSysNameList")
@@ -109,7 +108,7 @@ public class SysRoleController {
 
     /**
      * 新增保存
-     * 
+     *
      * @param sysRole sysRole
      * @return String
      */
@@ -141,7 +140,7 @@ public class SysRoleController {
 
     /**
      * 查询对应ID的Role
-     * 
+     *
      * @param sysRole sysRole
      * @return Map<String, Object>
      */
@@ -157,7 +156,7 @@ public class SysRoleController {
 
     /**
      * 修改保存
-     * 
+     *
      * @param sysRole sysRole
      * @return String
      */
@@ -185,7 +184,7 @@ public class SysRoleController {
 
     /**
      * 删除
-     * 
+     *
      * @param roleId roleId
      * @return String
      */
@@ -211,7 +210,7 @@ public class SysRoleController {
 
     /**
      * 系统菜单
-     * 
+     *
      * @return Datagrid<SysMenu>
      */
     @RequestMapping(value = "/getSysMenuList", method = RequestMethod.POST)
@@ -240,7 +239,7 @@ public class SysRoleController {
 
     /**
      * 查询角色菜单列表
-     * 
+     *
      * @return List<SysRoleMenu>
      */
     @RequestMapping(value = "/getSysRoleMenuList")
@@ -251,7 +250,7 @@ public class SysRoleController {
 
     /**
      * 保存角色菜单关联
-     * 
+     *
      * @param roleId roleId
      * @param menuId menuId
      * @return String

@@ -41,13 +41,13 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
-		
+
 		<dependency>
 			<groupId>com.its.common</groupId>
 			<artifactId>its-spb-common</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		
+
 		<!-- SpringBoot整合mysql -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -116,24 +116,24 @@
         </dependency>
         <!--jetty容器支持jsp end-->
 		<!-- SpringBoot整合jetty end -->
-		
+
 		<!-- SpringBoot整合tomcat start -->
 		<!-- War包部署到外置Tomcat中已经包含了这些包，如部署到外置Tomcat -->
 		<!-- 则需要将scope设置为provided否则会和内嵌的Tomcat 容器发生冲突 -->
-		<!--<scope>provided</scope> 
+		<!--<scope>provided</scope>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 		</dependency>-->
 		<!-- SpringBoot整合tomcat end -->
 		<!--SpringBoot整合JSP start -->
-		<!--用于编译jsp 
+		<!--用于编译jsp
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>-->
 		<!--SpringBoot整合JSP end -->
-		
+
 		<!--jsp页面使用jstl标签 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -162,13 +162,6 @@
 			<artifactId>ant</artifactId>
 			<version>1.10.5</version>
 		</dependency>
-		<!-- java-jwt start -->
-		<dependency>
-			<groupId>com.auth0</groupId>
-			<artifactId>java-jwt</artifactId>
-			<version>3.8.2</version>
-		</dependency>
-		<!-- java-jwt end -->
 	</dependencies>
 	<build>
 		<plugins>

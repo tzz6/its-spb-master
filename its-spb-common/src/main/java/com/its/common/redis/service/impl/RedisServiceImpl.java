@@ -15,12 +15,11 @@ import org.springframework.util.CollectionUtils;
 import com.its.common.redis.service.RedisService;
 
 /**
- * 
- * @author tzz
- * @工号: 
- * @date 2019/07/10
- * @Introduce: RedisServiceImpl
- */
+  * Description: RedisServiceImpl
+  * Company: tzz
+  * @Author: tzz
+  * Date: 2019/07/10
+  */
 @Service
 public class RedisServiceImpl implements RedisService {
 
@@ -56,7 +55,7 @@ public class RedisServiceImpl implements RedisService {
         }
         return flag;
     }
-    
+
     @Override
     public long getExpire(String key) {
         return redisTemplate.getExpire(key, TimeUnit.SECONDS);
@@ -163,7 +162,8 @@ public class RedisServiceImpl implements RedisService {
         try {
             redisTemplate.opsForHash().putAll(key, map);
             if (time > 0) {
-                expire(key, time);
+                boolean expire = expire(key, time);
+                logger.info("expire:" + expire);
             }
             flag = true;
         } catch (Exception e) {
@@ -284,7 +284,7 @@ public class RedisServiceImpl implements RedisService {
             return 0;
         }
     }
-    
+
     /** ================sort set================ */
     @Override
     public Set<Object> szGet(String key, long start, long end) {
@@ -305,7 +305,7 @@ public class RedisServiceImpl implements RedisService {
             return false;
         }
     }
-    
+
     @Override
     public boolean szSet(String key, Object value, double score) {
         try {
@@ -315,7 +315,7 @@ public class RedisServiceImpl implements RedisService {
             return false;
         }
     }
-    
+
     @Override
     public boolean szSetAndTime(String key, long time, Object value, double score) {
         boolean flag = true;
@@ -330,7 +330,7 @@ public class RedisServiceImpl implements RedisService {
         }
         return flag;
     }
-    
+
     @Override
     public long szGetSetSize(String key) {
         try {
@@ -340,7 +340,7 @@ public class RedisServiceImpl implements RedisService {
             return 0;
         }
     }
-    
+
     @Override
     public long zsetRemove(String key, Object... values) {
         try {
@@ -447,8 +447,7 @@ public class RedisServiceImpl implements RedisService {
     @Override
     public long lRemove(String key, long count, Object value) {
         try {
-            Long remove = redisTemplate.opsForList().remove(key, count, value);
-            return remove;
+            return redisTemplate.opsForList().remove(key, count, value);
         } catch (Exception e) {
             logger.error("redis lRemove:" + e.getMessage(), e);
             return 0;

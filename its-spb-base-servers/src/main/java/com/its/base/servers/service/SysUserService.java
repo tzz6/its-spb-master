@@ -23,7 +23,7 @@ public interface SysUserService {
 	 * @param sysUser sysUser
 	 */
 	void insertSysUser(SysUser sysUser);
-	
+
 	/**
 	 * updateSysUser
 	 * @param sysUser sysUser
@@ -58,12 +58,22 @@ public interface SysUserService {
 	void deleteSysUser(List<String> stIdList);
 
 	/**
+	 *
+	 * description: login
+	 * @author: tzz
+	 * date: 2019/08/29 17:08
+	 * @param map map
+	 * @return SysUser
+	 */
+	SysUser login(Map<String, Object> map);
+
+	/**
 	 * getSysUserByMap
 	 * @param map map
 	 * @return List
 	 */
 	List<SysUser> getSysUserByMap(Map<String, Object> map);
-	
+
 	/**
 	 * updateSysUserPassword
 	 * @param sysUser sysUser

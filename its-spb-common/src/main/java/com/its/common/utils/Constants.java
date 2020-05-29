@@ -12,6 +12,10 @@ public class Constants {
 		public static final String VERIFY_CODE = "VerifyCode";
 		/** 登录后的Session key */
 		public static final String ITS_USER_SESSION = "ITS_USER_SESSION";
+		/** token */
+		public static final String ITS_TOKEN = "ITS_TOKEN";
+		/** token */
+		public static final String LOG_OUT = "log_out";
 		/** 时区 */
 		public static final String SYS_TIME_ZONE = "SYS_TIME_ZONE";
 		/** 登录后的用户权限 Session key */
@@ -38,7 +42,7 @@ public class Constants {
 	public static final String IS_REPAEAT = "IS_REPEAT";
 	/** 操作失败标志 */
 	public static final String OPTION_FLAG_FAIL = "FAIL";
-	
+
 	public static final String EXCEPTION = "EXCEPTION";
 
 	public class CookieKey {

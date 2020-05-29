@@ -62,7 +62,7 @@ public class ItsSpbWebMvcConfig implements WebMvcConfigurer {
 		//添加登录拦截器
 		registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns(excludePath);
 	}
-	
+
 	/**
      * 添加格式化转换器
 

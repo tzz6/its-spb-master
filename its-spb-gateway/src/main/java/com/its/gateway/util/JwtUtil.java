@@ -13,20 +13,22 @@ import com.auth0.jwt.interfaces.JWTVerifier;
  * @author: 01115486
  * date: 2019/08/19 15:17
  */
-public class JwtUtil { 
-    
+public class JwtUtil {
+
     private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
 
     /** 秘钥 */
     public static final String SECRET_KEY = "JWT!2#4%6";
+    /** refreshToken过期时间 */
+    public static final long REFRESH_TOKEN_EXPIRE_TIME = 30 * 60 * 1000;
     /** 签发人 */
     private static final String ISSUER = "issuer";
 
     /**
-     * 
+     *
      * description: 验证token
-     * 
-     * @author: tzz 
+     *
+     * @author: tzz
      * date: 2019/08/19 15:22
      * @param token
      * @return boolean
@@ -45,10 +47,10 @@ public class JwtUtil {
     }
 
     /**
-     * 
+     *
      * description: 从token获取username
-     * 
-     * @author: tzz 
+     *
+     * @author: tzz
      * date: 2019/08/19 15:23
      * @param token
      * @return String

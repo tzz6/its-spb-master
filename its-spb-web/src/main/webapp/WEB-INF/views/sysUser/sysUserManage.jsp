@@ -8,7 +8,7 @@
 <head>
 </head>
 <body class="easyui-layout">
-	<div id="tb" style="padding:5px;"> 
+	<div id="tb" style="padding:5px;">
 		<!-- 	查询条件 -->
 		<form id="search_form">
 			<table style="cellspacing: 0">
@@ -112,13 +112,13 @@
 		</form>
 		<div id="update_dialog_button_div" style="text-align: center;">
 			<a href="#" id="update_dialog_linkbutton_save" class="easyui-linkbutton" data-options="iconCls:'icon-save'"><fmt:message key="btn.save" /></a>
-			&nbsp;&nbsp;&nbsp;&nbsp; 
+			&nbsp;&nbsp;&nbsp;&nbsp;
 			<a href="#" id="update_dialog_linkbutton_cancel" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'"><fmt:message key="btn.close" /></a>
 		</div>
 	</div>
-	
+
 	<!--导入-->
-	<div id="import_dialog_div" class="easyui-dialog" style="width:900px;height:600px" data-options="modal:true, shadow:false, closed:true, 
+	<div id="import_dialog_div" class="easyui-dialog" style="width:900px;height:600px" data-options="modal:true, shadow:false, closed:true,
 		buttons:'#upload_dialog_button_div', title:'<fmt:message key="btn.import" />'">
 	      <div>
 		        <form id="upload_dialog_form" method="post" accept-charset="utf-8" enctype="multipart/form-data">
@@ -126,15 +126,15 @@
 		        		<tr>
 							<td>解析方式:</td>
 							<td>
-								<label><input name="imptType" type="radio" value="SAX"  checked="checked"/>POI(SAX)</label> 
-								<label><input name="imptType" type="radio" value="POI" />POI</label> 
+								<label><input name="imptType" type="radio" value="SAX"  checked="checked"/>POI(SAX)</label>
+								<label><input name="imptType" type="radio" value="POI" />POI</label>
 							</td>
 		        		</tr>
 		        		<tr>
 							<td>保存方式:</td>
 							<td>
-								<label><input name="saveType" type="radio" value="Mysql"  checked="checked"/>Mysql</label> 
-								<label><input name="saveType" type="radio" value="MongDB" />MongDB</label> 
+								<label><input name="saveType" type="radio" value="Mysql"  checked="checked"/>Mysql</label>
+								<label><input name="saveType" type="radio" value="MongDB" />MongDB</label>
 							</td>
 		        		</tr>
 					    <tr>
@@ -156,7 +156,7 @@
 		</div>
 	</div>
 	<!-- 导入 end -->
-	
+
 	<!-- 设置用户角色    start -->
     <div id="tbRole" style="padding: 5px; display: none;">
 		<div>
@@ -192,7 +192,7 @@
 	<!-- 设置用户角色 end -->
 </body>
 <script type="text/javascript">
-	
+
 	var cols;
 	var dragCols = [ {
 		field : 'rowCheckBox',
@@ -239,7 +239,7 @@
 		for(var i = 0;i<cols.length;i++){
 			if(cols[i].formatter=='formatter-stCode'){
 				cols[i].formatter = function(value, row) {return "<input name='stCode_update' id='"+row.stId+"' value='"+value+"' onchange='updateStName(this)' style='width: 190px;height:20px; font-size: 12px;'>";}
-				
+
 			}
 			if(cols[i].formatter=='formatter-createTm'){
 				cols[i].formatter = function(value, row) {return $.fn.timestampFormat(value, 'yyyy-MM-dd HH:mm:ss');}
@@ -248,7 +248,7 @@
 		init();
 		drag();//绑定datagrid，绑定拖拽
 	});
-	
+
 
 	function updateStName(obj) {
 		$.ajax({url : '${apibase}/sysUser/updateSysUser?random='+ new Date().getTime(),
@@ -293,7 +293,7 @@
 				}
 			}
 		});
-		
+
 	}
 	//设置cookies
 	function setCookie(name, value) {
@@ -328,6 +328,7 @@
 				{
 					url : '${apibase}/sysUser/sysUserManage?random='
 							+ new Date().getTime(),
+					method : 'GET',
 					pageList : [ 50, 100, 200,10000,50000,100000,1000000 ],
 					pageSize : 50,
 					nowrap : true,
@@ -386,7 +387,7 @@
 						width : cols[i].width,
 						formatter : cols[i].formatter
 					};
-					var colFMT; 
+					var colFMT;
 					if(cols[i].formatter!=null){
 						colFMT = {
 							field : cols[i].field,
@@ -429,7 +430,7 @@
 		_doResize($('#user_table'));
 	});
 
-	// 查询按钮点击事件 		
+	// 查询按钮点击事件
 	$('#search_linkbutton').click(function() {
 		querySysUserList();
 	});
@@ -474,50 +475,60 @@
 
 	// 提交保存录入的新增用户信息
 	function saveSysUser() {
-		$('#add_dialog_form').form('submit', {
-			url : '${apibase}/sysUser/addSysUser?random=' + new Date().getTime(),
-			contentType: 'application/x-www-form-urlencoded;charset=UTF-8', 
-			type: 'post', 
-			dataType: 'json', 
-			onSubmit : function() {
-				$("#stName_add_h").val($("#stName_add").val());
-				return $(this).form('validate');
-			},
-			success : function(resultData) {
-				alert("easyUI form提交,因跨域请求后，无法获取返回的response,手动刷新列表:"+resultData);
-				if (resultData == 'SUCCESS') {
-					$.messager.show({
-						title : Msg.sys_remaind1,
-						msg : Msg.sys_save_txt
-					});
-					$('#add_dialog_div').dialog('close'); // 关闭新增窗口
-					querySysUserList(); // 重新查询用户列表
-				} else if (resultData == 'IS_REPEAT') {
-					$.messager.show({
-						title : Msg.sys_remaind1,
-						msg : Msg.sys_userMgr_04
-					});
-				} else if(resultData == 'FAIL'){
-             		 $.messager.show({
-                         title: Msg.sys_remaind1,
-                         msg:Msg.sys_save_txt3
-                     });
-              	}else {
-              		if (resultData != null && resultData != undefined) {
-	      				var index = resultData.indexOf("/logout");
-	      				if (index != -1) {
-	      					$.messager.show({
-	                             title: Msg.sys_remaind1,
-	                             msg:Msg.sys_no_permissions_txt1
-	                         });
-	      					setTimeout(function () { 
-	      						top.location.href = resultData;
-	      				    }, 3000);
-	      				}
-	      			}
-              	}
-			}
-		});
+		if ($('#add_dialog_form').form('validate')) {
+			$("#stName_add_h").val($("#stName_add").val());
+			var jsonData = $("#add_dialog_form").serializeArray();
+			$.ajax({url : '${apibase}/sysUser/addSysUser?random=' + new Date().getTime(),
+				type : "POST",
+				data : jsonData,
+				async : false,
+				success : function(resultData) {
+					if (resultData.code == '0') {
+						$.messager.show({
+							title : Msg.sys_remaind1,
+							msg : Msg.sys_save_txt
+						});
+						$('#add_dialog_div').dialog('close'); // 关闭新增窗口
+						querySysUserList(); // 重新查询用户列表
+					} else if (resultData.code == 'IS_REPEAT') {
+						$.messager.show({
+							title : Msg.sys_remaind1,
+							msg : Msg.sys_userMgr_04
+						});
+					} else if(resultData.code == 'FAIL'){
+						$.messager.show({
+							title: Msg.sys_remaind1,
+							msg:Msg.sys_save_txt3
+						});
+					}else {
+						if (resultData != null && resultData != undefined) {
+							var index = resultData.indexOf("/logout");
+							if (index != -1) {
+								$.messager.show({
+									title: Msg.sys_remaind1,
+									msg:Msg.sys_no_permissions_txt1
+								});
+								setTimeout(function () {
+									top.location.href = resultData;
+								}, 3000);
+							}
+						}
+					}
+				}
+			})
+		}
+
+		<%--$('#add_dialog_form').form('submit', {--%>
+		<%--	url : '${apibase}/sysUser/addSysUser?random=' + new Date().getTime(),--%>
+		<%--	contentType: 'application/x-www-form-urlencoded;charset=UTF-8',--%>
+		<%--	type: 'post',--%>
+		<%--	dataType: 'json',--%>
+		<%--	onSubmit : function() {--%>
+		<%--		$("#stName_add_h").val($("#stName_add").val());--%>
+		<%--		return $(this).form('validate');--%>
+		<%--	},--%>
+
+		<%--});--%>
 	}
 
 	// 修改按钮点击事件
@@ -572,7 +583,7 @@
 	$('#update_dialog_linkbutton_cancel').click(function() {
 		$('#update_dialog_div').dialog('close');
 	});
-	
+
 	// 打开导入弹出框
 	$('#import_linkbutton').click(function() {
 		if($(this).linkbutton("options").disabled){	//已禁用按钮
@@ -583,14 +594,14 @@
 		$('input[name="imptType"][value="SAX"]').prop("checked",true);
 		$('input[name="saveType"][value="Mysql"]').prop("checked",true);
 		$("#import_dialog_linkbutton_save").linkbutton('enable');
-		$('#resultTable').datagrid('loadData',{'total':0,'rows':[]}); 
+		$('#resultTable').datagrid('loadData',{'total':0,'rows':[]});
 // 		var row = $("#agentservice_table").datagrid("getSelected");
 // 		if (row) {
 // 			var agentServiceId = row.agentServiceId;
 // 			$("#import_area_agentServiceId").val(agentServiceId);
 // 		}
 	});
-	
+
 	$('#import_dialog_linkbutton_save').click(function() {
 		if($(this).linkbutton("options").disabled){	//已禁用按钮
 			return;
@@ -602,36 +613,45 @@
 
 	// 提交保存录入的修改用户信息
 	function updateSysUser() {
-		debugger
-		$('#update_dialog_form').form('submit',{
-		url : '${apibase}/sysUser/updateSysUser?random='+ new Date().getTime(),
-		onSubmit : function() {
-// 			$("#stName_update_h").val(encodeURI($("#stName_update").val()));
+		if ($('#update_dialog_form').form('validate')) {
 			$("#stName_update_h").val($("#stName_update").val());
-						return $(this).form('validate');
-		},
-		success : function(resultData) {
-			if (resultData == 'SUCCESS') {
-				$.messager.show({title : Msg.sys_remaind1,msg : Msg.sys_save_txt});
-				$('#update_dialog_div').dialog('close'); // 关闭新增窗口
-				querySysUserList(); // 重新查询用户列表
-			} else if (resultData == 'IS_REPEAT') {
-				$.messager.show({title : Msg.sys_remaind1,msg : Msg.sys_userMgr_04});
-			} else if (resultData == 'FAIL') {
-				$.messager.show({title : Msg.sys_remaind1,msg : Msg.sys_save_txt3});
-			} else {
-				if (resultData != null && resultData != undefined) {
-						var index = resultData.indexOf("/logout");
-						if (index != -1) {
-							$.messager.show({title : Msg.sys_remaind1,msg : Msg.sys_no_permissions_txt1});
-							setTimeout(function() {
-								top.location.href = resultData;
-							}, 3000);
+			var jsonData = $("#update_dialog_form").serializeArray();
+			$.ajax({url : '${apibase}/sysUser/updateSysUser?random='+ new Date().getTime(),
+				type : "POST",
+				data : jsonData,
+				async : false,
+				success : function(resultData) {
+					if (resultData == 'SUCCESS') {
+						$.messager.show({title : Msg.sys_remaind1,msg : Msg.sys_save_txt});
+						$('#update_dialog_div').dialog('close'); // 关闭新增窗口
+						querySysUserList(); // 重新查询用户列表
+					} else if (resultData == 'IS_REPEAT') {
+						$.messager.show({title : Msg.sys_remaind1,msg : Msg.sys_userMgr_04});
+					} else if (resultData == 'FAIL') {
+						$.messager.show({title : Msg.sys_remaind1,msg : Msg.sys_save_txt3});
+					} else {
+						if (resultData != null && resultData != undefined) {
+							var index = resultData.indexOf("/logout");
+							if (index != -1) {
+								$.messager.show({title : Msg.sys_remaind1,msg : Msg.sys_no_permissions_txt1});
+								setTimeout(function() {
+									top.location.href = resultData;
+								}, 3000);
+							}
 						}
+					}
 				}
-			}
+			})
 		}
-		});
+
+		<%--$('#update_dialog_form').form('submit',{--%>
+		<%--url : '${apibase}/sysUser/updateSysUser?random='+ new Date().getTime(),--%>
+		<%--onSubmit : function() {--%>
+		<%--	$("#stName_update_h").val(encodeURI($("#stName_update").val()));--%>
+		<%--	$("#stName_update_h").val($("#stName_update").val());--%>
+		<%--	return $(this).form('validate');--%>
+		<%--}--%>
+		<%--});--%>
 	}
 
 	// 删除按钮点击事件
@@ -676,7 +696,7 @@
 		} else {
 		$.messager.show({title : Msg.sys_remaind1,msg : Msg.frequency_10});}
 	});
-	
+
 	// Excel导出
 	$('#export_linkbutton').click(function() {
 		window.location.href = "${apibase}/excel/export";
@@ -721,8 +741,8 @@
 			idField : 'roleId',
 			pageList : [ 50, 100, 200 ],
 			pageSize : 50,
-			singleSelect : false, //是否单选 
-			pagination : true,//分页控件 
+			singleSelect : false, //是否单选
+			pagination : true,//分页控件
 			rownumbers : true, //行号
 			columns : [ [ {
 				field : "ck",
@@ -740,21 +760,22 @@
 			} ] ],
 			onLoadSuccess : function() {
 				//$("#roleDg").datagrid("clearChecked");
-				$.post('${apibase}/sysUser/getSysUserRoleList?random='+ new Date().getTime(),{stId : items[0].stId},
-				function(data) {
-					if (data != null&& data.length > 0) {
-						userRoles = data;
-						for (var i = 0; i < userRoles.length; i++) {
-							var rows = $('#roleDg').datagrid("getRows");
-							for (var j = 0; j < rows.length; j++) {
-								if (rows[j].roleId == userRoles[i].roleId) {
-									var rowIndex = $('#roleDg').datagrid("getRowIndex",rows[j].roleId);
-									$('#roleDg').datagrid("checkRow",rowIndex).datagrid("refreshRow",rowIndex);//刷新行
+				$.post('${apibase}/sysUser/getSysUserRoleList?random=' + new Date().getTime(),
+						{stId: items[0].stId},
+						function (data) {
+							if (data != null && data.length > 0) {
+								userRoles = data;
+								for (var i = 0; i < userRoles.length; i++) {
+									var rows = $('#roleDg').datagrid("getRows");
+									for (var j = 0; j < rows.length; j++) {
+										if (rows[j].roleId == userRoles[i].roleId) {
+											var rowIndex = $('#roleDg').datagrid("getRowIndex", rows[j].roleId);
+											$('#roleDg').datagrid("checkRow", rowIndex).datagrid("refreshRow", rowIndex);//刷新行
+										}
+									}
 								}
 							}
-						}
-					}
-				}, "json");
+						}, "json");
 			}
 		});
 
@@ -763,23 +784,23 @@
 		// 				title:Msg.set_associated_roles,
 		// 				height:500,
 		// 				width:550,
-		// 				 onOpen:function(){   
-		// 			          //dialog原始left  
-		// 			          default_left=$('#setRolePage').panel('options').left;   
-		// 			          //dialog原始top  
-		// 			          default_top=$('#setRolePage').panel('options').top;  
-		// 			        },  
-		// 			        onMove:function(left,top){  //鼠标拖动时事件  
-		// 			           var body_width=document.body.offsetWidth;//body的宽度  
-		// 			           var body_height=document.body.offsetHeight;//body的高度  
-		// 			           var dd_width= $('#setRolePage').panel('options').width;//dialog的宽度  
-		// 			           var dd_height= $('#setRolePage').panel('options').height;//dialog的高度                     
-		// 			           if(left<1||left>(body_width-dd_width)||top<1||top>(body_height-dd_height)){  
-		// 			              $('#setRolePage').dialog('move',{      
-		// 			                    //left:default_left,      
-		// 			                    //top:default_top      
-		// 			              });  
-		// 			          }  
+		// 				 onOpen:function(){
+		// 			          //dialog原始left
+		// 			          default_left=$('#setRolePage').panel('options').left;
+		// 			          //dialog原始top
+		// 			          default_top=$('#setRolePage').panel('options').top;
+		// 			        },
+		// 			        onMove:function(left,top){  //鼠标拖动时事件
+		// 			           var body_width=document.body.offsetWidth;//body的宽度
+		// 			           var body_height=document.body.offsetHeight;//body的高度
+		// 			           var dd_width= $('#setRolePage').panel('options').width;//dialog的宽度
+		// 			           var dd_height= $('#setRolePage').panel('options').height;//dialog的高度
+		// 			           if(left<1||left>(body_width-dd_width)||top<1||top>(body_height-dd_height)){
+		// 			              $('#setRolePage').dialog('move',{
+		// 			                    //left:default_left,
+		// 			                    //top:default_top
+		// 			              });
+		// 			          }
 		// 			        }
 
 		// 			}).dialog('open');
@@ -843,7 +864,7 @@
 			}
 		});
 	}
-	
+
 	//导入上传保存
 	function uploadSaveFile() {
 		var filepath = $("#uploadFile").val();
@@ -859,7 +880,7 @@
 		$("#import_dialog_linkbutton_save").linkbutton('disable');
 		$("#msg_uploading").html(Msg.msg_uploading);
 		//清空datagrid
-// 		$('#resultTable').datagrid('loadData',{'total':0,'rows':[]}); 
+// 		$('#resultTable').datagrid('loadData',{'total':0,'rows':[]});
 		$("#upload_dialog_form").form('submit',{
 			url : '${apibase}/excel/import?random='+ new Date().getTime(),
 			method : "post",
@@ -882,7 +903,7 @@
 				}
 			});
 	}
-	
+
 	function initResultTable() {
 		$('#resultTable').datagrid({
 			pagination : true,

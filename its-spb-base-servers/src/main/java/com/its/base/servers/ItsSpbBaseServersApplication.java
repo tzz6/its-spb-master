@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 
 /**
  * its-spb-base-servers服务启动
- * 
+ *
  * @EnableEurekaClient 将当前服务注册到Eureka注册中心,如果注册中心是Eureka使用，向注册中心注册服务<br>
  * @EnableDiscoveryClient如果注册中心是Zookeeper、Connsul使用@EnableDiscoveryClient替换@EnableEurekaClient，向注册中心注册服务<br>
  * @EnableSwagger2Doc开启Swagger<br>
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Import;
  * 使用@Configuration注解需要与SpringBootApplication在同一package下，不在同一package下则需要使用scanBasePackages = "com.its"<br>
  * @author tzz
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.its.base","com.its.common.redis"})
 @EnableEurekaClient
 @EnableSwagger2Doc
 @MapperScan("com.its.base.servers.mapper")

@@ -5,7 +5,7 @@ $(function() {
 		$(this).attr("src", ctx + "/verifyCodeServlet?t=" + new Date().getTime());
 	});
 
-	
+
 	$("#login_form").ajaxForm({
 		beforeSubmit : function(form_data, form, option) {
 			$("#errorInfo").html("");
@@ -48,12 +48,12 @@ $(function() {
 		},
 		timeout : 20000
 	});
-	
+
 	var autologin = $("#autologin").attr("checked");
 	if(autologin == 'checked'){
 		loginSubmit();
 	}
-	
+
 	var language = GetCookie("lang");
 	//	alert(language);
 });
@@ -105,7 +105,8 @@ function ajaxSubmit(){
 	encrypt.setPublicKey(publicKey);
 	// RAS加密
 	password = encrypt.encrypt(password);
-	
+	var redirectUrl = $("#redirectUrl").val();
+
 	$.ajax({url : ctxStr+'/login?random='+ new Date().getTime(),
 		type : "POST",
 		data : {
@@ -113,7 +114,8 @@ function ajaxSubmit(){
 			'password' : password,
 			'verifyCode' : verifyCode,
 			'lang' : lang,
-			'savePassword' : savePassword
+			'savePassword' : savePassword,
+			'redirectUrl' : redirectUrl
 		},
 		async : false,
 		success : function(data) {
@@ -121,13 +123,19 @@ function ajaxSubmit(){
 			if(json.status == 'success'){
 				var refreshToken = json.refreshToken;
 				var token = json.token;
-				window.sessionStorage.setItem("lang", lang);
-				window.sessionStorage.setItem("username", username);
-				window.sessionStorage.setItem("token", token);
-				window.sessionStorage.setItem("refreshToken", refreshToken);
+				// sessionStorage
+				// window.sessionStorage.setItem("lang", lang);
+				// window.sessionStorage.setItem("username", username);
+				// window.sessionStorage.setItem("token", token);
+				// window.sessionStorage.setItem("refreshToken", refreshToken);
+				// localStorage:生命周期是永久，意味着除非用户显示在浏览器提供的UI上
+				// 清除localStorage信息，否则这些信息将永远存在
+				window.localStorage.setItem("token", token);
+				window.localStorage.setItem("refreshToken", refreshToken);
 //				window.sessionStorage.clear();
 				var url = json.message;
-				window.location.href = json.message;
+				alert(url);
+				window.location.href = url;
 			}else{
 				$("#btn_login").attr('disabled',false);
 				if(json.status == 'verifyCodeError'){

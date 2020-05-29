@@ -5,7 +5,11 @@ server:
    #配置上下文
    #servlet:
    #   context-path: /its
-spring: 
+  #session过期时间
+   servlet:
+     session:
+       timeout: 1800s
+spring:
   profiles:
     ###引用其他的yml文件
     include: mybatis,redis

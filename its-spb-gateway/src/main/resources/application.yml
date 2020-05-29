@@ -1,8 +1,8 @@
 server:
   ###服务端口号
   port: 80
-spring: 
-  application: 
+spring:
+  application:
   ###服务别名--服务注册到注册中心名称
     name: its-spb-gateway
   ###设置有效的配置文件
@@ -11,22 +11,24 @@ spring:
     ###active: its-spb-geteway
     ###引用其他的yml文件
     include: mybatis,redis
-           
+
 #Eureka注册中心配置
 eureka:
   client:
     serviceUrl:
     ###注册地址
-      defaultZone: http://127.0.0.1:8101/eureka/    
+      defaultZone: http://127.0.0.1:8101/eureka/
 ribbon:
   ###指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间。
   ReadTimeout: 5000
   ###指的是建立连接后从服务器读取到可用资源所用的时间。
   ConnectTimeout: 5000
-
+logging:
+  level:
+    org.springframework.cloud.gateway: trace
 ###yml再建一个配置文件，语法是三个横线“---”
 ---
-spring: 
+spring:
   cloud:
     gateway:
       discovery:
@@ -57,7 +59,7 @@ spring:
         filters:
           - StripPrefix=1
           - RequestTime=true
-  profiles: its-spb-geteway      
+  profiles: its-spb-geteway
 
 #单机动态路由开启端点
 management:
@@ -69,7 +71,7 @@ management:
     enabled: false
 
 ###Spring Cloud Gateway官方Route Predicate Factories
-###yml再建一个配置文件，语法是三个横线“---”        
+###yml再建一个配置文件，语法是三个横线“---”
 ###After Route Predicate Factory 请求时间在2017-01-20T17:42:47.789-07:00[America/Denver]之后跳转http://example.org
 ---
 spring:
@@ -81,7 +83,7 @@ spring:
         predicates:
         - After=2017-01-20T17:42:47.789-07:00[America/Denver]
   profiles: after_route
-###Before Route Predicate Factory 请求时间在2017-01-20T17:42:47.789-07:00[America/Denver]之前跳转http://example.org  
+###Before Route Predicate Factory 请求时间在2017-01-20T17:42:47.789-07:00[America/Denver]之前跳转http://example.org
 ---
 spring:
   cloud:
@@ -92,7 +94,7 @@ spring:
         predicates:
         - Before=2017-01-20T17:42:47.789-07:00[America/Denver]
   profiles: befter_route
-###Between Route Predicate Factory 请求时间在2017-01-20T17:42:47.789-07:00[America/Denver], 2017-01-21T17:42:47.789-07:00[America/Denver]之间跳转http://example.org  
+###Between Route Predicate Factory 请求时间在2017-01-20T17:42:47.789-07:00[America/Denver], 2017-01-21T17:42:47.789-07:00[America/Denver]之间跳转http://example.org
 ---
 spring:
   cloud:

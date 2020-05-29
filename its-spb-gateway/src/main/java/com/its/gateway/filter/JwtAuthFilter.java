@@ -39,10 +39,9 @@ import reactor.core.publisher.Mono;
 public class JwtAuthFilter implements GlobalFilter, Ordered {
     private final Logger log = LoggerFactory.getLogger(IpBlackListFilter.class);
     private static final String ITS_TOKEN = "its-token";
-    private static final String REFRESHTOKEN = "its-refreshToken";
+    private static final String ITS_REFRESH_TOKEN = "its-refreshToken";
     private static final String WEB_REFERER = "referer";
-    /** refreshToken过期时间 */
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 30 * 1000;
+
     private StringRedisTemplate redisTemplate;
 
     @Autowired
@@ -52,17 +51,19 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
-        String referer=exchange.getRequest().getHeaders().getFirst(WEB_REFERER);
-        String url = exchange.getRequest().getURI().getPath();
-        String[] noAuthList = new String[] {"/api-docs", "/auth-service/", "/api-base/login", "/api-base/sysRole/updateSysRole"};
+        ServerHttpRequest request = exchange.getRequest();
+        String referer = request.getHeaders().getFirst(WEB_REFERER);
+        String url = request.getURI().getPath();
+        String[] noAuthList = new String[]{"/api-docs", "/auth-service/", "/api-base/login",
+                "/api-base/sysRole/updateSysRole", "/api-base/verifyCode/generator",
+                "/api-base/sysUser/login"};
         if (checkFilter(url, noAuthList) && checkReferer(referer)) {
             // 从请求头中取得token
-            String refreshToken = exchange.getRequest().getHeaders().getFirst(REFRESHTOKEN);
-            String token = exchange.getRequest().getHeaders().getFirst(ITS_TOKEN);
+            String refreshToken = request.getHeaders().getFirst(ITS_REFRESH_TOKEN);
+            String token = request.getHeaders().getFirst(ITS_TOKEN);
             // 从cookie中取得token(登录成功后将token设置到cookie，请求的header中会带上cookie)
-            MultiValueMap<String, HttpCookie> cookies = exchange.getRequest().getCookies();
-            List<HttpCookie> refreshTokenHttpCookieList = cookies.get(REFRESHTOKEN);
+            MultiValueMap<String, HttpCookie> cookies = request.getCookies();
+            List<HttpCookie> refreshTokenHttpCookieList = cookies.get(ITS_REFRESH_TOKEN);
             if (refreshTokenHttpCookieList != null && refreshTokenHttpCookieList.size() > 0) {
                 refreshToken = refreshTokenHttpCookieList.get(0).getValue();
             }
@@ -73,22 +74,20 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
             log.info("its refreshToken: {} its token : {}", refreshToken, token);
             boolean tokenFlag = true;
             BaseResponse<String> res = new BaseResponse<>();
-
             Map<Object, Object> map = null;
-            if ((token == null || "".equals(token)||refreshToken == null || "".equals(refreshToken))) {
+            if ((token == null || "".equals(token))) {
                 // token为空则鉴权失败
                 tokenFlag = false;
                 res.fail(ResponseEnum.ACCOUNT_NO_TOKEN);
-//                message = "{\"code\": \"401\",\"msg\": \"401 Unauthorized.\"}";
             } else {
+                // 检验token是否合法
                 boolean verifyResult = JwtUtil.verify(token);
                 // 从redis中获取单点登录认证信息
-                map = redisTemplate.opsForHash().entries(refreshToken);
+                map = redisTemplate.opsForHash().entries(token);
                 if (!verifyResult || map == null || map.size() == 0) {
                     // token验证非法或redis中无单点登录认证信息，则鉴权失败
                     tokenFlag = false;
                     res.fail(ResponseEnum.ACCOUNT_OTHER_LOGIN);
-//                    message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
                 } else {
                     String redisToken = map.get("token").toString();
                     //注意：从Redis获取到的字符数据需要去掉前后双引号
@@ -97,14 +96,13 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                     if (redisToken == null || !token.equals(redisToken.replace(repStr, ""))) {
                         tokenFlag = false;
                         res.fail(ResponseEnum.ACCOUNT_OTHER_LOGIN);
-//                        message = "{\"code\": \"1004\",\"msg\": \"1004 Invalid Token.\"}";
                     }
                 }
             }
             if (!tokenFlag) {
                 // 鉴权失败
                 ServerHttpResponse response = exchange.getResponse();
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                response.setStatusCode(HttpStatus.OK);
                 response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
                 String message  = JSON.toJSONString(res);
                 log.info(message);
@@ -113,7 +111,6 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                 return response.writeWith(Mono.just(buffer));
             } else {
                 // 鉴权成功
-                ServerHttpRequest request = exchange.getRequest();
                 String username = map.get("username").toString();
                 String lang = map.get("lang").toString();
                 if (username != null && lang != null) {
@@ -122,13 +119,11 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
                         .header("its-language", lang.replace("\"", "")).build();
                 }
                 // 刷新redis中登录会话的过期时间
-                redisTemplate.expire(refreshToken, REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
+                redisTemplate.expire(token, JwtUtil.REFRESH_TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
             }
         }
         return chain.filter(exchange);
     }
-
-
 
     @Override
     public int getOrder() {

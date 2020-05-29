@@ -28,17 +28,14 @@ $(function() {
 			data : data,
 			headers : {//请求头
 				'Accept' : 'application/json; charset=utf-8',
-				'its-username' : window.sessionStorage.getItem("username"),
-				'its-language' : window.sessionStorage.getItem("lang"),
-				'its-refreshToken' : window.sessionStorage
-						.getItem("refreshToken"),
-				'its-token' : window.sessionStorage.getItem("token")
+				'its-refreshToken' : window.localStorage.getItem("refreshToken"),
+				'its-token' : window.localStorage.getItem("token")
 			},
 			success : function(successData) {
 				var code = successData.code;
 				if (code != null && code != "") {
 					if (code == "09020101" || code == "09020102") {
-						alert("请重新登录")
+						alert("ajaxExt.js请重新登录," + code + "," + successData.msg)
 					}
 				} else {
 					successFunction(successData);

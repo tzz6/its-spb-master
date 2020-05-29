@@ -3,7 +3,7 @@ package com.its.base.servers.controller.nosql;
 import com.its.base.servers.api.mongodb.domain.City;
 import com.its.base.servers.api.mongodb.domain.Country;
 import com.its.base.servers.mongo.CountryMongoDaoImpl;
-import com.its.common.dto.ItsResponse;
+import com.its.common.dto.BaseResponse;
 import com.its.common.model.Datagrid;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -96,8 +96,9 @@ public class MongodbController {
 
 	/** 保存 */
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public @ResponseBody ItsResponse<String> save(Country country) {
-		ItsResponse<String> response = new ItsResponse<String>().success();
+	public @ResponseBody
+	BaseResponse<String> save(Country country) {
+		BaseResponse<String> response = new BaseResponse<String>().success();
 		try {
 			if (country.getId() != null) {
 				// 编辑
@@ -120,7 +121,7 @@ public class MongodbController {
 			}
 		} catch (Exception e) {
 			log.error("mongodb save error：" + e.getMessage(), e);
-			response = new ItsResponse<String>().success();
+			response = new BaseResponse<String>().success();
 		}
 		return response;
 	}
@@ -137,8 +138,9 @@ public class MongodbController {
 
 	/** 删除 */
 	@RequestMapping("/delete")
-	public @ResponseBody ItsResponse<String> delete(@RequestParam(value = "ids") String ids) {
-		ItsResponse<String> response = new ItsResponse<String>().success();
+	public @ResponseBody
+	BaseResponse<String> delete(@RequestParam(value = "ids") String ids) {
+		BaseResponse<String> response = new BaseResponse<String>().success();
 		try {
 			Query query = null;
 			String empty = " ";
@@ -153,7 +155,7 @@ public class MongodbController {
 			countryMongoDao.remove(query);
 		} catch (Exception e) {
 			log.error("mongodb delete error：" + e.getMessage(), e);
-			response = new ItsResponse<String>().success();
+			response = new BaseResponse<String>().success();
 		}
 		return response;
 	}

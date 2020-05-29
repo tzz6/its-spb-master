@@ -8,14 +8,14 @@
 <head>
 </head>
 <body class="easyui-layout">
-	<div id="tb" style="padding:5px;"> 
+	<div id="tb" style="padding:5px;">
 	<!-- 	查询条件 -->
 		<form id="search_form">
 		<table cellspacing="10">
-			<tr>       
+			<tr>
 				<td class="content_input">
 				<div style="width: 168px;">
-				<input id="st_code" name="u.st_code" class="easyui-textbox easyui-validatebox" label="<fmt:message key='user.employee.number' />:" 
+				<input id="st_code" name="u.st_code" class="easyui-textbox easyui-validatebox" label="<fmt:message key='user.employee.number' />:"
 				style="width:160px;" labelPosition='top' data-options="prompt:'<fmt:message key='user.employee.number' />',validType:'maxLength[32]'"/></div>
 		        </td>
 	            <td class="content_input">
@@ -26,7 +26,7 @@
 <!-- 			            	<option value="IOP-MCS">IOP-MCS</option>   -->
 <!-- 						    <option value="IOP-AMS">IOP-AMS</option>  -->
 <!-- 					    </select>   -->
-				<input id="sr.sys_name_code" name="sr.sys_name_code" class="easyui-combobox" label="系统名:" labelPosition='top' style="width:160px;" 
+				<input id="sr.sys_name_code" name="sr.sys_name_code" class="easyui-combobox" label="系统名:" labelPosition='top' style="width:160px;"
 				data-options="panelHeight:'auto',valueField:'EN_NAME',textField:'BLD_NAME',url:'${apibase}/sysReport/sysReportPageValue?sqlKey=SYS_NAME'"/>
 				</div>
 		        </td>
@@ -40,7 +40,7 @@
 				<td colspan="2">
 	            <div id="not_exist" style="display: none;"><span style="color: red;"><fmt:message key="search.no.record" />！</span></div>
 	             </td>
-                 <td valign="bottom" colspan="2" style="" align="right">         
+                 <td valign="bottom" colspan="2" style="" align="right">
                  	<a href="#" id="search_linkbutton" class="easyui-linkbutton" style="min-width:80px;" data-options="iconCls:'icon-search'"> <fmt:message key="btn.search" /></a>
 					<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-page_excel'" id="export_linkbutton"> <fmt:message key="btn.export" /></a>
 					<a href="#" class="easyui-linkbutton" style="min-width:80px;" data-options="iconCls:'icon-reload'" id="reset_linkbutton"> <fmt:message key="btn.reset" /></a>
@@ -62,13 +62,6 @@
 	$.ajax({
           url:'${apibase}/sysReport/tableHeart?random=' + new Date().getTime(),
           type: "GET",
-//           headers: {//请求头
-//           	'Accept': 'application/json; charset=utf-8',
-//           	'its-username': window.sessionStorage.getItem("username"),
-//           	'its-language': window.sessionStorage.getItem("lang"),
-//           	'its-refreshToken': window.sessionStorage.getItem("refreshToken"),
-//       		'its-token': window.sessionStorage.getItem("token")
-//           },
           async: false,
           success: function (resultData){
         	  tableHeartArr = resultData;
@@ -91,19 +84,19 @@
          column.align = 'center';
          columns.push(column);
 	}
-	
+
 	$(function() {
 		init();
 		initTime();
 	});
-	
+
 	$.extend($.fn.validatebox.defaults.rules, {
         md: {
             validator: function(value, param){
                 var d1 = $(".create_date_start").datetimebox("getValue");
                 var d2 = value;
                 d1 = d1.replace(/-/g,"/");
-                var date1 = new Date(d1);                
+                var date1 = new Date(d1);
                 d2 = d2.replace(/-/g,"/");
                 var date2 = new Date(d2);
                 return date2>=date1;
@@ -111,20 +104,20 @@
             message: '结束时间小于起始时间'
         }
     });
-	
+
 	$.extend($.fn.validatebox.defaults.rules, {
         ld: {
             validator: function(value, param){
                 var d1 = $(".create_date_start").datetimebox("getValue");
                 var d2 = value;
                 d1 = d1.replace(/-/g,"/");
-                var date1 = new Date(d1);                
+                var date1 = new Date(d1);
                 d2 = d2.replace(/-/g,"/");
-                var date2 = new Date(d2);                
-                var timeslong = date2.getTime() - date1.getTime();               
+                var date2 = new Date(d2);
+                var timeslong = date2.getTime() - date1.getTime();
                 var diff = timeslong/(1000*60*60*24);
                 return diff <= 30;
-                
+
             },
             message: '时间段大于30天'
         }
@@ -169,7 +162,7 @@
 		_doResize($('#user_table'));
 	});
 
-	// 查询按钮点击事件 		
+	// 查询按钮点击事件
 	$('#search_linkbutton').click(function() {
 		querySysUserList();
 	});
@@ -186,7 +179,7 @@
 	// 重置查询列表框
 	function resetSearchForm() {
 		$("#search_form").form("clear");
-// 		 $('#bcCode').combobox('select', '');  
+// 		 $('#bcCode').combobox('select', '');
 		// 时间
 	    var endDate = new Date();
 	    var startTime = endDate.getTime()-1000*60*60*24*29;
@@ -221,36 +214,36 @@ function initTime(){
 	 $(".create_date_start").datetimebox({
         editable: false
     });
-  	
-    $(".create_date_end").datetimebox({	      
+
+    $(".create_date_end").datetimebox({
         editable: false
     });
-    
+
     var endDate = new Date();
     var startTime = endDate.getTime()-1000*60*60*24*29;
 	 var startDate = new Date(startTime);
     $('.create_date_start').datetimebox('setValue', parsedate(startDate, 0));
     $('.create_date_end').datetimebox('setValue', parsedate(endDate, 1));
 }
-function parsedate(value,type){  
-    var date = new Date(value);  
-    var year = date.getFullYear();  
-    var month = date.getMonth()+1; //月份+1     
+function parsedate(value,type){
+    var date = new Date(value);
+    var year = date.getFullYear();
+    var month = date.getMonth()+1; //月份+1
     var day = date.getDate();
     var language = "zh";
     if(language == "en"){
 	    if(type == 0){
-	    	return month+"/"+day+"/"+year+" 00:00"; 
+	    	return month+"/"+day+"/"+year+" 00:00";
 	    }
-	    return month+"/"+day+"/"+year+" 23:59:59";  	    	
+	    return month+"/"+day+"/"+year+" 23:59:59";
     }else{
 	    if(type == 0){
-	    	return year+"-"+month+"-"+day+" 00:00"; 
+	    	return year+"-"+month+"-"+day+" 00:00";
 	    }
-	    return year+"-"+month+"-"+day+" 23:59:59";  	    	
+	    return year+"-"+month+"-"+day+" 23:59:59";
     }
 
-} 
+}
 </script>
 </html>
 </fmt:bundle>

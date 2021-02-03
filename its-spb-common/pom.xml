@@ -18,7 +18,7 @@
 		<httpclient.version>4.5.1</httpclient.version>
 		<fastjson.version>1.2.51</fastjson.version>
 		<org.json.version>20160212</org.json.version>
-		<ant.version>1.9.6</ant.version>
+		<ant.version>1.10.9</ant.version>
 		<zxing.version>3.2.1</zxing.version>
 		<itextpdf.version>5.5.8</itextpdf.version>
 		<itext.asian.version>5.2.0</itext.asian.version>

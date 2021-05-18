@@ -26,7 +26,7 @@
 		<itext.version>2.0.8</itext.version>
 		<poi.ooxml.version>4.1.1</poi.ooxml.version>
 		<jasperreports.version>6.0.0</jasperreports.version>
-		<xstream.version>1.4.8</xstream.version>
+		<xstream.version>1.4.17</xstream.version>
 		<dom4j.version>1.6.1</dom4j.version>
 	</properties>
 

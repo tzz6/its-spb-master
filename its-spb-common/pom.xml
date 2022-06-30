@@ -20,7 +20,7 @@
 		<org.json.version>20160212</org.json.version>
 		<ant.version>1.9.6</ant.version>
 		<zxing.version>3.2.1</zxing.version>
-		<itextpdf.version>5.5.8</itextpdf.version>
+		<itextpdf.version>5.5.12</itextpdf.version>
 		<itext.asian.version>5.2.0</itext.asian.version>
 		<org.xhtmlrenderer.version>9.0.6</org.xhtmlrenderer.version>
 		<itext.version>2.0.8</itext.version>
